@@ -7,6 +7,12 @@ export default function Drive() {
 	const showModal = () => {
 		setIsModalVisible(true);
 	};
+	const handleOk = () => {
+		setIsModalVisible(false);
+	};
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
 	return(
 		<div> 
 			<div className='icon-container'>
@@ -14,8 +20,9 @@ export default function Drive() {
 					<Icon icon="mdi:file-document-add-outline" />
 					<input type="file" name="myfile" />
 				</div> 
-				<Icon icon="material-symbols:folder" />
+				<Icon icon="material-symbols:folder" onClick={showModal} />
 			</div> 
+			<Modal title="Basic Modal" open={isModalVisible} onOk={handleOk} onCancel = {handleCancel}
 		
 		</div>
 	)
