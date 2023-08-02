@@ -6,7 +6,7 @@ function App() {
   return (
     <div>
     <Routes>
-        <Route> </Route>
+        <Route path="/drive/:id" element={<Drive />} />
     </Routes>
     </div>
   );
