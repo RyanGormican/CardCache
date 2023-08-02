@@ -5,3 +5,7 @@
 	display: flex;
 	gap: 15px;
 }
+
+.icon{
+	cursor: pointer;
+}

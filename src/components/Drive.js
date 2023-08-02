@@ -22,8 +22,13 @@ export default function Drive() {
 				</div> 
 				<Icon icon="material-symbols:folder" onClick={showModal} />
 			</div> 
-			<Modal title="Basic Modal" open={isModalVisible} onOk={handleOk} onCancel = {handleCancel}
-		
+			<Modal 
+			title="Folder Uploadl" 
+			open={isModalVisible} 
+			onOk={handleOk} 
+			onCancel = {handleCancel} 
+			centered
+			</Modal>
 		</div>
 	)
 }
