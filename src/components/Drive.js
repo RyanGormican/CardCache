@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState }  from 'react'
 import { Icon } from '@iconify/react';
 import {Modal} from 'antd';
+
 export default function Drive() {
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
 	return(
 		<div> 
 			<div className='icon-container'>
