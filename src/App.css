@@ -20,8 +20,16 @@
 .grid-parent {
 	display:grid;
 	grid-template-columns: auto auto auto;
+	position: relative;
+	top: 10vh;
+	gap 10px;
+	padding: 2vw;
 }
 
 .grid-child{
-	border: 1px solid #212121;
+	border: 1px solid #717171;
+	justify-content: center;
+	display: flex;
+	align-items:cneter;
+	height: 100px;
 }
