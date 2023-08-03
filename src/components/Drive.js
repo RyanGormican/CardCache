@@ -27,6 +27,17 @@ const [cardName, setCardName] = useState('');
 	}
 			
 	};
+
+	const readData = () => {
+		onSnapshot(collectionRef, (data) => {
+			console.log(data.docs.map((doc) => { 
+				return {...doc.data(), id: doc.id}
+			}))
+		})
+	}
+	useEffect(() => {
+		readData();
+	}, [])
 	return(
 		<div> 
 			<div className='icon-container'>
