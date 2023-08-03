@@ -9,7 +9,7 @@ function App() {
     <div>
     <Routes>
         <Route path="/" element={<Auth />} />
-        <Route path="/drive/:id" element={<Drive database={database}/>} />
+        <Route path="/drive/" element={<Drive database={database}/>} />
     </Routes>
     </div>
   );

@@ -27,9 +27,14 @@
 }
 
 .grid-child{
-	border: 1px solid #717171;
+	border: 1px solid #c5c5c5;
 	justify-content: center;
 	display: flex;
 	align-items:cneter;
 	height: 100px;
+	cursor: pointer;
+	border-radius: 2vw;
+}
+.grid-child h4{
+	color: #777777;
 }
