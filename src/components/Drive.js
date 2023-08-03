@@ -5,6 +5,7 @@ import { collection, addDoc, onSnapshot} from 'firebase/firestore';
 export default function Drive() {
 const collectionRef = collection(database, 'cardData')
 const [cardName, setCardName] = useState('');
+const [cards, setCards]= useState ([]); 
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -30,7 +31,7 @@ const [cardName, setCardName] = useState('');
 
 	const readData = () => {
 		onSnapshot(collectionRef, (data) => {
-			console.log(data.docs.map((doc) => { 
+			setCards(data.docs.map((doc) => { 
 				return {...doc.data(), id: doc.id}
 			}))
 		})
