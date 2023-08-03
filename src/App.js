@@ -1,11 +1,13 @@
 
 import './App.css';
 import Drive from './components/Drive';
+import Auth from './components/Auth';
 import { Routes, Route } from ' react-router-dom'
 function App() {
   return (
     <div>
     <Routes>
+        <Route path="/" element={<Auth />} />
         <Route path="/drive/:id" element={<Drive />} />
     </Routes>
     </div>
