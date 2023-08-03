@@ -9,3 +9,10 @@
 .icon{
 	cursor: pointer;
 }
+.auth-btn{
+	display:flex;
+	justify-content: center;
+	align-items: cneter;
+	height: 100vh;
+	flex-direction: column;
+}
