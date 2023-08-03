@@ -1,6 +1,6 @@
 import React, { useState }  from 'react'
 import { Icon } from '@iconify/react';
-import {Modal} from 'antd';
+import {Modal, Input} from 'antd';
 
 export default function Drive() {
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -28,6 +28,8 @@ export default function Drive() {
 			onOk={handleOk} 
 			onCancel = {handleCancel} 
 			centered
+			>
+				<input placeholder="Basic usage" />
 			</Modal>
 		</div>
 	)
