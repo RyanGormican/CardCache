@@ -4,7 +4,7 @@ import {Modal, Input} from 'antd';
 import { collection, addDoc} from 'firebase/firestore';
 export default function Drive() {
 const collectionRef = collection(database, 'cardData')
-const [folderName, setFolderName] = useState('');
+const [cardName, setCardName] = useState('');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -13,9 +13,9 @@ const [folderName, setFolderName] = useState('');
 		setIsModalVisible(false);
 	};
 
-	const folderUpload = () => {
+	const cardUpload = () => {
 	addDoc(collectionRef, {
-	   folderName : folderName,
+	   cardName : cardName,
 	   })
 	.then( => {
 		setIsModalVisible(false);
@@ -39,12 +39,13 @@ const [folderName, setFolderName] = useState('');
 			<Modal 
 			title="Card Upload" 
 			open={isModalVisible} 
-			onOk={folderUpload} 
+			onOk={cardUpload} 
 			onCancel = {handleCancel} 
 			centered
 			>
 				<input placeholder="Enter the Card Name..." 
-				onChange={(event)=> setFolderName(event.target.value)}
+				onChange={(event)=> setCardName(event.target.value)}
+				value={cardName}
 				/>
 			</Modal>
 		</div>
