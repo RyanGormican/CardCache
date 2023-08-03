@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
 
 export default function Drive() {
+const [folderName, setFolderName] = useState('');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -29,7 +30,9 @@ export default function Drive() {
 			onCancel = {handleCancel} 
 			centered
 			>
-				<input placeholder="Basic usage" />
+				<input placeholder="Enter the Folder Name..." 
+				onChange={(event)=> setFolderName(event.target.value)}
+				/>
 			</Modal>
 		</div>
 	)
