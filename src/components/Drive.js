@@ -49,10 +49,10 @@ const [cards, setCards]= useState ([]);
 				<Icon icon="material-symbols:folder" onClick={showModal} />
 			</div> 
 
-			<div>
+			<div className='grid-parent'>
 				{cards.map((card) => {
 					return (
-						<div>
+						<div className='grid-child'>
 							<h4>{card.cardName}</h4>
 						</div> 
 					)
