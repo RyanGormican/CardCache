@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
 import { collection, addDoc} from 'firebase/firestore';
 export default function Drive() {
+const collectionRef = collection(database, 'cardData')
 const [folderName, setFolderName] = useState('');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const showModal = () => {
@@ -13,7 +14,18 @@ const [folderName, setFolderName] = useState('');
 	};
 
 	const folderUpload = () => {
-			setIsModalVisible(false);
+	addDoc(collectionRef, {
+	   folderName : folderName,
+	   })
+	.then( => {
+		setIsModalVisible(false);
+		alert('Card Added')
+	})
+	.catch(err =>{
+		alert(err.message)
+	})
+	}
+			
 	};
 	return(
 		<div> 
@@ -25,13 +37,13 @@ const [folderName, setFolderName] = useState('');
 				<Icon icon="material-symbols:folder" onClick={showModal} />
 			</div> 
 			<Modal 
-			title="Folder Uploadl" 
+			title="Card Upload" 
 			open={isModalVisible} 
 			onOk={folderUpload} 
 			onCancel = {handleCancel} 
 			centered
 			>
-				<input placeholder="Enter the Folder Name..." 
+				<input placeholder="Enter the Card Name..." 
 				onChange={(event)=> setFolderName(event.target.value)}
 				/>
 			</Modal>
