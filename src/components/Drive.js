@@ -48,6 +48,16 @@ const [cards, setCards]= useState ([]);
 				</div> 
 				<Icon icon="material-symbols:folder" onClick={showModal} />
 			</div> 
+
+			<div>
+				{cards.map((card) => {
+					return (
+						<div>
+							<h4>{card.cardName}</h4>
+						</div> 
+					)
+				})}	
+			</div>
 			<Modal 
 			title="Card Upload" 
 			open={isModalVisible} 
