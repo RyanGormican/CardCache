@@ -16,7 +16,7 @@ export default function Auth() {
 	useEffect(() => {
 		onAuthStateChange(auth, (user) => {
 			if (user){
-				navigate('/drive/:id')
+				navigate('/drive/')
 			}
 			else{
 				navigate('/')

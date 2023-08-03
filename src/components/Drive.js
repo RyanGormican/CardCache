@@ -1,7 +1,7 @@
 import React, { useState }  from 'react'
 import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
-import { collection, addDoc} from 'firebase/firestore';
+import { collection, addDoc, onSnapshot} from 'firebase/firestore';
 export default function Drive() {
 const collectionRef = collection(database, 'cardData')
 const [cardName, setCardName] = useState('');
