@@ -2,7 +2,8 @@
 import './App.css';
 import Drive from './components/Drive';
 import Auth from './components/Auth';
-import { Routes, Route } from ' react-router-dom'
+import { Routes, Route } from ' react-router-dom';
+import { app } from './firebaseConfig';
 function App() {
   return (
     <div>
