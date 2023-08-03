@@ -1,18 +1,19 @@
 import React, { useState }  from 'react'
 import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
-
+import { collection, addDoc} from 'firebase/firestore';
 export default function Drive() {
 const [folderName, setFolderName] = useState('');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const showModal = () => {
 		setIsModalVisible(true);
 	};
-	const handleOk = () => {
-		setIsModalVisible(false);
-	};
 	const handleCancel = () => {
 		setIsModalVisible(false);
+	};
+
+	const folderUpload = () => {
+			setIsModalVisible(false);
 	};
 	return(
 		<div> 
@@ -26,7 +27,7 @@ const [folderName, setFolderName] = useState('');
 			<Modal 
 			title="Folder Uploadl" 
 			open={isModalVisible} 
-			onOk={handleOk} 
+			onOk={folderUpload} 
 			onCancel = {handleCancel} 
 			centered
 			>
