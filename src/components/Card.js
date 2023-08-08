@@ -2,8 +2,17 @@ import React from 'react'
 import { Icon } from '@iconify/react';
 import {getStorage,ref, getDownloadURL} from "firebase/storage";
 export default function Card() {
+	const storage = getStorage();
 	const getCard = (event) => {
+	const cardRef = ref(storage, event.target.files[0].name);
+	getDownloadURL(cardRef)
+		.then((url) = > {
 
+		})
+		.catch((error)> {
+
+
+		}
 	}
 	return (
 		<div> 
