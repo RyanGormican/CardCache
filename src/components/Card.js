@@ -9,7 +9,7 @@ database
 ) {
 let params=useParams();
 	const storage = getStorage();
-	const colectionRef = collection(database, driveData', params?.id)
+	const colectionRef = doc(database, driveData', params?.id)
 	const getFile = (event) => {
 	const fileRef = ref(storage, event.target.files[0].name);
 	const uploadTask = uploadBytesResumable(fileRef, file);
