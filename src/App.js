@@ -11,7 +11,7 @@ function App() {
     <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/drive/" element={<Drive database={database}/>} />
-        <Route path="/card/:id" element={<Folder database={database}/>} />
+        <Route path="/card/:id" element={<Card database={database}/>} />
     </Routes>
     </div>
   );
