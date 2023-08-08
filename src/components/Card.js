@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Icon } from '@iconify/react';
-import { useParams} from 'react-router-dom'
+import { useParams, useNavigate} from 'react-router-dom'
 import {getStorage,ref, getDownloadURL} from "firebase/storage";
 import {updateDoc, doc, onSnapshot, collection } from 'firebase/firestore'
 export default function Card(
@@ -57,11 +57,18 @@ const [cardName, setCardName]= useState ('');
 	const openFile = (downloadURL) => {
 		window.open(downloadURL, '_blank');
 	} 
+
+	const goHome = () => {
+
+	}
 	useEffect(() => {
 		readData();
 	}, [])
 	return (
 		<div> 
+			<div className= 'return' onClick= {goHome}>
+			<Icon icon="icon-park-outline:return" height="60" />
+			</div>
 			<div className='icon-container'>
 				<div class="upload-btn">
 					<Icon icon="mdi:file-document-add-outline" />
@@ -69,7 +76,7 @@ const [cardName, setCardName]= useState ('');
 				</div> 
 			</div> 
 			<div className='folder-title'>
-			<h3>{Cards.cardName} </h3>
+			<h1>{Cards.cardName} </h1>
 			</div>
 			<div className= 'grid-parent'>
 				{cards.map((card)=> {
