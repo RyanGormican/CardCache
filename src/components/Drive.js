@@ -20,6 +20,10 @@ const [cards, setCards]= useState ([]);
 	const cardUpload = () => {
 	addDoc(collectionRef, {
 	   cardName : cardName,
+	   		fileLink: [{
+			downloadURL: downloadURL,
+			fileName:  event.target.files[0].name
+			}]
 	   })
 	.then( => {
 		setIsModalVisible(false);
