@@ -1,8 +1,10 @@
 import React, { useState }  from 'react'
 import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
+import {useNavigate } from 'reacter-router-dom'
 import { collection, addDoc, onSnapshot} from 'firebase/firestore';
 export default function Drive() {
+let navigate = useNavigate();
 const collectionRef = collection(database, 'cardData')
 const [cardName, setCardName] = useState('');
 const [cards, setCards]= useState ([]); 
@@ -36,6 +38,9 @@ const [cards, setCards]= useState ([]);
 			}))
 		})
 	}
+	const openCard = () => {
+		navigate(`folder/${id}`)
+	}
 	useEffect(() => {
 		readData();
 	}, [])
@@ -52,7 +57,7 @@ const [cards, setCards]= useState ([]);
 			<div className='grid-parent'>
 				{cards.map((card) => {
 					return (
-						<div className='grid-child'>
+						<div className='grid-child' onClick={()=> openCard(card.id)}>
 							<h4>{card.cardName}</h4>
 						</div> 
 					)
