@@ -38,7 +38,10 @@ const [cards, setCards]= useState ([]);
     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 		updateDoc(databaseRef,{
-			fileLink: [downloadURL]
+			fileLink: [{
+			downloadURL: downloadURL,
+			fileName:  event.target.files[0].name
+			}]
 		})
     });
   }
@@ -68,7 +71,7 @@ const [cards, setCards]= useState ([]);
 				{folders.map((folder)=> {
 					return (
 						<div className='grid-child'>
-							<h5>{folder.cardArray} </h4>
+							<h5>{folder.fileName} </h4>
 						</div> 
 
 					)
