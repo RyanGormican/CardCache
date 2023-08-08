@@ -83,7 +83,7 @@ const [cardName, setCardName]= useState ('');
 				{cards?.map((card)=> {
 					return (
 					<>
-						{card.downloadURL == '' ? (
+						{card.downloadURL !== '' ? (
 						
 						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
 							<h5>{card.fileName} </h4>
