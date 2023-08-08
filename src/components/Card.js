@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
 import { Icon } from '@iconify/react';
 import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, getDownloadURL} from "firebase/storage";
