@@ -37,3 +37,9 @@
 .grid-child h4{
 	color: #777777;
 }
+
+.folder-title{
+	display: flex;
+	justify-content: center;
+	margin-top:30px;
+}

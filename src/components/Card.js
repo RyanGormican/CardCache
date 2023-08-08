@@ -68,7 +68,9 @@ const [cardName, setCardName]= useState ('');
 					<input type="file" onChange={getFile} name="myfile" />
 				</div> 
 			</div> 
+			<div className='folder-title'>
 			<h3>{Cards.cardName} </h3>
+			</div>
 			<div className= 'grid-parent'>
 				{cards.map((card)=> {
 					return (
