@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import GoogleButton from 'react-google=button';
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChange } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
