@@ -10,7 +10,6 @@ database
 let params=useParams();
 const [cards, setCards]= useState ([]); 
 	const storage = getStorage();
-	const colectionRef = collection(database, 'cardData')
 	const databaseRef = doc(database, 'cardData', params?.id)
 	const getFile = (event) => {
 	const fileRef = ref(storage, event.target.files[0].name);
@@ -49,7 +48,7 @@ const [cards, setCards]= useState ([]);
 	}
 
 		const readData = () => {
-		onSnapshot(collectionRef, (data) => {
+		onSnapshot(databaseRef, (data) => {
 			setCards(doc.data().fileLink)
 			})
 	}
@@ -67,7 +66,7 @@ const [cards, setCards]= useState ([]);
 					<input type="file" onChange={getFile} name="myfile" />
 				</div> 
 			</div> 
-			
+			<h3>{Cards.cardName} </h3>
 			<div className= 'grid-parent'>
 				{cards.map((card)=> {
 					return (
