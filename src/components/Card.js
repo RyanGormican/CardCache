@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Icon } from '@iconify/react';
 import { useParams} from 'react-router-dom'
 import {getStorage,ref, getDownloadURL} from "firebase/storage";
-import {updateDoc, doc, onSnapshot } from 'firebase/firestore'
+import {updateDoc, doc, onSnapshot, collection } from 'firebase/firestore'
 export default function Card(
 {
 database
@@ -10,7 +10,8 @@ database
 let params=useParams();
 const [cards, setCards]= useState ([]); 
 	const storage = getStorage();
-	const colectionRef = doc(database, 'cardData', params?.id)
+	const colectionRef = collection(database, 'cardData', params?.id)
+	const databaseRef = doc(database, 'cardData', params?.id)
 	const getFile = (event) => {
 	const fileRef = ref(storage, event.target.files[0].name);
 	const uploadTask = uploadBytesResumable(fileRef, file);
@@ -36,7 +37,7 @@ const [cards, setCards]= useState ([]);
     // Handle successful uploads on complete
     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-		updateDoc(collectionRef,{
+		updateDoc(databaseRef,{
 			fileLink: [downloadURL]
 		})
     });
