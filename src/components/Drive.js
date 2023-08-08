@@ -62,7 +62,7 @@ const [cards, setCards]= useState ([]);
 			<div className='grid-parent'>
 				{cards.map((card) => {
 					return (
-						<div className='grid-child' onClick={()=> openCard(card.id)}>
+						<div className='preview-child' onClick={()=> openCard(card.id)}>
 							<h4>{card.cardName}</h4>
 						</div> 
 					)

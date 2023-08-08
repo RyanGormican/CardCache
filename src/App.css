@@ -34,6 +34,7 @@
 	height: 100px;
 	cursor: pointer;
 	border-radius: 2vw;
+}
 .grid-child h4{
 	color: #777777;
 }
@@ -48,4 +49,20 @@
 	position: absolute;
 	left: 30px;
 	cursor: pointer;
+}
+
+.image-preview{
+	width:100px;
+}
+
+.preview-child{
+	border: 1px solid #c5c5c5;
+	justify-content: center;
+	display: flex;
+	align-items:cneter;
+	height: 200px;
+	flex-direction:column;
+	cursor: pointer;
+	border-radius: 2vw;
+	gap:10px;
 }
