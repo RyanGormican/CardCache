@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Icon } from '@iconify/react';
 import { useParams} from 'react-router-dom'
 import {getStorage,ref, getDownloadURL} from "firebase/storage";
@@ -8,6 +8,7 @@ export default function Card(
 database
 ) {
 let params=useParams();
+const [cards, setCards]= useState ([]); 
 	const storage = getStorage();
 	const colectionRef = doc(database, driveData', params?.id)
 	const getFile = (event) => {
