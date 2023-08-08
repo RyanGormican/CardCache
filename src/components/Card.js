@@ -68,11 +68,19 @@ const [cards, setCards]= useState ([]);
 			</div> 
 			
 			<div className= 'grid-parent'>
-				{folders.map((folder)=> {
+				{cards.map((card)=> {
 					return (
+					<>
+						{card ? (
+						
 						<div className='grid-child'>
-							<h5>{folder.fileName} </h4>
+							<h5>{card.fileName} </h4>
 						</div> 
+						) : (
+						""
+						)}
+					</>
+						
 
 					)
 				})}
