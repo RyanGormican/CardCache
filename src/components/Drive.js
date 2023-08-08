@@ -1,7 +1,7 @@
-import React, { useState, useEffect }  from 'react'
+import React, { useState, useEffect }  from 'react';
 import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
-import {useNavigate } from 'react-router-dom'
+import {useNavigate } from 'react-router-dom';
 import { collection, addDoc, onSnapshot} from 'firebase/firestore';
 
 export default function Drive() {
