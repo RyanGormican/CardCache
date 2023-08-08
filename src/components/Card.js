@@ -38,7 +38,7 @@ const [cards, setCards]= useState ([]);
     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 		updateDoc(databaseRef,{
-			fileLink: [{
+			fileLink: [...cards, {
 			downloadURL: downloadURL,
 			fileName:  event.target.files[0].name
 			}]
@@ -50,11 +50,12 @@ const [cards, setCards]= useState ([]);
 
 		const readData = () => {
 		onSnapshot(collectionRef, (data) => {
-			setCards(data.docs.map((doc) => { 
-				return {...doc.data(), id: doc.id}
-			}))
-		})
+			setCards(doc.data().fileLink)
+			})
 	}
+	const openFile = (downloadURL) => {
+		window.location = downloadURL
+	} 
 	useEffect(() => {
 		readData();
 	}, [])
@@ -73,7 +74,7 @@ const [cards, setCards]= useState ([]);
 					<>
 						{card ? (
 						
-						<div className='grid-child'>
+						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
 							<h5>{card.fileName} </h4>
 						</div> 
 						) : (
