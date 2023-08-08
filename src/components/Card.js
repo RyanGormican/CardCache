@@ -54,7 +54,7 @@ const [cards, setCards]= useState ([]);
 			})
 	}
 	const openFile = (downloadURL) => {
-		window.location = downloadURL
+		window.open(downloadURL, '_blank');
 	} 
 	useEffect(() => {
 		readData();
