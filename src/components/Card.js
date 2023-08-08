@@ -9,6 +9,7 @@ database
 ) {
 let params=useParams();
 const [cards, setCards]= useState ([]); 
+const [cardName, setCardName]= useState (''); 
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
 	const getFile = (event) => {
@@ -50,6 +51,7 @@ const [cards, setCards]= useState ([]);
 		const readData = () => {
 		onSnapshot(databaseRef, (data) => {
 			setCards(doc.data().fileLink)
+			setCardName(doc.data().cardName)
 			})
 	}
 	const openFile = (downloadURL) => {
