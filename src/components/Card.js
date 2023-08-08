@@ -9,10 +9,7 @@ database
 ) {
 let params=useParams();
 let navigate = useNavigate();
-const [cards, setCards]= useState ([{
-downloadURL: '',
-fileName: ''
-}]); 
+const [cards, setCards]= useState([]);
 const [cardName, setCardName]= useState (''); 
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
