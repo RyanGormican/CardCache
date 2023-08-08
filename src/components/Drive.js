@@ -40,7 +40,7 @@ const [cards, setCards]= useState ([]);
 		})
 	}
 	const openCard = () => {
-		navigate(`card/${id}`)
+		navigate(`/card/${id}`)
 	}
 	useEffect(() => {
 		readData();
