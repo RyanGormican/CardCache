@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Icon } from '@iconify/react';
 import { useParams} from 'react-router-dom'
 import {getStorage,ref, getDownloadURL} from "firebase/storage";
-import {updateDoc, doc,collection } from 'firebase/firestore'
+import {updateDoc, doc, onSnapshot } from 'firebase/firestore'
 export default function Card(
 {
 database
@@ -42,6 +42,17 @@ let params=useParams();
   }
 )
 	}
+
+		const readData = () => {
+		onSnapshot(collectionRef, (data) => {
+			setCards(data.docs.map((doc) => { 
+				return {...doc.data(), id: doc.id}
+			}))
+		})
+	}
+	useEffect(() => {
+		readData();
+	}, [])
 	return (
 		<div> 
 			<div className='icon-container'>
