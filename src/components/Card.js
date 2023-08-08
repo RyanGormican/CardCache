@@ -10,7 +10,7 @@ database
 let params=useParams();
 const [cards, setCards]= useState ([]); 
 	const storage = getStorage();
-	const colectionRef = collection(database, 'cardData', params?.id)
+	const colectionRef = collection(database, 'cardData')
 	const databaseRef = doc(database, 'cardData', params?.id)
 	const getFile = (event) => {
 	const fileRef = ref(storage, event.target.files[0].name);
