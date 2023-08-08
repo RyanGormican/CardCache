@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
 import {useNavigate } from 'reacter-router-dom'
 import { collection, addDoc, onSnapshot} from 'firebase/firestore';
+
 export default function Drive() {
 let navigate = useNavigate();
 const collectionRef = collection(database, 'cardData')
@@ -39,7 +40,7 @@ const [cards, setCards]= useState ([]);
 		})
 	}
 	const openCard = () => {
-		navigate(`folder/${id}`)
+		navigate(`card/${id}`)
 	}
 	useEffect(() => {
 		readData();
