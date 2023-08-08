@@ -8,6 +8,7 @@ export default function Card(
 database
 ) {
 let params=useParams();
+let navigate = useNavigate();
 const [cards, setCards]= useState ([]); 
 const [cardName, setCardName]= useState (''); 
 	const storage = getStorage();
@@ -59,7 +60,7 @@ const [cardName, setCardName]= useState ('');
 	} 
 
 	const goHome = () => {
-
+		navigate('/drive')
 	}
 	useEffect(() => {
 		readData();
