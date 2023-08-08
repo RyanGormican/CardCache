@@ -10,7 +10,6 @@ database
 let params=useParams();
 let navigate = useNavigate();
 const [cards, setCards]= useState([]);
-const [cardCollection, setCardCollection] = useState([]);
 const [cardName, setCardName]= useState (''); 
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
@@ -40,7 +39,7 @@ const [cardName, setCardName]= useState ('');
     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 		updateDoc(databaseRef,{
-			fileLink: [...folderCollection, {
+			fileLink: [...cards, {
 			downloadURL: downloadURL,
 			fileName:  event.target.files[0].name
 			}]
@@ -52,7 +51,6 @@ const [cardName, setCardName]= useState ('');
 
 		const readData = () => {
 		onSnapshot(databaseRef, (data) => {
-			setCardCollection([doc.data()])
 			setCards(doc.data().fileLink)
 			setCardName([doc.data().cardName])
 			})
