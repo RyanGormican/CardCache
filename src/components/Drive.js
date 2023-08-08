@@ -21,8 +21,8 @@ const [cards, setCards]= useState ([]);
 	addDoc(collectionRef, {
 	   cardName : cardName,
 	   		fileLink: [{
-			downloadURL: downloadURL,
-			fileName:  event.target.files[0].name
+			downloadURL: '',
+			fileName:  ''
 			}]
 	   })
 	.then( => {
