@@ -80,7 +80,7 @@ const [cardName, setCardName]= useState ('');
 			<h1>{Cards.cardName} </h1>
 			</div>
 			<div className= 'grid-parent'>
-				{cards.map((card)=> {
+				{cards?.map((card)=> {
 					return (
 					<>
 						{card ? (
