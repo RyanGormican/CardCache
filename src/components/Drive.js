@@ -3,10 +3,12 @@ import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
 import {useNavigate } from 'react-router-dom';
 import { collection, addDoc, onSnapshot} from 'firebase/firestore';
-import { database } from '../firebaseConfig';
+import { database} from '../firebaseConfig';
+import { getAuth, signOut } from 'firebase/auth';
 
 export default function Drive() {
 let navigate = useNavigate();
+let auth = getAuth();
 const collectionRef = collection(database, 'cardData')
 const [cardName, setCardName] = useState('');
 const [cards, setCards]= useState ([]); 
@@ -42,6 +44,9 @@ const [cards, setCards]= useState ([]);
 			}))
 		})
 	}
+	const handleLogout = () => {
+    signOut(auth)
+	};
 	const openCard = (id) => {
 		navigate(`/card/${id}`)
 	}
@@ -49,7 +54,13 @@ const [cards, setCards]= useState ([]);
 		readData();
 	}, [])
 	return(
-		<div> 
+		<div>
+			<div className='icon-logout'>
+				<Icon icon="material-symbols:logout" height="60" onClick={handleLogout} />
+			</div> 
+			<div className='title'>
+				<h1> CardCache </h1>
+			</div>
 			<div className='icon-container'>
 				<Icon icon="material-symbols:folder" height="60" onClick={showModal} />
 			</div> 
@@ -64,7 +75,7 @@ const [cards, setCards]= useState ([]);
 				})}	
 			</div>
 			<Modal 
-			title="Card Upload" 
+			title="Add a Card" 
 			open={isModalVisible} 
 			onOk={cardUpload} 
 			onCancel = {handleCancel} 

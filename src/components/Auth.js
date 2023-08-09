@@ -25,7 +25,7 @@ export default function Auth() {
 	}, [])
 	return (
 		<div className='auth-btn'>
-		<h1> Sign In With Google... </h1>
+		<h1> CardCache </h1>
 		<GoogleButton
 			onClick={signUp}
 		/>

@@ -6,6 +6,14 @@
 	gap: 15px;
 }
 
+.icon-logout{
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	display: flex;
+	gap: 15px;
+}
+
 .icon{
 	cursor: pointer;
 }
@@ -16,7 +24,10 @@
 	height: 100vh;
 	flex-direction: column;
 }
-
+.title{
+position: absolute;
+top:10px;
+}
 .grid-parent {
 	display:grid;
 	grid-template-columns: auto auto auto;
