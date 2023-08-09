@@ -77,7 +77,7 @@ const [cardName, setCardName]= useState ('');
 				</div> 
 			</div> 
 			<div className='folder-title'>
-			<h1>{cards.cardName} </h1>
+			<h1>{cardName} </h1>
 			</div>
 			<div className= 'grid-parent'>
 				{cards?.map((card)=> {
