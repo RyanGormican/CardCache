@@ -4,7 +4,7 @@ import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import {updateDoc, doc, onSnapshot, collection, query, where } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
-import {Modal, Input} from 'antd';
+import {Modal, Input, Checkbox} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
 export default function Card() {
 let params=useParams();
@@ -15,23 +15,46 @@ const [search, setSearch] = useState('');
 const [cardName, setCardName]= useState (''); 
 const [selectedFile, setSelectedFile] = useState([]);
 const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+const [searchModalVisible, setSearchModalVisible] = useState(false);
 const [fileToDelete, setFileToDelete] = useState('');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
+	
+	const [fileTypes, setFileTypes] = useState({
+		png: true,
+		jpg: true,
+		jpeg: true,
+		gif: true,
+		bmp: true,
+		pdf: true,
+	})
+	const filterByType = (card) => {
+		const extension = card.fileName.split('.').pop();
+		return fileTypes[extension];
+	};
 
-
-
+	const toggleCheck = ( fileType) =>
+	{
+	setFileTypes((prevValues) => ({
+		...prevValues,
+		[fileType]: !prevValues[fileType],
+	}));
+	};
 	const deleteFile = (fileName) => {
   const updatedFileLinks = cards.filter((card) => card.fileName !== fileName);
   updateDoc(databaseRef, { fileLink: updatedFileLinks });
 };
   const filteredCards = cards.filter((card) =>
-    card.fileName.toLowerCase().includes(search.toLowerCase())
+    card.fileName.toLowerCase().includes(search.toLowerCase()) && filterByType(card)
   )
 	const showDeleteModal = (fileName) => {
 	setFileToDelete(fileName);
 	setDeleteModalVisible(true);
+	}
+	const showSearchModal = () =>
+	{
+		setSearchModalVisible(true);
 	}
 	const hideDeleteModal = () => {
 		setFileToDelete('');
@@ -48,6 +71,7 @@ const [fileToDelete, setFileToDelete] = useState('');
 	}
 		const handleCancel = () => {
 		setIsModalVisible(false);
+		setSearchModalVisible(false);
 	}
 	const handleFile = (event) => {
   setSelectedFile(event.target.files[0]);
@@ -134,6 +158,7 @@ const [fileToDelete, setFileToDelete] = useState('');
 			</div>
 			<div className='folder-title'>
 			<input type="text" placeholder="Search file..." value={search} onChange={(e)=> setSearch(e.target.value)} />
+			<Icon icon="mdi:eye-outline" height="30" onClick={showSearchModal}/>
 			</div>
 	<div className='grid-parent'>
   {filteredCards?.length > 0 ? (
@@ -199,6 +224,25 @@ const [fileToDelete, setFileToDelete] = useState('');
         centered
       >
         <p>Are you sure you want to delete {fileToDelete}?</p>
+      </Modal>
+
+	  		 <Modal
+		title={`Advanced Search`}
+        visible={searchModalVisible}
+        onOk={confirmDelete}
+        onCancel={handleCancel}
+        centered
+      >
+      {Object.keys(fileTypes).map((fileType) =>
+	  <div key={fileType}>
+		<Checkbox
+		checked={fileTypes[fileType]}
+		onChange={()=> toggleCheck(fileType)}
+	  >
+	  {fileType.toUpperCase()}
+		</Checkbox>
+		</div>
+	  ))}
       </Modal>
 
 		</div>
