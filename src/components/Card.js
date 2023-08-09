@@ -11,6 +11,8 @@ let navigate = useNavigate();
 const [cards, setCards]= useState([]);
 const [cardName, setCardName]= useState (''); 
 const [selectedFile, setSelectedFile] = useState([]);
+const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+const [fileToDelete, setFileToDelete] = useState('');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
@@ -22,7 +24,20 @@ const [selectedFile, setSelectedFile] = useState([]);
   updateDoc(databaseRef, { fileLink: updatedFileLinks });
 };
 
-
+	const showDeleteModal = (fileName) => {
+	setFileToDelete(fileName);
+	setDeleteModalVisible(true);
+	}
+	const hideDeleteModal = () => {
+		setFileToDelete('');
+		setDeleteModalVisible(false);
+	}
+	const confirmDelete = () => {
+		if (fileToDelete) {
+			deleteFile(fileToDelete);
+			hideDeleteModal();
+		}
+	}
 	const showModal = () => {
 		setIsModalVisible(true);
 	}
@@ -117,14 +132,14 @@ const [selectedFile, setSelectedFile] = useState([]);
 					<>
 						{card.downloadURL !== '' ? (
 						
-						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
+						<div className='grid-child'>
 							{isImage ? (
 							<img className='image-preview' src={card.downloadURL} alt='image' />
 							) : ( 
 							""
 							)}
-							<h5>{card.fileName} </h5>
-							<Icon icon="jam:trash" onClick={() => deleteFile(card.fileName)} />
+							<h5 onClick={()=> openFile(card.downloadURL)}>{card.fileName} </h5>
+							<Icon icon="jam:trash" height="30" onClick={() => showDeleteModal(card.fileName)} />
 						</div> 
 						) : (
 						""
@@ -149,7 +164,16 @@ const [selectedFile, setSelectedFile] = useState([]);
 				onChange={handleFile}
 				/>
 			</Modal>
-	
+			
+			 <Modal
+		title={`Delete file`}
+        visible={deleteModalVisible}
+        onOk={confirmDelete}
+        onCancel={hideDeleteModal}
+        centered
+      >
+        <p>Are you sure you want to delete {fileToDelete}?</p>
+      </Modal>
 
 		</div>
 	)
