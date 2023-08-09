@@ -92,13 +92,14 @@ const [fileToDelete, setFileToDelete] = useState('');
 )
 
 	}
+const readData = () => {
+  const user = auth.currentUser;
 
-	const readData = () => {
-	 const user = auth.currentUser; 
-  if (databaseRef && params?.id) {
-    onSnapshot(databaseRef.doc(params.id), (snapshot) => {
+  if (databaseRef && user) {
+    onSnapshot(databaseRef, (snapshot) => {
       const data = snapshot.data();
-      if (data && data.userId === user?.uid) { // Check if the card belongs to the current user
+
+      if (data && data.userId === user.uid) {
         setCards(data.fileLink);
         setCardName(data.cardName);
       } else {
@@ -108,6 +109,7 @@ const [fileToDelete, setFileToDelete] = useState('');
     });
   }
 };
+
 
 
 	const openFile = (downloadURL) => {

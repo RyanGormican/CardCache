@@ -43,12 +43,19 @@ const cardUpload = () => {
 
 
 	const readData = () => {
-		onSnapshot(collectionRef, (data) => {
-			setCards(data.docs.map((doc) => { 
-				return {...doc.data(), id: doc.id}
-			}))
-		})
-	}
+  const user = auth.currentUser;
+
+  if (collectionRef && user) {
+    onSnapshot(collectionRef.where('userId', '==', user.uid), (data) => {
+      setCards(data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id
+      })));
+    });
+  }
+};
+
+
 	const handleLogout = () => {
     signOut(auth)
 	};
