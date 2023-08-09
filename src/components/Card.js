@@ -157,7 +157,7 @@ const [fileToDelete, setFileToDelete] = useState('');
 			<h1>{cardName} </h1>
 			</div>
 			<div className='folder-title'>
-			<input type="text" placeholder="Search file..." value={search} onChange={(e)=> setSearch(e.target.value)} />
+			<input type="text" placeholder="Search files..." value={search} onChange={(e)=> setSearch(e.target.value)} />
 			<Icon icon="mdi:eye-outline" height="30" onClick={showSearchModal}/>
 			</div>
 	<div className='grid-parent'>
@@ -229,20 +229,20 @@ const [fileToDelete, setFileToDelete] = useState('');
 	  		 <Modal
 		title={`Advanced Search`}
         visible={searchModalVisible}
-        onOk={confirmDelete}
+        onOk={handleCancel}
         onCancel={handleCancel}
         centered
       >
-      {Object.keys(fileTypes).map((fileType) =>
-	  <div key={fileType}>
-		<Checkbox
-		checked={fileTypes[fileType]}
-		onChange={()=> toggleCheck(fileType)}
-	  >
-	  {fileType.toUpperCase()}
-		</Checkbox>
-		</div>
-	  ))}
+       {Object.keys(fileTypes).map((fileType) => (
+          <div key={fileType}>
+            <Checkbox
+              checked={fileTypes[fileType]}
+              onChange={() => toggleCheck(fileType)}
+            >
+              {fileType}
+            </Checkbox>
+          </div>
+        ))}
       </Modal>
 
 		</div>
