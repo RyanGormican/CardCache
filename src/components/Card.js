@@ -92,20 +92,15 @@ const [fileToDelete, setFileToDelete] = useState('');
 )
 
 	}
- const readData = () => {
-    const user = auth.currentUser;
-
-    if (user) {
-      const q = query(databaseRef, where('userId', '==', user.uid));
-
-      onSnapshot(q, (data) => {
-        setCards(data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id
-        })));
-      });
+ 	const readData = () => {
+  onSnapshot(databaseRef, (snapshot) => {
+    const data = snapshot.data();
+    if (data) {
+      setCards(data.fileLink);
+      setCardName(data.cardName);
     }
-  };
+  });
+};
 
 
 
