@@ -104,10 +104,6 @@ const [fileToDelete, setFileToDelete] = useState('');
 };
 
 
-const filteredCards = cards.filter((card) =>
-  card.cardName.toLowerCase().includes(search.toLowerCase())
-);
-
 	const openFile = (downloadURL) => {
 		window.open(downloadURL, '_blank');
 	} 
@@ -138,9 +134,6 @@ const filteredCards = cards.filter((card) =>
 		<div className='grid-parent'>
         {cards?.length > 0 ? (
           cards
-            .filter((card) =>
-              card.cardName.toLowerCase().includes(search.toLowerCase())
-            )
             .map((card) => {
               const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
               return (
