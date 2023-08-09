@@ -16,6 +16,13 @@ const [selectedFile, setSelectedFile] = useState([]);
 	const databaseRef = doc(database, 'cardData', params?.id)
 
 
+
+	const deleteFile = (fileName) => {
+  const updatedFileLinks = cards.filter((card) => card.fileName !== fileName);
+  updateDoc(databaseRef, { fileLink: updatedFileLinks });
+};
+
+
 	const showModal = () => {
 		setIsModalVisible(true);
 	}
@@ -25,15 +32,12 @@ const [selectedFile, setSelectedFile] = useState([]);
 	const handleFile = (event) => {
   setSelectedFile(event.target.files[0]);
 	};
-	  
-	
 
 	const getFile = () => {
-	console.log(selectedFile);
-	if (!selectedFile || !selectedFile.name){
-	setIsModalVisible(false);
-	return;
+	if (!selectedFile.name){
+		return;
 	}
+	console.log(selectedFile);
 	const fileRef = ref(storage, selectedFile.name);
 	const uploadTask = uploadBytesResumable(fileRef, selectedFile);
 	uploadTask.on('state_changed', 
@@ -120,7 +124,7 @@ const [selectedFile, setSelectedFile] = useState([]);
 							""
 							)}
 							<h5>{card.fileName} </h5>
-							 
+							<Icon icon="jam:trash" onClick={() => deleteFile(card.fileName)} />
 						</div> 
 						) : (
 						""
@@ -145,6 +149,8 @@ const [selectedFile, setSelectedFile] = useState([]);
 				onChange={handleFile}
 				/>
 			</Modal>
+	
+
 		</div>
 	)
 }
