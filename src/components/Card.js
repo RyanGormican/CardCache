@@ -11,6 +11,7 @@ let params=useParams();
 let navigate = useNavigate();
 let auth= getAuth();
 const [cards, setCards]= useState([]);
+const [search, setSearch] = useState('');
 const [cardName, setCardName]= useState (''); 
 const [selectedFile, setSelectedFile] = useState([]);
 const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -103,7 +104,9 @@ const [fileToDelete, setFileToDelete] = useState('');
 };
 
 
-
+const filteredCards = cards.filter((card) =>
+  card.cardName.toLowerCase().includes(search.toLowerCase())
+);
 
 	const openFile = (downloadURL) => {
 		window.open(downloadURL, '_blank');
@@ -129,31 +132,43 @@ const [fileToDelete, setFileToDelete] = useState('');
 			<div className='folder-title'>
 			<h1>{cardName} </h1>
 			</div>
-			<div className= 'grid-parent'>
-				{cards?.map((card)=> {
-				 const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
-					return (
-					<>
-						{card.downloadURL !== '' ? (
-						
-						<div className='grid-child'>
-							{isImage ? (
-							<img className='image-preview' src={card.downloadURL} alt='image' />
-							) : ( 
-							""
-							)}
-							<h5 onClick={()=> openFile(card.downloadURL)}>{card.fileName} </h5>
-							<Icon icon="jam:trash" height="30" onClick={() => showDeleteModal(card.fileName)} />
-						</div> 
-						) : (
-						""
-						)}
-					</>
-						
-
-					)
-				})}
-			</div> 
+			<div className='folder-title'>
+				<input type="text" placeholder="Search file..." value={search} onChange={(e)=> setSearch(e.target.value)} />
+			</div>
+		<div className='grid-parent'>
+        {cards?.length > 0 ? (
+          cards
+            .filter((card) =>
+              card.cardName.toLowerCase().includes(search.toLowerCase())
+            )
+            .map((card) => {
+              const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
+              return (
+                <div className='grid-child'>
+                  {isImage ? (
+                    <img
+                      className='image-preview'
+                      src={card.downloadURL}
+                      alt='image'
+                    />
+                  ) : (
+                    ''
+                  )}
+                  <h5 onClick={() => openFile(card.downloadURL)}>
+                    {card.fileName}{' '}
+                  </h5>
+                  <Icon
+                    icon='jam:trash'
+                    height='30'
+                    onClick={() => showDeleteModal(card.fileName)}
+                  />
+                </div>
+              );
+            })
+        ) : (
+          <p>No files found.</p>
+        )}
+      </div>
 
 			<Modal 
 			title="Add a file" 
