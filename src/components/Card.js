@@ -3,10 +3,8 @@ import { Icon } from '@iconify/react';
 import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import {updateDoc, doc, onSnapshot, collection } from 'firebase/firestore';
-export default function Card(
-{
-database
-) {
+import { database } from '../firebaseConfig';
+export default function Card() {
 let params=useParams();
 let navigate = useNavigate();
 const [cards, setCards]= useState([]);
