@@ -15,12 +15,14 @@ export default function Drive() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false); // Add dataLoaded state
 
+
+    const handleLogout = () => {
+    signOut(auth);
+  };
   const showModal = () => {
     setIsModalVisible(true);
   };
-   const handleLogout = () => {
-    signOut(auth);
-  }
+ 
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -95,8 +97,8 @@ export default function Drive() {
 
   return (
     <div> 
-      <div className='icon-logout'>
-        <Icon icon='material-symbols:logout' height="60" onClick={handleLogout} />
+      <div className='icon-logout' onClick={handleLogout}>
+        <Icon icon='material-symbols:logout' height="60" />
       </div>
       <div className='title'>
         <h1> CardCache </h1>
