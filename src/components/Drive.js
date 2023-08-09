@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
-import { Modal } from 'antd';
+import { Modal, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
