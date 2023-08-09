@@ -4,16 +4,32 @@ import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import {updateDoc, doc, onSnapshot, collection } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
+import {Modal, Input} from 'antd';
 export default function Card() {
 let params=useParams();
 let navigate = useNavigate();
 const [cards, setCards]= useState([]);
 const [cardName, setCardName]= useState (''); 
+const [selectedFile, setSelectedFile] = useState(null);
+	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
-	const getFile = (event) => {
-	const fileRef = ref(storage, event.target.files[0].name);
-	const uploadTask = uploadBytesResumable(fileRef, event.target.files[0]);
+
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	}
+		const handleCancel = () => {
+		setIsModalVisible(false);
+	}
+	const handleFile = (event) => {
+		const file = event.target.files[0];
+  setSelectedFile(event.target.files[0]);
+	};
+
+	const getFile = (selectedFile) => {
+	const fileRef = ref(storage, selectedFile.name);
+	const uploadTask = uploadBytesResumable(fileRef, selectedFile.name);
 	uploadTask.on('state_changed', 
   (snapshot) => {
     // Observe state change events such as progress, pause, and resume
@@ -39,7 +55,7 @@ const [cardName, setCardName]= useState ('');
 		updateDoc(databaseRef,{
 			fileLink: [...cards, {
 			downloadURL: downloadURL,
-			fileName:  event.target.files[0].name
+			fileName:  selectedFile
 			}]
 		})
     });
@@ -67,6 +83,7 @@ const [cardName, setCardName]= useState ('');
 	useEffect(() => {
 		readData();
 	}, [])
+
 	return (
 		<div> 
 			<div className= 'return' onClick= {goHome}>
@@ -74,8 +91,7 @@ const [cardName, setCardName]= useState ('');
 			</div>
 			<div className='icon-container'>
 				<div class="upload-btn">
-					<Icon icon="mdi:file-document-add-outline" height="60"/>
-					<input type="file" onChange={getFile} name="myfile" />
+					<Icon icon="mdi:file-document-add-outline" height="60" onClick={showModal} />
 				</div> 
 			</div> 
 			<div className='folder-title'>
@@ -101,6 +117,20 @@ const [cardName, setCardName]= useState ('');
 					)
 				})}
 			</div> 
+
+			<Modal 
+			title="Add a file" 
+			open={isModalVisible} 
+			onOk={getFile(selectedFile)} 
+			onCancel = {handleCancel} 
+			centered
+			>
+				<input placeholder="Select your file..." 
+				name="myfile"
+				type="file"
+				onChange={handleFile}
+				/>
+			</Modal>
 		</div>
 	)
 }
