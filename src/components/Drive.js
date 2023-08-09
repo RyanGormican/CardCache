@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
 import {useNavigate } from 'react-router-dom';
 import { collection, addDoc, onSnapshot} from 'firebase/firestore';
-import { database } from './firebaseConfig';
+import { database } from '../firebaseConfig';
 
 export default function Drive() {
 let navigate = useNavigate();
