@@ -27,7 +27,7 @@ const [selectedFile, setSelectedFile] = useState([]);
 	};
 
 	const getFile = () => {
-	if (!selectedFile) {
+	if (!selectedFile || Object.keys(selectedFile).length === 0) {
 	setIsModalVisible(false);
 	return; 
 	}
