@@ -135,41 +135,42 @@ const [fileToDelete, setFileToDelete] = useState('');
 			<div className='folder-title'>
 			<input type="text" placeholder="Search file..." value={search} onChange={(e)=> setSearch(e.target.value)} />
 			</div>
-			 <div className='grid-parent'>
-        {filteredCards.length > 0 ? (
-          filteredCards.map((card) => {
-            const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
-            return (
-			<>
-				{card.downloadURL !== '' ? (
-              <div className='grid-child'>
-                {isImage ? (
-                  <img
-                    className='image-preview'
-                    src={card.downloadURL}
-                    alt='image'
-                  />
-                ) : (
-                  ''
-                )}
-                <h5 onClick={() => openFile(card.downloadURL)}>
-                  {card.fileName}{' '}
-                </h5>
-                <Icon
-                  icon='jam:trash'
-                  height='30'
-                  onClick={() => showDeleteModal(card.fileName)}
+	<div className='grid-parent'>
+  {filteredCards?.length > 0 ? (
+    filteredCards?.map((card) => {
+      const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
+      return (
+        <div className='grid-child'>
+          {card?.downloadURL !== '' ? (
+            <React.Fragment>
+              {isImage ? (
+                <img
+                  className='image-preview'
+                  src={card.downloadURL}
+                  alt='image'
                 />
-              </div>
-			  ) (
-			  ""
-			  )}
-            );
-          })
-        ) : (
-          <p>No files found.</p>
-        )}
-      </div>
+              ) : (
+                ''
+              )}
+              <h5 onClick={() => openFile(card.downloadURL)}>
+                {card.fileName}
+              </h5>
+              <Icon
+                icon='jam:trash'
+                height='30'
+                onClick={() => showDeleteModal(card.fileName)}
+              />
+            </React.Fragment>
+          ) : (
+            ''
+          )}
+        </div>
+      );
+    })
+  ) : (
+    <p>No files found.</p>
+  )}
+</div>
 
 
 			<Modal 
