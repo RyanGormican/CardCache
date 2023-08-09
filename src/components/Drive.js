@@ -51,10 +51,6 @@ const [cards, setCards]= useState ([]);
 	return(
 		<div> 
 			<div className='icon-container'>
-				<div class="upload-btn">
-					<Icon icon="mdi:file-document-add-outline" height="60" />
-					<input type="file" name="myfile" />
-				</div> 
 				<Icon icon="material-symbols:folder" height="60" onClick={showModal} />
 			</div> 
 
