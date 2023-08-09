@@ -49,7 +49,7 @@ const [cardName, setCardName]= useState ('');
 
 		const readData = () => {
 		onSnapshot(databaseRef, (snapshot) => {
-		constdata =snapshot.data();
+		const data =snapshot.data();
 		if (data) {
 			setCards(doc.data().fileLink)
 			setCardName([doc.data().cardName])
