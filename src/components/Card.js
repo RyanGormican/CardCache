@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Icon } from '@iconify/react';
 import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
-import {updateDoc, doc, onSnapshot, collection,query, where } from 'firebase/firestore';
+import {updateDoc, doc, onSnapshot, collection, query, where } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
 import {Modal, Input} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
