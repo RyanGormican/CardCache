@@ -138,6 +138,10 @@ const [fileToDelete, setFileToDelete] = useState('');
 	<div className='grid-parent'>
   {filteredCards?.length > 0 ? (
     filteredCards?.map((card) => {
+
+	  if (card.downloadURL === '' || card.fileName === '') {
+        return null; 
+      }
       const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
       return (
         <div className='grid-child'>
