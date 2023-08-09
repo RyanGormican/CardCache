@@ -25,13 +25,15 @@ const [selectedFile, setSelectedFile] = useState([]);
 	const handleFile = (event) => {
   setSelectedFile(event.target.files[0]);
 	};
+	  
+	
 
 	const getFile = () => {
-	if (!selectedFile || Object.keys(selectedFile).length === 0) {
-	setIsModalVisible(false);
-	return; 
-	}
 	console.log(selectedFile);
+	if (!selectedFile || !selectedFile.name){
+	setIsModalVisible(false);
+	return;
+	}
 	const fileRef = ref(storage, selectedFile.name);
 	const uploadTask = uploadBytesResumable(fileRef, selectedFile);
 	uploadTask.on('state_changed', 
@@ -118,6 +120,7 @@ const [selectedFile, setSelectedFile] = useState([]);
 							""
 							)}
 							<h5>{card.fileName} </h5>
+							 
 						</div> 
 						) : (
 						""
