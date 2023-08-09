@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Icon } from '@iconify/react';
 import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
@@ -61,22 +61,36 @@ const [cardName, setCardName]= useState ('');
 	const openFile = (downloadURL) => {
 		window.open(downloadURL, '_blank');
 	} 
+	  const inputRef = useRef(null);
 
+ 
 	const goHome = () => {
 		navigate('/drive')
 	}
 	useEffect(() => {
 		readData();
 	}, [])
+
+	 const handleIconClick = () => {
+    inputRef.current.click();
+  };
 	return (
 		<div> 
 			<div className= 'return' onClick= {goHome}>
 			<Icon icon="icon-park-outline:return" height="60" />
 			</div>
 			<div className='icon-container'>
-				<div class="upload-btn">
-					<Icon icon="mdi:file-document-add-outline" height="60"/>
-					<input type="file" onChange={getFile} name="myfile" />
+				<div className="upload-btn">
+					 <label className='upload-btn' onClick={handleIconClick}>
+          <Icon icon='mdi:file-document-add-outline' height='60' />
+          <input
+            ref={inputRef}
+            type='file'
+            onChange={getFile}
+            name='myfile'
+            style={{ display: 'none' }} // Hide the input visually
+          />
+        </label>
 				</div> 
 			</div> 
 			<div className='folder-title'>
@@ -89,7 +103,7 @@ const [cardName, setCardName]= useState ('');
 						{card.downloadURL !== '' ? (
 						
 						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
-							<img className='image-preview' src={card.downloadURL} ALT='image' />
+							<img className='image-preview' src={card.downloadURL} alt='image' />
 							<h5>{card.fileName} </h5>
 						</div> 
 						) : (
