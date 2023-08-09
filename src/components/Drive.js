@@ -28,7 +28,6 @@ const [cards, setCards]= useState ([]);
 	   })
 	.then(() => {
 		setIsModalVisible(false);
-		alert('Card Added')
 	})
 	.catch(err =>{
 		alert(err.message)
@@ -53,10 +52,10 @@ const [cards, setCards]= useState ([]);
 		<div> 
 			<div className='icon-container'>
 				<div class="upload-btn">
-					<Icon icon="mdi:file-document-add-outline" />
+					<Icon icon="mdi:file-document-add-outline" height="60" />
 					<input type="file" name="myfile" />
 				</div> 
-				<Icon icon="material-symbols:folder" onClick={showModal} />
+				<Icon icon="material-symbols:folder" height="60" onClick={showModal} />
 			</div> 
 
 			<div className='grid-parent'>
