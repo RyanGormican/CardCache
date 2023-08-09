@@ -12,7 +12,7 @@
 .auth-btn{
 	display:flex;
 	justify-content: center;
-	align-items: cneter;
+	align-items: center;
 	height: 100vh;
 	flex-direction: column;
 }
@@ -30,7 +30,7 @@
 	border: 1px solid #c5c5c5;
 	justify-content: center;
 	display: flex;
-	align-items:cneter;
+	align-items:center;
 	height: 100px;
 	cursor: pointer;
 	border-radius: 2vw;
@@ -59,10 +59,10 @@
 	border: 1px solid #c5c5c5;
 	justify-content: center;
 	display: flex;
-	align-items:cneter;
+	align-items:center;
 	height: 200px;
 	flex-direction:column;
 	cursor: pointer;
 	border-radius: 2vw;
-	gap:10px;
+	margin:10px;
 }
