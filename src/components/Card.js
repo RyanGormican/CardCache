@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Icon } from '@iconify/react';
 import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
-import {updateDoc, doc, onSnapshot, collection } from 'firebase/firestore';
+import {updateDoc, doc, onSnapshot, collection,query, where } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
 import {Modal, Input} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
@@ -92,23 +92,21 @@ const [fileToDelete, setFileToDelete] = useState('');
 )
 
 	}
-const readData = () => {
-  const user = auth.currentUser;
+ const readData = () => {
+    const user = auth.currentUser;
 
-  if (databaseRef && user) {
-    onSnapshot(databaseRef, (snapshot) => {
-      const data = snapshot.data();
+    if (user) {
+      const q = query(databaseRef, where('userId', '==', user.uid));
 
-      if (data && data.userId === user.uid) {
-        setCards(data.fileLink);
-        setCardName(data.cardName);
-      } else {
-        // Handle case where user doesn't have access to the card
-        navigate('/drive'); // Redirect to Drive or show an error message
-      }
-    });
-  }
-};
+      onSnapshot(q, (data) => {
+        setCards(data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id
+        })));
+      });
+    }
+  };
+
 
 
 

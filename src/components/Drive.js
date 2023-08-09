@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react';
 import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
 import {useNavigate } from 'react-router-dom';
-import { collection, addDoc, onSnapshot} from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, where} from 'firebase/firestore';
 import { database} from '../firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth';
 
@@ -42,11 +42,13 @@ const cardUpload = () => {
 };
 
 
-	const readData = () => {
+const readData = () => {
   const user = auth.currentUser;
 
   if (collectionRef && user) {
-    onSnapshot(collectionRef.where('userId', '==', user.uid), (data) => {
+    const q = query(collectionRef, where('userId', '==', user.uid));
+
+    onSnapshot(q, (data) => {
       setCards(data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id
@@ -54,6 +56,7 @@ const cardUpload = () => {
     });
   }
 };
+
 
 
 	const handleLogout = () => {
