@@ -26,8 +26,11 @@ const [selectedFile, setSelectedFile] = useState([]);
   setSelectedFile(event.target.files[0]);
 	};
 
-	const getFile = (selectedFile) => {
-	  console.log(selectedFile);
+	const getFile = () => {
+	if (!selectedFile) {
+	setIsModalVisible(false);
+	return; 
+	}
 	const fileRef = ref(storage, selectedFile.name);
 	const uploadTask = uploadBytesResumable(fileRef, selectedFile);
 	uploadTask.on('state_changed', 
@@ -63,6 +66,7 @@ const [selectedFile, setSelectedFile] = useState([]);
     });
   }
 )
+
 	}
 
 	const readData = () => {
@@ -101,13 +105,17 @@ const [selectedFile, setSelectedFile] = useState([]);
 			</div>
 			<div className= 'grid-parent'>
 				{cards?.map((card)=> {
+				 const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
 					return (
 					<>
 						{card.downloadURL !== '' ? (
 						
 						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
-							
+							{isImage ? (
 							<img className='image-preview' src={card.downloadURL} alt='image' />
+							) : ( 
+							""
+							)}
 							<h5>{card.fileName} </h5>
 						</div> 
 						) : (
@@ -123,7 +131,7 @@ const [selectedFile, setSelectedFile] = useState([]);
 			<Modal 
 			title="Add a file" 
 			open={isModalVisible} 
-			onOk={() => getFile(selectedFile)} 
+			onOk={getFile}
 			onCancel = {handleCancel} 
 			centered
 			>
