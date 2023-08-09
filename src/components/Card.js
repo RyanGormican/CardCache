@@ -48,9 +48,12 @@ const [cardName, setCardName]= useState ('');
 	}
 
 		const readData = () => {
-		onSnapshot(databaseRef, (data) => {
+		onSnapshot(databaseRef, (snapshot) => {
+		constdata =snapshot.data();
+		if (data) {
 			setCards(doc.data().fileLink)
 			setCardName([doc.data().cardName])
+			}
 			})
 	}
 	const openFile = (downloadURL) => {
