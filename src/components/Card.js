@@ -13,7 +13,7 @@ const [cardName, setCardName]= useState ('');
 	const databaseRef = doc(database, 'cardData', params?.id)
 	const getFile = (event) => {
 	const fileRef = ref(storage, event.target.files[0].name);
-	const uploadTask = uploadBytesResumable(fileRef, file);
+	const uploadTask = uploadBytesResumable(fileRef, event.target.files[0].name);
 	uploadTask.on('state_changed', 
   (snapshot) => {
     // Observe state change events such as progress, pause, and resume
