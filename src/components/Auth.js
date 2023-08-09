@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import GoogleButton from 'react-google-button';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChange } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 export default function Auth() {
@@ -14,7 +14,7 @@ export default function Auth() {
 	}
 
 	useEffect(() => {
-		onAuthStateChange(auth, (user) => {
+		onAuthStateChanged(auth, (user) => {
 			if (user){
 				navigate('/drive/')
 			}
