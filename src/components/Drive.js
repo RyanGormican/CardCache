@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import { Icon } from '@iconify/react';
 import {Modal, Input} from 'antd';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate } from 'reacter-router-dom';
 import { collection, addDoc, onSnapshot} from 'firebase/firestore';
 
 export default function Drive() {
@@ -25,7 +25,7 @@ const [cards, setCards]= useState ([]);
 			fileName:  ''
 			}]
 	   })
-	.then( => {
+	.then(() => {
 		setIsModalVisible(false);
 		alert('Card Added')
 	})

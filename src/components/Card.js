@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { Icon } from '@iconify/react';
 import { useParams, useNavigate} from 'react-router-dom';
-import {getStorage,ref, getDownloadURL} from "firebase/storage";
-import {updateDoc, doc, onSnapshot, collection } from 'firebase/firestore'
+import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
+import {updateDoc, doc, onSnapshot, collection } from 'firebase/firestore';
 export default function Card(
 {
 database
@@ -86,7 +86,7 @@ const [cardName, setCardName]= useState ('');
 						{card.downloadURL !== '' ? (
 						
 						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
-							<img className='image-preview'src={card.downloadURL} ALT='image' />
+							<img className='image-preview' src={card.downloadURL} ALT='image' />
 							<h5>{card.fileName} </h4>
 						</div> 
 						) : (
