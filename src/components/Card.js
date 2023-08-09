@@ -10,7 +10,7 @@ let params=useParams();
 let navigate = useNavigate();
 const [cards, setCards]= useState([]);
 const [cardName, setCardName]= useState (''); 
-const [selectedFile, setSelectedFile] = useState(null);
+const [selectedFile, setSelectedFile] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
@@ -23,13 +23,13 @@ const [selectedFile, setSelectedFile] = useState(null);
 		setIsModalVisible(false);
 	}
 	const handleFile = (event) => {
-		const file = event.target.files[0];
   setSelectedFile(event.target.files[0]);
 	};
 
 	const getFile = (selectedFile) => {
+	  console.log(selectedFile);
 	const fileRef = ref(storage, selectedFile.name);
-	const uploadTask = uploadBytesResumable(fileRef, selectedFile.name);
+	const uploadTask = uploadBytesResumable(fileRef, selectedFile);
 	uploadTask.on('state_changed', 
   (snapshot) => {
     // Observe state change events such as progress, pause, and resume
@@ -49,13 +49,15 @@ const [selectedFile, setSelectedFile] = useState(null);
     // Handle unsuccessful uploads
   }, 
   () => {
+
+		setIsModalVisible(false);
     // Handle successful uploads on complete
     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 		updateDoc(databaseRef,{
 			fileLink: [...cards, {
 			downloadURL: downloadURL,
-			fileName:  selectedFile
+			fileName:  selectedFile.name
 			}]
 		})
     });
@@ -121,7 +123,7 @@ const [selectedFile, setSelectedFile] = useState(null);
 			<Modal 
 			title="Add a file" 
 			open={isModalVisible} 
-			onOk={getFile(selectedFile)} 
+			onOk={() => getFile(selectedFile)} 
 			onCancel = {handleCancel} 
 			centered
 			>
