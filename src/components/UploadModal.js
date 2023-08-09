@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Input, Icon } from 'antd';
+import { Icon } from '@iconify/react';
+import { Modal, Input} from 'antd';
 
 export default function UploadModal({ onUpload }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
