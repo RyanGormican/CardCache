@@ -31,8 +31,7 @@ const [cards, setCards]= useState ([]);
 	})
 	.catch(err =>{
 		alert(err.message)
-	})
-	}
+	});
 			
 	};
 
@@ -43,7 +42,7 @@ const [cards, setCards]= useState ([]);
 			}))
 		})
 	}
-	const openCard = () => {
+	const openCard = (id) => {
 		navigate(`/card/${id}`)
 	}
 	useEffect(() => {

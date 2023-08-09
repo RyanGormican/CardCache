@@ -77,7 +77,7 @@ const [cardName, setCardName]= useState ('');
 				</div> 
 			</div> 
 			<div className='folder-title'>
-			<h1>{Cards.cardName} </h1>
+			<h1>{cards.cardName} </h1>
 			</div>
 			<div className= 'grid-parent'>
 				{cards?.map((card)=> {
@@ -87,7 +87,7 @@ const [cardName, setCardName]= useState ('');
 						
 						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
 							<img className='image-preview' src={card.downloadURL} ALT='image' />
-							<h5>{card.fileName} </h4>
+							<h5>{card.fileName} </h5>
 						</div> 
 						) : (
 						""
