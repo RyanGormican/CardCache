@@ -31,6 +31,7 @@ const [cardName, setCardName]= useState ('');
   }, 
   (error) => {
     // Handle unsuccessful uploads
+		console.log(error.message)
   }, 
   () => {
     // Handle successful uploads on complete
