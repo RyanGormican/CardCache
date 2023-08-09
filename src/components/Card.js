@@ -88,7 +88,12 @@ const [cardName, setCardName]= useState ('');
 						{card.downloadURL !== '' ? (
 						
 						<div className='grid-child' onClick={()=> openFile(card.downloadURL)}>
-							<img className='image-preview' src={card.downloadURL} ALT='image' />
+							  {/\.(jpg|jpeg|png|gif)$/i.test(card.fileName) && (
+							
+							<img className='image-preview' src={card.downloadURL} alt='image' />
+							 ) : (
+								  ""
+							 )}
 							<h5>{card.fileName} </h5>
 						</div> 
 						) : (
