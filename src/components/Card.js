@@ -31,6 +31,7 @@ const [selectedFile, setSelectedFile] = useState([]);
 	setIsModalVisible(false);
 	return; 
 	}
+	console.log(selectedFile);
 	const fileRef = ref(storage, selectedFile.name);
 	const uploadTask = uploadBytesResumable(fileRef, selectedFile);
 	uploadTask.on('state_changed', 
