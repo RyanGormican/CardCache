@@ -33,12 +33,15 @@ const [fileToDelete, setFileToDelete] = useState('');
 	})
 	const handleDragOver = (e) => {
   e.preventDefault();
+  e.stopPropagation();
 };
 
 const handleDrop = (e) => {
   e.preventDefault();
+  e.stopPropagation();
   const files = e.dataTransfer.files;
   setSelectedFile(files[0]);
+  getFile();
 };
 	const sortByOption = (option) => {
    switch (option) {
