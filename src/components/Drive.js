@@ -49,6 +49,9 @@ export default function Drive() {
   };
 
   const handleAddSharing = async (cardId, userId) => {
+      if (!userId){
+      return;
+      }
     const cardRef = doc(database, 'cardData', cardId);
 
     // Add the new user ID to the sharedWith array
