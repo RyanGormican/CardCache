@@ -31,7 +31,15 @@ const [fileToDelete, setFileToDelete] = useState('');
 		bmp: true,
 		pdf: true,
 	})
+	const handleDragOver = (e) => {
+  e.preventDefault();
+};
 
+const handleDrop = (e) => {
+  e.preventDefault();
+  const files = e.dataTransfer.files;
+  setSelectedFile(files[0]);
+};
 	const sortByOption = (option) => {
    switch (option) {
       case 'name':
@@ -100,7 +108,6 @@ const filteredCards = cards
 	if (!selectedFile.name){
 		return;
 	}
-	console.log(selectedFile);
 	const fileRef = ref(storage, selectedFile.name);
 	const uploadTask = uploadBytesResumable(fileRef, selectedFile);
 	uploadTask.on('state_changed', 
@@ -230,11 +237,14 @@ const filteredCards = cards
 			onCancel = {handleCancel} 
 			centered
 			>
-				<input placeholder="Select your file..." 
-				name="myfile"
-				type="file"
-				onChange={handleFile}
-				/>
+			<div className="file-drop" onDrop={handleDrop} onDragOver={handleDragOver}>
+    <p>Drag and drop files here or click to select</p>
+  </div>
+   <input
+      type="file"
+      name="myfile"
+      onChange={handleFile}
+    />
 			</Modal>
 			
 			 <Modal
