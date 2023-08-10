@@ -16,14 +16,14 @@ export default function Drive() {
   const [dataLoaded, setDataLoaded] = useState(false); // Add dataLoaded state
 
 
-    const handleLogout = () => {
-    signOut(auth);
-  };
   const showModal = () => {
     setIsModalVisible(true);
   };
  
 
+    const handleLogout = () => {
+    signOut(auth);
+  };
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -39,6 +39,8 @@ export default function Drive() {
           {
             downloadURL: '',
             fileName: '',
+            fileSize: 0,
+            creationTimestamp: 0,
           },
         ],
       })

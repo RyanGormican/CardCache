@@ -6,10 +6,12 @@ import {updateDoc, doc, onSnapshot, collection, query, where } from 'firebase/fi
 import { database } from '../firebaseConfig';
 import {Modal, Input, Checkbox} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
+
 export default function Card() {
 let params=useParams();
 let navigate = useNavigate();
 let auth= getAuth();
+const [selectedSort, setSelectedSort] = useState(''); 
 const [cards, setCards]= useState([]);
 const [search, setSearch] = useState('');
 const [cardName, setCardName]= useState (''); 
@@ -29,6 +31,21 @@ const [fileToDelete, setFileToDelete] = useState('');
 		bmp: true,
 		pdf: true,
 	})
+
+	const sortByOption = (option) => {
+   switch (option) {
+      case 'name':
+         return (a, b) => a.fileName.localeCompare(b.fileName);
+      case 'size':
+         return (a, b) => a.fileSize - b.fileSize;
+      case 'time':
+         return (a, b) => a.creationTimestamp - b.creationTimestamp;
+      default:
+         return () => 0;
+   }
+};
+
+
 	const filterByType = (card) => {
 		const extension = card.fileName.split('.').pop();
 		return fileTypes[extension];
@@ -45,9 +62,11 @@ const [fileToDelete, setFileToDelete] = useState('');
   const updatedFileLinks = cards.filter((card) => card.fileName !== fileName);
   updateDoc(databaseRef, { fileLink: updatedFileLinks });
 };
-  const filteredCards = cards.filter((card) =>
-    card.fileName.toLowerCase().includes(search.toLowerCase()) && filterByType(card)
-  )
+const filteredCards = cards
+   .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
+   .filter(filterByType)
+   .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
+
 	const showDeleteModal = (fileName) => {
 	setFileToDelete(fileName);
 	setDeleteModalVisible(true);
@@ -111,7 +130,9 @@ const [fileToDelete, setFileToDelete] = useState('');
 		updateDoc(databaseRef,{
 			fileLink: [...cards, {
 			downloadURL: downloadURL,
-			fileName:  selectedFile.name
+			fileName:  selectedFile.name,
+			fileSize: selectedFile.size,
+			creationTimstamp: Date.now(),
 			}]
 		})
     });
@@ -233,6 +254,19 @@ const [fileToDelete, setFileToDelete] = useState('');
         onCancel={handleCancel}
         centered
       >
+	     <div className="sort-dropdown">
+      <span>Sort by:</span>
+      <select
+         value={selectedSort}
+         onChange={(e) => setSelectedSort(e.target.value)}
+      >
+         <option value="">None</option>
+         <option value="name">File Name</option>
+         <option value="size">File Size</option>
+         <option value="time">Time Added</option>
+      </select>
+   </div>
+
        {Object.keys(fileTypes).map((fileType) => (
           <div key={fileType}>
             <Checkbox
