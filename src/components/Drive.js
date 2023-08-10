@@ -104,29 +104,56 @@ export default function Drive() {
     return () => unsubscribe(); // Cleanup the listener
   }, [auth]);
 
-  const readData = (user) => {
-    if (user) {
-      const q = query(collectionRef, where('userId', '==', user.uid));
+const readData = (user) => {
+  if (user) {
+    const q = query(
+      collectionRef,
+      where('userId', '==', user.uid)
+    );
 
-      onSnapshot(
-        q,
-        (data) => {
-          console.log('Data fetched:', data.docs.map((doc) => doc.data()));
-          setCards(
-            data.docs.map((doc) => ({
-              ...doc.data(),
-              id: doc.id,
-            }))
-          );
-          setDataLoaded(true);
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
-          setDataLoaded(true);
-        }
-      );
-    }
-  };
+    const qShared = query(
+      collectionRef,
+      where('sharedWith', 'array-contains', user.uid)
+    );
+
+    onSnapshot(
+      qShared,
+      (sharedData) => {
+        console.log('Shared Data fetched:', sharedData.docs.map((doc) => doc.data()));
+        const sharedCards = sharedData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setCards((prevCards) => [...prevCards, ...sharedCards]);
+      },
+      (error) => {
+        console.error('Error fetching shared data:', error);
+        setDataLoaded(true);
+      }
+    );
+
+    onSnapshot(
+      q,
+      (data) => {
+        console.log('Data fetched:', data.docs.map((doc) => doc.data()));
+        setCards(
+          data.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }))
+        );
+        setDataLoaded(true);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        setDataLoaded(true);
+      }
+    );
+  }
+};
+
+
+
 
   return (
     <div>
