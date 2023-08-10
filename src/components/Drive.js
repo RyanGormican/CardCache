@@ -68,6 +68,7 @@ export default function Drive() {
         await addDoc(collectionRef, {
           userId: user.uid,
           cardName: cardName,
+          sharedWith: [user.uid],
           fileLink: [
             {
               downloadURL: '',
@@ -108,28 +109,7 @@ const readData = (user) => {
   if (user) {
     const q = query(
       collectionRef,
-      where('userId', '==', user.uid)
-    );
-
-    const qShared = query(
-      collectionRef,
       where('sharedWith', 'array-contains', user.uid)
-    );
-
-    onSnapshot(
-      qShared,
-      (sharedData) => {
-        console.log('Shared Data fetched:', sharedData.docs.map((doc) => doc.data()));
-        const sharedCards = sharedData.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setCards((prevCards) => [...prevCards, ...sharedCards]);
-      },
-      (error) => {
-        console.error('Error fetching shared data:', error);
-        setDataLoaded(true);
-      }
     );
 
     onSnapshot(
@@ -151,7 +131,6 @@ const readData = (user) => {
     );
   }
 };
-
 
 
 
