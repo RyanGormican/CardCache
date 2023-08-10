@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import {  Modal, Checkbox } from 'antd';
 import { Icon } from '@iconify/react';
-import { Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, where, doc, updateDoc } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth';
 
@@ -15,64 +15,110 @@ export default function Drive() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false); // Add dataLoaded state
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  
-  
+
+  const [isSharingModalVisible, setIsSharingModalVisible] = useState(false);
+  const [currentCardId, setCurrentCardId] = useState('');
+  const [sharedWithUsers, setSharedWithUsers] = useState([]);
+  const [newUserId, setNewUserId] = useState('');
+
   const showSettings = () => {
     setIsSettingsVisible(true);
   };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
- 
 
-    const handleLogout = () => {
+  const handleLogout = () => {
     signOut(auth);
   };
+
   const handleCancel = () => {
     setIsModalVisible(false);
     setIsSettingsVisible(false);
+    setIsSharingModalVisible(false);
   };
 
-  const cardUpload = () => {
+  const handleShareIconClick = (cardId) => {
+    setCurrentCardId(cardId);
+    setIsSharingModalVisible(true);
+
+    // Fetch sharedWith users for the selected card
+    const card = cards.find((card) => card.id === cardId);
+    setSharedWithUsers(card.sharedWith || []);
+  };
+
+  const handleAddSharing = async (cardId, userId) => {
+    const cardRef = doc(database, 'cardData', cardId);
+
+    // Add the new user ID to the sharedWith array
+    await updateDoc(cardRef, {
+      sharedWith: [...sharedWithUsers, userId],
+    });
+
+    // Update the sharedWithUsers state
+    setSharedWithUsers([...sharedWithUsers, userId]);
+  };
+
+  const cardUpload = async () => {
     const user = auth.currentUser;
 
     if (collectionRef && user) {
-      addDoc(collectionRef, {
-        userId: user.uid,
-        cardName: cardName,
-        fileLink: [
-          {
-            downloadURL: '',
-            fileName: '',
-            fileSize: 0,
-            creationTimestamp: 0,
-          },
-        ],
-      })
-        .then(() => {
-          setIsModalVisible(false);
-        })
-        .catch((err) => {
-          alert(err.message);
+      try {
+        await addDoc(collectionRef, {
+          userId: user.uid,
+          cardName: cardName,
+          fileLink: [
+            {
+              downloadURL: '',
+              fileName: '',
+              fileSize: 0,
+              creationTimestamp: 0,
+            },
+          ],
         });
+
+        setIsModalVisible(false);
+      } catch (error) {
+        alert(error.message);
+      }
     }
   };
+
+  const openCard = (id) => {
+    navigate(`/card/${id}`);
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log('User UID:', user.uid);
+        readData(user);
+      } else {
+        navigate('/');
+        // Handle the case when the user is not authenticated
+        setDataLoaded(true);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup the listener
+  }, [auth]);
 
   const readData = (user) => {
     if (user) {
       const q = query(collectionRef, where('userId', '==', user.uid));
 
-         onSnapshot(
-      q,
-      (data) => {
-        console.log('Data fetched:', data.docs.map((doc) => doc.data()));
-        setCards(
-          data.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }))
-        );
-        setDataLoaded(true);
+      onSnapshot(
+        q,
+        (data) => {
+          console.log('Data fetched:', data.docs.map((doc) => doc.data()));
+          setCards(
+            data.docs.map((doc) => ({
+              ...doc.data(),
+              id: doc.id,
+            }))
+          );
+          setDataLoaded(true);
         },
         (error) => {
           console.error('Error fetching data:', error);
@@ -82,31 +128,10 @@ export default function Drive() {
     }
   };
 
-
-  const openCard = (id) => {
-    navigate(`/card/${id}`);
-  };
-
- useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log('User UID:', user.uid);
-        readData(user);
-      } else {
-      navigate('/')
-        // Handle the case when the user is not authenticated
-        setDataLoaded(true);
-      }
-    });
-
-    return () => unsubscribe(); // Cleanup the listener
-
-  }, [auth]);
-
   return (
-    <div> 
+    <div>
       <div className='icon-logout' onClick={handleLogout}>
-        <Icon icon='material-symbols:logout' height="60" />
+        <Icon icon='material-symbols:logout' height='60' />
       </div>
       <div className='title'>
         <h1> CardCache </h1>
@@ -121,26 +146,29 @@ export default function Drive() {
         <a href='https://ryangormicanportfoliohub.vercel.app/'>
           <Icon icon='teenyicons:computer-outline' color='#199c35' width='60' />
         </a>
-        <Icon icon="mdi:gear" width='60' onClick = {showSettings} />
+        <Icon icon='mdi:gear' width='60' onClick={showSettings} />
       </div>
       <div className='icon-container'>
         <Icon icon='material-symbols:folder' height='60' onClick={showModal} />
       </div>
-<div className='grid-parent'>
-  {dataLoaded ? (
-    cards.map((card) => (
-      <div
-        className='preview-child'
-        key={card.id}
-        onClick={() => openCard(card.id)}
-      >
-        <h4>{card.cardName}</h4>
+      <div className='grid-parent'>
+        {dataLoaded ? (
+          cards.map((card) => (
+            <div
+              className='preview-child'
+              key={card.id}
+            >
+              <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
+              <Icon
+                icon='material-symbols:person-add'
+                onClick={() => handleShareIconClick(card.id)}
+              />
+            </div>
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
-    ))
-  ) : (
-    <p>Loading...</p>
-  )}
-</div>
       <Modal
         title='Add a Card'
         open={isModalVisible}
@@ -155,13 +183,55 @@ export default function Drive() {
         />
       </Modal>
 
-        <Modal
+      <Modal
         title='Settings'
         open={isSettingsVisible}
         onOk={handleCancel}
         onCancel={handleCancel}
         centered
       >
+        {/* Add settings content here */}
+      </Modal>
+
+      <Modal
+        title='Share Card'
+        open={isSharingModalVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        centered
+      >
+        <h3>Shared with:</h3>
+        <ul>
+          {sharedWithUsers.map((userId) => (
+            <li key={userId}>{userId}</li>
+          ))}
+        </ul>
+         <div>
+    <input
+      type='text'
+      readOnly
+      value={auth.currentUser?.uid}
+    />
+    <button
+      onClick={() => {
+        const input = document.querySelector('input');
+        if (input) {
+          input.select();
+          document.execCommand('copy');
+        }
+      }}
+    >
+      Copy
+    </button>
+  </div>
+        <input
+          placeholder='Enter User ID to Share'
+          onChange={(event) => setNewUserId(event.target.value)}
+          value={newUserId}
+        />
+        <button onClick={() => handleAddSharing(currentCardId, newUserId)}>
+          Share
+        </button>
       </Modal>
     </div>
   );
