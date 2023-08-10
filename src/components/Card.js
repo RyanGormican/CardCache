@@ -241,7 +241,7 @@ const filteredCards = cards
 			centered
 			>
 			<div className="file-drop" onDrop={handleDrop} onDragOver={handleDragOver}>
-    <p>Drag and drop files here or click to select</p>
+    <p>Drag and drop files here or click 'Choose file' to add</p>
   </div>
    <input
       type="file"
