@@ -16,9 +16,11 @@ const [cards, setCards]= useState([]);
 const [search, setSearch] = useState('');
 const [cardName, setCardName]= useState (''); 
 const [selectedFile, setSelectedFile] = useState([]);
+const [infoModalVisible, setInfoModalVisible] = useState(false);
 const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 const [searchModalVisible, setSearchModalVisible] = useState(false);
 const [fileToDelete, setFileToDelete] = useState('');
+const [fileToView, setFileToView] = useState('');
 const [sortOrder, setSortOrder] = useState('ascending');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
@@ -32,6 +34,7 @@ const [sortOrder, setSortOrder] = useState('ascending');
 		bmp: true,
 		pdf: true,
 		json: true,
+		txt: true,
 	})
 	const handleDragOver = (e) => {
   e.preventDefault();
@@ -91,6 +94,11 @@ const filteredCards = cards
 	{
 		setSearchModalVisible(true);
 	}
+	const showInfoModal = (card) => {
+		setInfoModalVisible(true);
+		console.log(card);
+		setFileToView(card);
+	}
 	const hideDeleteModal = () => {
 		setFileToDelete('');
 		setDeleteModalVisible(false);
@@ -107,6 +115,7 @@ const filteredCards = cards
 		const handleCancel = () => {
 		setIsModalVisible(false);
 		setSearchModalVisible(false);
+		setInfoModalVisible(false);
 	}
 	const handleFile = (event) => {
   setSelectedFile(event.target.files[0]);
@@ -147,7 +156,7 @@ const filteredCards = cards
 			downloadURL: downloadURL,
 			fileName:  selectedFile.name,
 			fileSize: selectedFile.size,
-			creationTimstamp: Date.now(),
+			creationTimestamp: Date.now(),
 			userId: user.uid,
 			}]
 		})
@@ -226,6 +235,7 @@ const filteredCards = cards
                 height='30'
                 onClick={() => showDeleteModal(card.fileName)}
               />
+			  <Icon icon="mdi:information" height='30'   onClick={() => showInfoModal(card)} />
             </React.Fragment>
           ) : (
             ''
@@ -309,7 +319,27 @@ const filteredCards = cards
           </div>
         ))}
       </Modal>
-
+	  
+	  		 <Modal
+		title={`Information`}
+        visible={infoModalVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        centered
+      >
+		<div>
+		Name: {fileToView.fileName}
+		</div>
+		<div>
+		Time added: {new Date(fileToView.creationTimestamp).toLocaleString()}
+		</div>
+		<div>
+		Size: {fileToView.fileSize} bytes
+		</div>
+		<div>
+		Owner: {fileToView.userId}
+		</div>
+	  </Modal>
 		</div>
 	)
 }
