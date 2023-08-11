@@ -81,7 +81,8 @@
 }
 
 .image-preview{
-	width:100px;
+	height:200px;
+	width:full;
 }
 
 .preview-child{
