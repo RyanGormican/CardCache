@@ -124,3 +124,7 @@ width: 100%;
   display: flex;
   gap: 10px; /* Adjust the gap between icons */
 }
+.media-full{
+	height:80vh;
+	width:80vw;
+}

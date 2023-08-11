@@ -11,7 +11,7 @@ return (
 <div>
 	{mediaType === "video" ? (
 	<div>
-		<video className="media" src={mediaURL} autoPlay={autoplay} controls loop={loop}  onClick={setInfoModalVisible} />
+		<video className="media" src={mediaURL} autoPlay={autoplay} controls loop={loop}  onClick={() => setInfoModalVisible(true)}  />
 	</div>
 	) : (
 		""
@@ -21,7 +21,7 @@ return (
             className='image-preview'
             src={mediaURL}
             alt='image'
-			onClick={setInfoModalVisible}
+			onClick={() => setInfoModalVisible(true)} 
           />
 	) : (
 		""
@@ -33,7 +33,26 @@ return (
         onOk={handleCancel}
         onCancel={handleCancel}
         centered
+
       >
+
+	  	{mediaType === "video" ? (
+	<div>
+		<video className="media-full" src={mediaURL} autoPlay={autoplay} controls loop={loop}  onClick={() => setInfoModalVisible(true)}  />
+	</div>
+	) : (
+		""
+	)}
+	{mediaType === "image" ? (
+	 <img
+            className='media-full'
+            src={mediaURL}
+            alt='image'
+			onClick={() => setInfoModalVisible(true)} 
+          />
+	) : (
+		""
+	)}
 	  </Modal>
 </div>
 
