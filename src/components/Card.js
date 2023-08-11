@@ -221,11 +221,7 @@ const filteredCards = cards
     <React.Fragment>
       <div className="media-container">
         {isImage ? (
-          <img
-            className='image-preview'
-            src={card.downloadURL}
-            alt='image'
-          />
+          <Player mediaURL={card.downloadURL} mediaType='image'/>
         ) : (
           ''
         )}
