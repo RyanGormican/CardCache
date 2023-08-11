@@ -221,12 +221,12 @@ const filteredCards = cards
     <React.Fragment>
       <div className="media-container">
         {isImage ? (
-          <Player mediaURL={card.downloadURL} mediaType='image'/>
+          <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName}/>
         ) : (
           ''
         )}
         {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
-          <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaType='video' />
+          <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName}  mediaType='video' />
         )}
       </div>
       <div className="file-details">

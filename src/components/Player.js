@@ -1,6 +1,6 @@
 import React,  {useState, useEffect} from 'react';
 import {Modal, Input, Checkbox} from 'antd';
-export default function Player({mediaURL, autoplay, loop,mediaType}) {
+export default function Player({mediaURL, autoplay, loop,mediaType, mediaName}) {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
 
   const handleCancel = () => {
@@ -28,12 +28,13 @@ return (
 	)}
 
 	 <Modal
-		title={`Viewing`}
+		title={`Viewing ${mediaName}`}
         visible={infoModalVisible}
         onOk={handleCancel}
         onCancel={handleCancel}
         centered
         bodyStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDireaction:'column', minHeight: '80vh', overflow: 'auto' }}
+		width='auto'
       >
 
 	  	{mediaType === "video" ? (
