@@ -230,7 +230,7 @@ const filteredCards = cards
           ''
         )}
         {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
-          <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} />
+          <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaType='video' />
         )}
       </div>
       <div className="file-details">
