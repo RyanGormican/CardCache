@@ -1,12 +1,16 @@
 import React,  {useState, useEffect} from 'react';
 
 export default function Player({mediaURL, autoplay, loop,mediaType}) {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [infoModalVisible, setInfoModalVisible] = useState(false);
+
+  const handleCancel = () => {
+    setInfoModalVisible(false);
+	}
 return (
 <div>
 	{mediaType === "video" ? (
 	<div>
-		<video className="media" src={mediaURL} autoPlay={autoplay} controls loop={loop} />
+		<video className="media" src={mediaURL} autoPlay={autoplay} controls loop={loop}  onClick={setInfoModalVisible} />
 	</div>
 	) : (
 		""
