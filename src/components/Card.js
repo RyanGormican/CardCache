@@ -280,8 +280,6 @@ const filteredCards = cards
          <option value="size">File Size</option>
          <option value="time">Time Added</option>
       </select>
-   </div>
-    <div>
 	{sortOrder === 'ascending' ? (
     <Icon
       icon="bxs:up-arrow"
@@ -293,7 +291,8 @@ const filteredCards = cards
       onClick={() => setSortOrder('ascending')}
     />
 	)}
-  </div>
+   </div>
+
        {Object.keys(fileTypes).map((fileType) => (
           <div key={fileType}>
             <Checkbox
