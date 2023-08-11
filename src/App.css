@@ -107,8 +107,5 @@
 }
 .media{
 height: auto;
-width: 100px;
-}
-.media video{
-	display: block;
+width: 100%;
 }

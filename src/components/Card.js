@@ -229,7 +229,9 @@ const filteredCards = cards
                 ''
               )}
 			   {/\.(mp4|webm|ogg)$/i.test(card.fileName) ? (
-              <Player mediaURL={card.downloadURL} autoplay={false} loop={false} />
+              <div>
+			   <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} />
+			   </div>
             ) : (
               ""
             )}

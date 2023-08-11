@@ -4,7 +4,7 @@ export default function Player({mediaURL, autoplay, loop}) {
 
 return (
 	<div>
-		<video className="media" src={mediaURL} autoPlay={autoplay} loop={loop} />
+		<video className="media" src={mediaURL} autoPlay={autoplay} controls loop={loop} />
 	</div>
 );
 
