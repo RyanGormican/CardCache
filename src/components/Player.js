@@ -11,7 +11,7 @@ return (
 <div>
 	{mediaType === "video" ? (
 	<div>
-		<video className="media" src={mediaURL} autoPlay={autoplay} controls loop={loop}  onClick={() => setInfoModalVisible(true)}  />
+		<video className="media" src={mediaURL} autoPlay={autoplay}  loop={loop}  onClick={() => setInfoModalVisible(true)}  />
 	</div>
 	) : (
 		""
