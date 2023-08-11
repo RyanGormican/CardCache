@@ -6,7 +6,7 @@ import {updateDoc, doc, onSnapshot, collection, query, where } from 'firebase/fi
 import { database } from '../firebaseConfig';
 import {Modal, Input, Checkbox} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
-
+import Player from "./Player";
 export default function Card() {
 let params=useParams();
 let navigate = useNavigate();
@@ -35,6 +35,7 @@ const [sortOrder, setSortOrder] = useState('ascending');
 		pdf: true,
 		json: true,
 		txt: true,
+		mp4: true,
 	})
 	const handleDragOver = (e) => {
   e.preventDefault();
@@ -227,6 +228,11 @@ const filteredCards = cards
               ) : (
                 ''
               )}
+			   {/\.(mp4|webm|ogg)$/i.test(card.fileName) ? (
+              <Player mediaURL={card.downloadURL} autoplay={false} loop={false} />
+            ) : (
+              ""
+            )}
               <h5 onClick={() => openFile(card.downloadURL)}>
                 {card.fileName}
               </h5>

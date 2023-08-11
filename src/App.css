@@ -105,3 +105,10 @@
 .file-drop p {
   margin: 0;
 }
+.media{
+height: auto;
+width: 100px;
+}
+.media video{
+	display: block;
+}
