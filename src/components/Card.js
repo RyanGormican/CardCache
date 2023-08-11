@@ -19,6 +19,7 @@ const [selectedFile, setSelectedFile] = useState([]);
 const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 const [searchModalVisible, setSearchModalVisible] = useState(false);
 const [fileToDelete, setFileToDelete] = useState('');
+const [sortOrder, setSortOrder] = useState('ascending');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
@@ -44,13 +45,14 @@ const handleDrop = (e) => {
   getFile();
 };
 	const sortByOption = (option) => {
+	const order = sortOrder === 'ascending' ? 1 : -1;
    switch (option) {
       case 'name':
-         return (a, b) => a.fileName.localeCompare(b.fileName);
+         return (a, b) => a.fileName.localeCompare(b.fileName) * order;
       case 'size':
-         return (a, b) => a.fileSize - b.fileSize;
+         return (a, b) => a.fileSize - b.fileSize * order;
       case 'time':
-         return (a, b) => a.creationTimestamp - b.creationTimestamp;
+         return (a, b) => a.creationTimestamp - b.creationTimestamp * order;
       default:
          return () => 0;
    }
@@ -279,7 +281,18 @@ const filteredCards = cards
          <option value="time">Time Added</option>
       </select>
    </div>
-
+    <div>
+    <Icon
+      icon="bxs:up-arrow"
+      onClick={() => setSortOrder('ascending')}
+      className={sortOrder === 'ascending' ? 'active' : ''}
+    />
+    <Icon
+      icon="bxs:down-arrow"
+      onClick={() => setSortOrder('descending')}
+      className={sortOrder === 'descending' ? 'active' : ''}
+    />
+  </div>
        {Object.keys(fileTypes).map((fileType) => (
           <div key={fileType}>
             <Checkbox
