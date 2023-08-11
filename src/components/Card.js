@@ -230,12 +230,12 @@ const filteredCards = cards
               <h5 onClick={() => openFile(card.downloadURL)}>
                 {card.fileName}
               </h5>
+			  <Icon icon="mdi:information" height='30'   onClick={() => showInfoModal(card)} />
               <Icon
                 icon='jam:trash'
                 height='30'
                 onClick={() => showDeleteModal(card.fileName)}
               />
-			  <Icon icon="mdi:information" height='30'   onClick={() => showInfoModal(card)} />
             </React.Fragment>
           ) : (
             ''
@@ -331,7 +331,7 @@ const filteredCards = cards
 		Name: {fileToView.fileName}
 		</div>
 		<div>
-		Time added: {new Date(fileToView.creationTimestamp).toLocaleString()}
+		Time Added: {new Date(fileToView.creationTimestamp).toLocaleString()}
 		</div>
 		<div>
 		Size: {fileToView.fileSize} bytes
