@@ -31,6 +31,7 @@ const [sortOrder, setSortOrder] = useState('ascending');
 		gif: true,
 		bmp: true,
 		pdf: true,
+		json: true,
 	})
 	const handleDragOver = (e) => {
   e.preventDefault();
@@ -53,6 +54,8 @@ const handleDrop = (e) => {
          return (a, b) => a.fileSize - b.fileSize * order;
       case 'time':
          return (a, b) => a.creationTimestamp - b.creationTimestamp * order;
+	  case 'user':
+         return (a, b) => a.userId.localeCompare(b.userId) * order;
       default:
          return () => 0;
    }
@@ -134,7 +137,7 @@ const filteredCards = cards
     // Handle unsuccessful uploads
   }, 
   () => {
-
+	    const user = auth.currentUser;
 		setIsModalVisible(false);
     // Handle successful uploads on complete
     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
@@ -145,6 +148,7 @@ const filteredCards = cards
 			fileName:  selectedFile.name,
 			fileSize: selectedFile.size,
 			creationTimstamp: Date.now(),
+			userId: user.uid,
 			}]
 		})
     });
@@ -279,6 +283,7 @@ const filteredCards = cards
          <option value="name">File Name</option>
          <option value="size">File Size</option>
          <option value="time">Time Added</option>
+		 <option value="user">Owner</option>
       </select>
 	{sortOrder === 'ascending' ? (
     <Icon
