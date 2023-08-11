@@ -127,4 +127,6 @@ width: 100%;
 .media-full{
 	height:80vh;
 	width:80vw;
+	margin: 0 auto;
+	display: block;
 }
