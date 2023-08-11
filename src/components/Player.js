@@ -33,8 +33,7 @@ return (
         onOk={handleCancel}
         onCancel={handleCancel}
         centered
-		footer={null} 
-        bodyStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', overflow: 'auto' }}
+        bodyStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDireaction:'column', minHeight: '80vh', overflow: 'auto' }}
       >
 
 	  	{mediaType === "video" ? (
