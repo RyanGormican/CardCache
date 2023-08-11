@@ -27,6 +27,9 @@ const [sortOrder, setSortOrder] = useState('ascending');
 	const databaseRef = doc(database, 'cardData', params?.id)
 	
 	const [fileTypes, setFileTypes] = useState({
+		doccuments:true,
+		images:true,
+		videos:true,
 		png: true,
 		jpg: true,
 		jpeg: true,
@@ -73,10 +76,26 @@ const handleDrop = (e) => {
 
 	const toggleCheck = ( fileType) =>
 	{
+	if(fileType === 'doccuments')
+	{
+	setFileTypes((prevValues) => ({
+		...prevValues,
+		pdf: !fileType,
+		txt: !fileType,
+		doccuments: !fileType,
+	}));
+	}
+	else if (fileType === 'images'){
+
+	}else if (fileType === 'videos'){
+
+	}
+	else{
 	setFileTypes((prevValues) => ({
 		...prevValues,
 		[fileType]: !prevValues[fileType],
 	}));
+	}
 	};
 	const deleteFile = (fileName) => {
   const updatedFileLinks = cards.filter((card) => card.fileName !== fileName);
