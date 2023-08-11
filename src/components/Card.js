@@ -282,16 +282,17 @@ const filteredCards = cards
       </select>
    </div>
     <div>
+	{sortOrder === 'ascending' ? (
     <Icon
       icon="bxs:up-arrow"
-      onClick={() => setSortOrder('ascending')}
-      className={sortOrder === 'ascending' ? 'active' : ''}
+      onClick={() => setSortOrder('descending')}
     />
+	) : ( 
     <Icon
       icon="bxs:down-arrow"
-      onClick={() => setSortOrder('descending')}
-      className={sortOrder === 'descending' ? 'active' : ''}
+      onClick={() => setSortOrder('ascending')}
     />
+	)}
   </div>
        {Object.keys(fileTypes).map((fileType) => (
           <div key={fileType}>
