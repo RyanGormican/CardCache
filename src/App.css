@@ -58,8 +58,9 @@
 	border: 1px solid #c5c5c5;
 	justify-content: center;
 	display: flex;
+	flex-direction: column;
 	align-items:center;
-	height: 100px;
+	height: auto;
 	cursor: pointer;
 	border-radius: 2vw;
 }
@@ -108,4 +109,17 @@
 .media{
 height: auto;
 width: 100%;
+}
+
+.file-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px; /* Add some spacing between media and file details */
+}
+
+.file-icons {
+  margin-top: 5px; /* Add spacing between file name and icons */
+  display: flex;
+  gap: 10px; /* Adjust the gap between icons */
 }
