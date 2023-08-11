@@ -27,7 +27,7 @@ const [sortOrder, setSortOrder] = useState('ascending');
 	const databaseRef = doc(database, 'cardData', params?.id)
 	
 	const [fileTypes, setFileTypes] = useState({
-		doccuments:true,
+		documents:true,
 		images:true,
 		videos:true,
 		png: true,
@@ -76,19 +76,33 @@ const handleDrop = (e) => {
 
 	const toggleCheck = ( fileType) =>
 	{
-	if(fileType === 'doccuments')
+	if(fileType === 'documents')
 	{
 	setFileTypes((prevValues) => ({
 		...prevValues,
-		pdf: !fileType,
-		txt: !fileType,
-		doccuments: !fileType,
+		pdf: !prevValues[fileType],
+		txt: !prevValues[fileType],
+		json: !prevValues[fileType],
+		documents: !prevValues[fileType],
 	}));
 	}
 	else if (fileType === 'images'){
+	setFileTypes((prevValues) => ({
+		...prevValues,
+		png: !prevValues[fileType],
+		jpg: !prevValues[fileType],
+		jpeg: !prevValues[fileType],
+		gif: !prevValues[fileType],
+		bmp: !prevValues[fileType],
+		images: !prevValues[fileType],
+	}));
 
 	}else if (fileType === 'videos'){
-
+	setFileTypes((prevValues) => ({
+		...prevValues,
+		mp4: !prevValues[fileType],
+		videos: !prevValues[fileType],
+	}));
 	}
 	else{
 	setFileTypes((prevValues) => ({
@@ -336,16 +350,39 @@ const filteredCards = cards
 	)}
    </div>
 
-       {Object.keys(fileTypes).map((fileType) => (
-          <div key={fileType}>
-            <Checkbox
-              checked={fileTypes[fileType]}
-              onChange={() => toggleCheck(fileType)}
-            >
-              {fileType}
-            </Checkbox>
-          </div>
-        ))}
+     <div className="checkbox-container">
+  <Checkbox
+    checked={fileTypes['documents']}
+    onChange={(e) =>toggleCheck('documents')}
+  >
+    Documents
+  </Checkbox>
+  <Checkbox
+    checked={fileTypes['images']}
+    onChange={(e) => toggleCheck('images')}
+  >
+    Images
+  </Checkbox>
+  <Checkbox
+    checked={fileTypes['videos']}
+    onChange={(e) =>  toggleCheck('videos')}
+  >
+    Videos
+  </Checkbox>
+</div>
+<div className="checkbox-container">
+  {Object.keys(fileTypes)
+    .filter((fileType) => !['documents', 'images', 'videos'].includes(fileType))
+    .map((fileType) => (
+      <Checkbox
+        key={fileType}
+        checked={fileTypes[fileType]}
+        onChange={() => toggleCheck(fileType)}
+      >
+        {fileType}
+      </Checkbox>
+    ))}
+</div>
       </Modal>
 	  
 	  		 <Modal
