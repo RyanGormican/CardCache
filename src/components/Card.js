@@ -12,39 +12,20 @@ export default function Card() {
 let params=useParams();
 let navigate = useNavigate();
 let auth= getAuth();
-const [selectedSort, setSelectedSort] = useState(''); 
 const [cards, setCards]= useState([]);
-const [search, setSearch] = useState('');
 const [cardName, setCardName]= useState (''); 
 const [selectedFile, setSelectedFile] = useState([]);
 const [infoModalVisible, setInfoModalVisible] = useState(false);
 const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-const [searchModalVisible, setSearchModalVisible] = useState(false);
 const [fileToDelete, setFileToDelete] = useState('');
 const [fileToView, setFileToView] = useState('');
 const [comment, setComment]= useState('');
 const [commentsModalVisible, setCommentsModalVisible] = useState(false);
-const [sortOrder, setSortOrder] = useState('ascending');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
 	const databaseRef = doc(database, 'cardData', params?.id)
 	
-	const [fileTypes, setFileTypes] = useState({
-		documents:true,
-		images:true,
-		videos:true,
-		audios:true,
-		png: true,
-		jpg: true,
-		jpeg: true,
-		gif: true,
-		bmp: true,
-		pdf: true,
-		json: true,
-		txt: true,
-		mp4: true,
-		mp3: true,
-	})
+
 	const handleDragOver = (e) => {
   e.preventDefault();
   e.stopPropagation();
@@ -57,21 +38,7 @@ const handleDrop = (e) => {
   setSelectedFile(files[0]);
   getFile();
 };
-	const sortByOption = (option) => {
-	const order = sortOrder === 'ascending' ? 1 : -1;
-   switch (option) {
-      case 'name':
-         return (a, b) => a.fileName.localeCompare(b.fileName) * order;
-      case 'size':
-         return (a, b) => a.fileSize - b.fileSize * order;
-      case 'time':
-         return (a, b) => a.creationTimestamp - b.creationTimestamp * order;
-	  case 'user':
-         return (a, b) => a.userId.localeCompare(b.userId) * order;
-      default:
-         return () => 0;
-   }
-};
+	
 const openCommentsModal = (card) => {
   setFileToView(card);
   setCommentsModalVisible(true);
@@ -97,71 +64,18 @@ const addComment = () => {
   updateDoc(databaseRef, { fileLink: cards.map(card => card.fileName === fileToView.fileName ? updatedFileToView : card) });
   setComment('');
 };
-	const filterByType = (card) => {
-		const extension = card.fileName.split('.').pop();
-		return fileTypes[extension];
-	};
+	
 
-	const toggleCheck = ( fileType) =>
-	{
-	if(fileType === 'documents')
-	{
-	setFileTypes((prevValues) => ({
-		...prevValues,
-		pdf: !prevValues[fileType],
-		txt: !prevValues[fileType],
-		json: !prevValues[fileType],
-		documents: !prevValues[fileType],
-	}));
-	}
-	else if (fileType === 'images'){
-	setFileTypes((prevValues) => ({
-		...prevValues,
-		png: !prevValues[fileType],
-		jpg: !prevValues[fileType],
-		jpeg: !prevValues[fileType],
-		gif: !prevValues[fileType],
-		bmp: !prevValues[fileType],
-		images: !prevValues[fileType],
-	}));
-
-	}else if (fileType === 'videos'){
-	setFileTypes((prevValues) => ({
-		...prevValues,
-		mp4: !prevValues[fileType],
-		videos: !prevValues[fileType],
-	}));
-	}
-	else if (fileType === 'audios'){
-	setFileTypes((prevValues) => ({
-		...prevValues,
-		mp3: !prevValues[fileType],
-		audios: !prevValues[fileType],
-	}));
-	}
-	else{
-	setFileTypes((prevValues) => ({
-		...prevValues,
-		[fileType]: !prevValues[fileType],
-	}));
-	}
-	};
+	
 	const deleteFile = (fileName) => {
   const updatedFileLinks = cards.filter((card) => card.fileName !== fileName);
   updateDoc(databaseRef, { fileLink: updatedFileLinks });
 };
-const filteredCards = cards
-   .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
-   .filter(filterByType)
-   .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
+
 
 	const showDeleteModal = (fileName) => {
 	setFileToDelete(fileName);
 	setDeleteModalVisible(true);
-	}
-	const showSearchModal = () =>
-	{
-		setSearchModalVisible(true);
 	}
 	const showInfoModal = (card) => {
 		setInfoModalVisible(true);
@@ -183,7 +97,6 @@ const filteredCards = cards
 	}
 		const handleCancel = () => {
 		setIsModalVisible(false);
-		setSearchModalVisible(false);
 		setInfoModalVisible(false);
 		setCommentsModalVisible(false);
 		setComment('');
@@ -277,8 +190,7 @@ const filteredCards = cards
 			<h1>{cardName} </h1>
 			</div>
 			<div className='search-title'>
-			<input type="text" placeholder="Search files..." value={search} onChange={(e)=> setSearch(e.target.value)} />
-			<Icon icon="mdi:eye-outline" height="30" onClick={showSearchModal}/>
+			<Search cards={cards} />
 			</div>
 	<div className='card-parent'>
   {filteredCards?.length > 0 ? (
@@ -366,80 +278,7 @@ const filteredCards = cards
         <p>Are you sure you want to delete {fileToDelete}?</p>
       </Modal>
 
-	  		 <Modal
-		title={`Advanced Search`}
-        visible={searchModalVisible}
-        centered
-		footer={[
-			<Button onClick={handleCancel}> Ok </Button>
-		]}
-      >
-	     <div className="sort-dropdown">
-      <span>Sort by:</span>
-      <select
-         value={selectedSort}
-         onChange={(e) => setSelectedSort(e.target.value)}
-      >
-         <option value="">None</option>
-         <option value="name">File Name</option>
-         <option value="size">File Size</option>
-         <option value="time">Time Added</option>
-		 <option value="user">Owner</option>
-      </select>
-	{sortOrder === 'ascending' ? (
-    <Icon
-      icon="bxs:up-arrow"
-      onClick={() => setSortOrder('descending')}
-    />
-	) : ( 
-    <Icon
-      icon="bxs:down-arrow"
-      onClick={() => setSortOrder('ascending')}
-    />
-	)}
-   </div>
-
-     <div className="checkbox-container">
-  <Checkbox
-    checked={fileTypes['documents']}
-    onChange={(e) =>toggleCheck('documents')}
-  >
-    Documents
-  </Checkbox>
-  <Checkbox
-    checked={fileTypes['images']}
-    onChange={(e) => toggleCheck('images')}
-  >
-    Images
-  </Checkbox>
-  <Checkbox
-    checked={fileTypes['videos']}
-    onChange={(e) =>  toggleCheck('videos')}
-  >
-    Videos
-  </Checkbox>
-    <Checkbox
-    checked={fileTypes['audios']}
-    onChange={(e) =>  toggleCheck('audios')}
-  >
-    Audios
-  </Checkbox>
-</div>
-<div className="checkbox-container">
-  {Object.keys(fileTypes)
-    .filter((fileType) => !['documents', 'images', 'videos','audios'].includes(fileType))
-    .map((fileType) => (
-      <Checkbox
-        key={fileType}
-        checked={fileTypes[fileType]}
-        onChange={() => toggleCheck(fileType)}
-      >
-        {fileType}
-      </Checkbox>
-    ))}
-</div>
-      </Modal>
-	  
+	  		 
 	  		 <Modal
 		title={`Information`}
         visible={infoModalVisible}
