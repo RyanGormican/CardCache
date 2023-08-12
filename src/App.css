@@ -130,3 +130,12 @@ width: 100%;
 	margin: 0 auto;
 	display: block;
 }
+.comment {
+  padding: 2px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.comment-id{
+
+}

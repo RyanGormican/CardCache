@@ -21,6 +21,8 @@ const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 const [searchModalVisible, setSearchModalVisible] = useState(false);
 const [fileToDelete, setFileToDelete] = useState('');
 const [fileToView, setFileToView] = useState('');
+const [comment, setComment]= useState('');
+const [commentsModalVisible, setCommentsModalVisible] = useState(false);
 const [sortOrder, setSortOrder] = useState('ascending');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const storage = getStorage();
@@ -69,8 +71,31 @@ const handleDrop = (e) => {
          return () => 0;
    }
 };
+const openCommentsModal = (card) => {
+  setFileToView(card);
+  setCommentsModalVisible(true);
+};
+const addComment = () => {
+  if (comment.trim() === '') {
+    return;
+  }
+
+  const updatedFileToView = {
+    ...fileToView,
+    comments: [
+      ...(fileToView.comments || []),
+      {
+        text: comment,
+        userId: auth.currentUser.uid, 
+		creationTimestamp: Date.now(),
+      },
+    ],
+  };
 
 
+  updateDoc(databaseRef, { fileLink: cards.map(card => card.fileName === fileToView.fileName ? updatedFileToView : card) });
+  setComment('');
+};
 	const filterByType = (card) => {
 		const extension = card.fileName.split('.').pop();
 		return fileTypes[extension];
@@ -284,6 +309,11 @@ const filteredCards = cards
             height='30'
             onClick={() => showInfoModal(card)}
           />
+		    <Icon
+			 icon='ic:outline-comment'
+			 height='30'
+			 onClick={() => openCommentsModal(card)} 
+  />
           <Icon
             icon='jam:trash'
             height='30'
@@ -422,6 +452,32 @@ const filteredCards = cards
 		<div>
 		Owner: {fileToView.userId}
 		</div>
+	  </Modal>
+
+	   <Modal
+		title={`Comments for: ${fileToView.fileName}`}
+        visible={commentsModalVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        centered
+      >
+	   <div className="comment-form">
+    <Input.TextArea
+      placeholder="Add a comment..."
+      value={comment}
+      onChange={(e) => setComment(e.target.value)}
+    />
+	<Icon icon="uil:comment-add" width="50"  onClick={addComment}/>
+  
+  </div>
+	 {fileToView.comments?.map((comment, index) => (
+    <div key={index} className="comment">
+      <p>{comment.text}</p>
+	<div className= "comment-id">
+    <Icon icon="material-symbols:person" width="20" /> {comment.userId}
+	</div>
+    </div>
+  ))}
 	  </Modal>
 		</div>
 	)
