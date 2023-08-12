@@ -261,15 +261,15 @@ const filteredCards = cards
 
 	return (
 		<div> 
-			<div className= 'return' onClick= {goHome}>
-			<Icon icon="icon-park-outline:return" height="60" />
+			<div className= 'return' onClick={goHome} >
+			<Icon icon="icon-park-outline:return" height="60"/>
 			</div>
 			<div className='icon-container'>
 				<div class="upload-btn">
 					<Icon icon="mdi:file-document-add-outline" height="60" onClick={showModal} />
 				</div> 
 			</div> 
-			<div className='title'>
+			<div className='card-title'>
 			<h1>CardCache </h1>
 			</div>
 			<div className='folder-title'>

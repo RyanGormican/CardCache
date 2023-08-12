@@ -4,6 +4,7 @@
 	top: 10px;
 	display: flex;
 	gap: 15px;
+	z-index: 1;
 }
 
 .icon-logout{
@@ -60,6 +61,19 @@
 	margin:10px;
 	padding: 2vw;
 }
+.card-title {
+position: absolute;
+	text-align: center;
+	  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  height: 10vh; 
+  z-index: 0;
+  padding-bottom: 5vh;
+}
 .grid-child{
 	border: 1px solid #c5c5c5;
 	justify-content: center;
@@ -78,7 +92,8 @@
 .folder-title{
 	display: flex;
 	justify-content: center;
-	margin-top:75px;
+	margin-top:20px;
+	padding-top:4vh;
 }
 .search-title{
 	display: flex;
@@ -86,8 +101,12 @@
 }
 
 .return{
-	left: 30px;
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	display: flex;
 	cursor: pointer;
+		z-index: 1;
 }
 
 .image-preview{
@@ -126,13 +145,13 @@ width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px; /* Add some spacing between media and file details */
+  margin-top: 10px;
 }
 
 .file-icons {
-  margin-top: 5px; /* Add spacing between file name and icons */
+  margin-top: 5px; 
   display: flex;
-  gap: 10px; /* Adjust the gap between icons */
+  gap: 10px; 
 }
 .media-full{
 	height:80vh;
@@ -145,7 +164,4 @@ width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.comment-id{
-
 }
