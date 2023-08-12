@@ -13,6 +13,7 @@ let params=useParams();
 let navigate = useNavigate();
 let auth= getAuth();
 const [cards, setCards]= useState([]);
+ const [filteredCards, setFilteredCards] = useState([]);
 const [cardName, setCardName]= useState (''); 
 const [selectedFile, setSelectedFile] = useState([]);
 const [infoModalVisible, setInfoModalVisible] = useState(false);
@@ -190,7 +191,7 @@ const addComment = () => {
 			<h1>{cardName} </h1>
 			</div>
 			<div className='search-title'>
-			<Search cards={cards} />
+			<Search cards={cards} filter={filteredCards} />
 			</div>
 	<div className='card-parent'>
   {filteredCards?.length > 0 ? (

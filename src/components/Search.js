@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { Modal, Button, Checkbox } from 'antd';
 import { Icon } from '@iconify/react';
 
-export default function Search({cards}) {
+export default function Search({cards, filter}) {
 const [search, setSearch] = useState('');
 const [searchModalVisible, setSearchModalVisible] = useState(false);
 const [selectedSort, setSelectedSort] = useState(''); 
@@ -28,7 +28,19 @@ const [sortOrder, setSortOrder] = useState('ascending');
 		setSearchModalVisible(false);
 	}
 
+	  const filterByType = (card) => {
+		const extension = card.fileName.split('.').pop();
+		return fileTypes[extension];
+	};
 
+		const filteredCards = cards
+   .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
+   .filter(filterByType)
+   .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
+
+    useEffect(() => {
+   filter(filteredCards);
+   },[filteredCards,filter]);
 
 	const sortByOption = (option) => {
 	const order = sortOrder === 'ascending' ? 1 : -1;
@@ -43,18 +55,12 @@ const [sortOrder, setSortOrder] = useState('ascending');
          return (a, b) => a.userId.localeCompare(b.userId) * order;
       default:
          return () => 0;
-   }
+   };
 
-   const filterByType = (card) => {
-		const extension = card.fileName.split('.').pop();
-		return fileTypes[extension];
-	};
-
-		const filteredCards = cards
-   .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
-   .filter(filterByType)
-   .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
+ 
 };
+
+ 
 
 const showSearchModal = () =>
 	{
