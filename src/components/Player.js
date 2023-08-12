@@ -4,10 +4,11 @@ import { Icon } from '@iconify/react';
 export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName }) {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [rotationDegrees, setRotationDegrees] = useState(0);
-
+  const [flipDirectionH, setFlipDirectionH] = useState('none');
   const handleCancel = () => {
     setInfoModalVisible(false);
     setRotationDegrees(0); 
+    setFlipDirectionH('none');
   };
 
   const rotateLeft = () => {
@@ -18,8 +19,8 @@ export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName 
     setRotationDegrees((prevDegrees) => (prevDegrees + 90) % 360);
   };
 
-  const flipMedia = () => {
-
+  const flipMediaH = () => {
+setFlipDirectionH((prevDirection) => (prevDirection === 'horizontal' ? 'none' : 'horizontal'));
   };
   return (
     <div>
@@ -63,7 +64,8 @@ export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName 
         }}
         width="auto"
         footer={[
-          <Icon icon='material-symbols:flip' width="30" onClick={flipMedia}/>,
+          <Icon icon="material-symbols:flip" width="30" rotate={3} onClick={flipMediaV} />,
+          <Icon icon='material-symbols:flip' width="30" rotate={2} onClick={flipMediaH}/>,
           <Icon icon='mdi:turn-left' width="30" onClick={rotateLeft} />,
           <Icon icon='mdi:turn-right' width="30"onClick={rotateRight} />,
           <Button onClick={handleCancel}> Ok </Button>
@@ -77,7 +79,7 @@ export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName 
               autoPlay={autoplay}
               controls
               loop={loop}
-              style={{ transform: `rotate(${rotationDegrees}deg)` }}
+              style={{ transform: `rotate(${rotationDegrees}deg) scaleX(${flipDirectionH === 'horizontal' ? -1 : 1})` }}
             />
           </div>
         ) : (
@@ -89,7 +91,7 @@ export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName 
             src={mediaURL}
             alt="image"
             onClick={() => setInfoModalVisible(true)}
-            style={{ transform: `rotate(${rotationDegrees}deg)` }}
+            style={{ transform: `rotate(${rotationDegrees}deg) scaleX(${flipDirectionH === 'horizontal' ? -1 : 1})` }}
           />
         ) : (
           ''
