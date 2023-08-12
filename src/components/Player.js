@@ -69,13 +69,21 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
         }}
         width="auto"
         footer={[
-          <Icon icon="material-symbols:flip" width="30" rotate={1} onClick={flipMediaV} />,
-          <Icon icon="material-symbols:flip" width="30" rotate={3} onClick={flipMediaV} />,
-          <Icon icon='material-symbols:flip' width="30" rotate={2} onClick={flipMediaH}/>,
-          <Icon icon='mdi:turn-left' width="30" onClick={rotateLeft} />,
-          <Icon icon='mdi:turn-right' width="30"onClick={rotateRight} />,
-          <Button onClick={handleCancel}> Ok </Button>
-        ]}
+    flipDirectionV === 'vertical' ? (
+      <Icon icon="material-symbols:flip" width="30" rotate={1} onClick={flipMediaV} />
+    ) : (
+      <Icon icon="material-symbols:flip" width="30" rotate={3} onClick={flipMediaV} />
+    ),
+    flipDirectionH === 'horizontal' ? (
+      <Icon icon='material-symbols:flip' width="30" onClick={flipMediaH} />
+    ) : (
+      <Icon icon='material-symbols:flip' width="30" rotate={2} onClick={flipMediaH} />
+    ),
+    <Icon icon='mdi:turn-left' width="30" onClick={rotateLeft} />,
+    <Icon icon='mdi:turn-right' width="30" onClick={rotateRight} />,
+    <Button onClick={handleCancel}> Ok </Button>
+  ]}
+>
       >
         {mediaType === 'video' ? (
           <div>
