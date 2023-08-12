@@ -122,6 +122,10 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
           ''
         )}
           {mediaType === 'audio' ? (
+          <div>
+         <ReactAudioVisualizer
+         audio={mediaURL}
+         />
           <audio
             className="media-full"
             src={mediaURL}
@@ -130,6 +134,7 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
             onClick={() => setInfoModalVisible(true)}
             style={{ transform: `rotate(${rotationDegrees}deg) scaleX(${flipDirectionH === 'horizontal' ? -1 : 1}) scaleY(${flipDirectionV === 'vertical' ? -1 : 1})` }}
           />
+          </div>
         ) : (
           ''
         )}
