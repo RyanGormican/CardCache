@@ -53,7 +53,13 @@
 	margin:10px;
 	padding: 2vw;
 }
-
+.card-parent {
+	display:grid;
+	grid-template-columns: auto auto auto;
+	position: relative;
+	margin:10px;
+	padding: 2vw;
+}
 .grid-child{
 	border: 1px solid #c5c5c5;
 	justify-content: center;
@@ -62,7 +68,8 @@
 	align-items:center;
 	height: auto;
 	cursor: pointer;
-	border-radius: 2vw;
+	border-radius:20px;
+	margin:2px;
 }
 .grid-child h4{
 	color: #777777;
@@ -71,11 +78,14 @@
 .folder-title{
 	display: flex;
 	justify-content: center;
-	margin-top:30px;
+	margin-top:75px;
+}
+.search-title{
+	display: flex;
+	justify-content: center;
 }
 
 .return{
-	position: absolute;
 	left: 30px;
 	cursor: pointer;
 }

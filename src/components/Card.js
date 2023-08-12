@@ -269,14 +269,17 @@ const filteredCards = cards
 					<Icon icon="mdi:file-document-add-outline" height="60" onClick={showModal} />
 				</div> 
 			</div> 
+			<div className='title'>
+			<h1>CardCache </h1>
+			</div>
 			<div className='folder-title'>
 			<h1>{cardName} </h1>
 			</div>
-			<div className='folder-title'>
+			<div className='search-title'>
 			<input type="text" placeholder="Search files..." value={search} onChange={(e)=> setSearch(e.target.value)} />
 			<Icon icon="mdi:eye-outline" height="30" onClick={showSearchModal}/>
 			</div>
-	<div className='grid-parent'>
+	<div className='card-parent'>
   {filteredCards?.length > 0 ? (
     filteredCards?.map((card) => {
 
