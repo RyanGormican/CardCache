@@ -63,7 +63,7 @@ export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName 
         }}
         width="auto"
         footer={[
-          <Icon icon="material-symbols:flip" onClick={flipMedia}/>
+          <Icon icon='material-symbols:flip' width="30" onClick={flipMedia}/>,
           <Icon icon='mdi:turn-left' width="30" onClick={rotateLeft} />,
           <Icon icon='mdi:turn-right' width="30"onClick={rotateRight} />,
           <Button onClick={handleCancel}> Ok </Button>
