@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Modal,Button } from 'antd';
 import { Icon } from '@iconify/react';
-import visualizer from 'react-audio-visualizer';
 export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName }) {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [rotationDegrees, setRotationDegrees] = useState(0);
@@ -122,9 +121,6 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
         )}
           {mediaType === 'audio' ? (
           <div>
-         <Visualizer
-         audio={mediaURL}
-         />
           <audio
             className="media-full"
             src={mediaURL}
