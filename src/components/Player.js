@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal,Button } from 'antd';
 import { Icon } from '@iconify/react';
+import ReactAudioVisualizer from 'react-audio-visualizer';
+import 'react-audio-visualizer/dist/index.css';
 export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName }) {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [rotationDegrees, setRotationDegrees] = useState(0);
@@ -53,12 +55,7 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
         ''
       )}
            {mediaType === 'audio' ? (
-       <img
-          className="media"
-          src={mediaURL}
-          alt="image"
-          onClick={() => setInfoModalVisible(true)}
-        />
+      <Icon icon="heroicons:musical-note-20-solid"           onClick={() => setInfoModalVisible(true)}/>
       ) : (
         ''
       )}
@@ -78,6 +75,9 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
         }}
         width="auto"
         footer={[
+        mediaType === 'audio' ? 
+        [ <Button onClick={handleCancel}> Ok </Button> ]
+        :[
     flipDirectionV === 'vertical' ? (
       <Icon icon="material-symbols:flip" width="30" rotate={1} onClick={flipMediaV} />
     ) : (
@@ -91,6 +91,8 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
     <Icon icon='mdi:turn-left' width="30" onClick={rotateLeft} />,
     <Icon icon='mdi:turn-right' width="30" onClick={rotateRight} />,
     <Button onClick={handleCancel}> Ok </Button>
+    ]
+
   ]}
 >
       >
