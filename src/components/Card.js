@@ -461,7 +461,7 @@ const filteredCards = cards
         onCancel={handleCancel}
         centered
       >
-	   <div className="comment-form">
+	   <div className="folder-title">
     <Input.TextArea
       placeholder="Add a comment..."
       value={comment}

@@ -133,7 +133,7 @@ width: 100%;
 .comment {
   padding: 2px;
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   align-items: center;
 }
 .comment-id{
