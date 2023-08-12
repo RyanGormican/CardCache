@@ -7,6 +7,7 @@ import { database } from '../firebaseConfig';
 import {Modal, Input, Button, Checkbox} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
 import Player from "./Player";
+import Search from "./Search";
 export default function Card() {
 let params=useParams();
 let navigate = useNavigate();
@@ -469,7 +470,7 @@ const filteredCards = cards
 			<Button onClick={handleCancel}> Ok </Button>
 		]}
       >
-	   <div className="folder-title">
+	   <div className="search-title">
     <Input.TextArea
       placeholder="Add a comment..."
       value={comment}
