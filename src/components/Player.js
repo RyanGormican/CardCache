@@ -52,7 +52,16 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
       ) : (
         ''
       )}
-
+           {mediaType === 'audio' ? (
+       <img
+          className="media"
+          src={mediaURL}
+          alt="image"
+          onClick={() => setInfoModalVisible(true)}
+        />
+      ) : (
+        ''
+      )}
       <Modal
         title={`Viewing ${mediaName}`}
         visible={infoModalVisible}
@@ -104,6 +113,18 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
             className="media-full"
             src={mediaURL}
             alt="image"
+            onClick={() => setInfoModalVisible(true)}
+            style={{ transform: `rotate(${rotationDegrees}deg) scaleX(${flipDirectionH === 'horizontal' ? -1 : 1}) scaleY(${flipDirectionV === 'vertical' ? -1 : 1})` }}
+          />
+        ) : (
+          ''
+        )}
+          {mediaType === 'audio' ? (
+          <audio
+            className="media-full"
+            src={mediaURL}
+            autoPlay={autoplay}
+            controls
             onClick={() => setInfoModalVisible(true)}
             style={{ transform: `rotate(${rotationDegrees}deg) scaleX(${flipDirectionH === 'horizontal' ? -1 : 1}) scaleY(${flipDirectionV === 'vertical' ? -1 : 1})` }}
           />

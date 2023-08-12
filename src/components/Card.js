@@ -30,6 +30,7 @@ const [sortOrder, setSortOrder] = useState('ascending');
 		documents:true,
 		images:true,
 		videos:true,
+		audios:true,
 		png: true,
 		jpg: true,
 		jpeg: true,
@@ -39,6 +40,7 @@ const [sortOrder, setSortOrder] = useState('ascending');
 		json: true,
 		txt: true,
 		mp4: true,
+		mp3: true,
 	})
 	const handleDragOver = (e) => {
   e.preventDefault();
@@ -102,6 +104,13 @@ const handleDrop = (e) => {
 		...prevValues,
 		mp4: !prevValues[fileType],
 		videos: !prevValues[fileType],
+	}));
+	}
+	else if (fileType === 'audios'){
+	setFileTypes((prevValues) => ({
+		...prevValues,
+		mp3: !prevValues[fileType],
+		audios: !prevValues[fileType],
 	}));
 	}
 	else{
@@ -261,6 +270,9 @@ const filteredCards = cards
         {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
           <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName}  mediaType='video' />
         )}
+		{/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
+		 <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName}  mediaType='audio' />
+		)}
       </div>
       <div className="file-details">
         <h5 onClick={() => openFile(card.downloadURL)}>
@@ -369,10 +381,16 @@ const filteredCards = cards
   >
     Videos
   </Checkbox>
+    <Checkbox
+    checked={fileTypes['audios']}
+    onChange={(e) =>  toggleCheck('audios')}
+  >
+    Audios
+  </Checkbox>
 </div>
 <div className="checkbox-container">
   {Object.keys(fileTypes)
-    .filter((fileType) => !['documents', 'images', 'videos'].includes(fileType))
+    .filter((fileType) => !['documents', 'images', 'videos','audios'].includes(fileType))
     .map((fileType) => (
       <Checkbox
         key={fileType}
