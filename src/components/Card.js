@@ -4,7 +4,7 @@ import { useParams, useNavigate} from 'react-router-dom';
 import {getStorage,ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import {updateDoc, doc, onSnapshot, collection, query, where } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
-import {Modal, Input, Checkbox} from 'antd';
+import {Modal, Input, Button, Checkbox} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
 import Player from "./Player";
 export default function Card() {
@@ -184,6 +184,8 @@ const filteredCards = cards
 		setIsModalVisible(false);
 		setSearchModalVisible(false);
 		setInfoModalVisible(false);
+		setCommentsModalVisible(false);
+		setComment('');
 	}
 	const handleFile = (event) => {
   setSelectedFile(event.target.files[0]);
@@ -363,9 +365,10 @@ const filteredCards = cards
 	  		 <Modal
 		title={`Advanced Search`}
         visible={searchModalVisible}
-        onOk={handleCancel}
-        onCancel={handleCancel}
         centered
+		footer={[
+			<Button onClick={handleCancel}> Ok </Button>
+		]}
       >
 	     <div className="sort-dropdown">
       <span>Sort by:</span>
@@ -436,9 +439,10 @@ const filteredCards = cards
 	  		 <Modal
 		title={`Information`}
         visible={infoModalVisible}
-        onOk={handleCancel}
-        onCancel={handleCancel}
         centered
+		footer={[
+			<Button onClick={handleCancel}> Ok </Button>
+		]}
       >
 		<div>
 		Name: {fileToView.fileName}
@@ -457,9 +461,10 @@ const filteredCards = cards
 	   <Modal
 		title={`Comments for: ${fileToView.fileName}`}
         visible={commentsModalVisible}
-        onOk={handleCancel}
-        onCancel={handleCancel}
         centered
+		footer={[
+			<Button onClick={handleCancel}> Ok </Button>
+		]}
       >
 	   <div className="folder-title">
     <Input.TextArea
