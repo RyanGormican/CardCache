@@ -53,7 +53,7 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
         ''
       )}
            {mediaType === 'audio' ? (
-      <Icon icon="heroicons:musical-note-20-solid"           onClick={() => setInfoModalVisible(true)}/>
+      <Icon icon="heroicons:musical-note-20-solid"  height="50" width="50"   onClick={() => setInfoModalVisible(true)}/>
       ) : (
         ''
       )}
