@@ -31,7 +31,9 @@ const [commentsModalVisible, setCommentsModalVisible] = useState(false);
   e.preventDefault();
   e.stopPropagation();
 };
-
+ const handleFilterChange = (filteredCards) => {
+    setFilteredCards(filteredCards);
+  };
 const handleDrop = (e) => {
   e.preventDefault();
   e.stopPropagation();
@@ -191,7 +193,7 @@ const addComment = () => {
 			<h1>{cardName} </h1>
 			</div>
 			<div className='search-title'>
-			<Search cards={cards} filter={filteredCards} />
+			<Search cards={cards} filtering={filteredCards}  onFilterChange={handleFilterChange}  />
 			</div>
 	<div className='card-parent'>
   {filteredCards?.length > 0 ? (
