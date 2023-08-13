@@ -122,13 +122,13 @@ const readData = (user) => {
       q,
       (data) => {
         console.log('Data fetched:', data.docs.map((doc) => doc.data()));
-        setCards(
-          data.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }))
-        );
+        const fetchedCards = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setCards(fetchedCards);
         setDataLoaded(true);
+        console.log(fetchedCards); // Log the fetchedCards array here
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -137,6 +137,7 @@ const readData = (user) => {
     );
   }
 };
+
 
 
 

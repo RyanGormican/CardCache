@@ -23,36 +23,27 @@ export default function Search({ cards, filtering, onFilterChange }) {
     mp4: true,
     mp3: true,
   });
-  
+
   const handleCancel = () => {
     setSearchModalVisible(false);
   };
 
-const filterByType = (card) => {
-  if (Array.isArray(card.fileLink)) {
-    // If fileLink is an array of objects (Drive.js)
-    const extension = card.fileLink[0]?.fileName.split('.').pop();
-    return extension && fileTypes[extension];
-  } else if (typeof card.fileLink === 'object') {
-    // If fileLink is an object with numbered keys (Card.js)
-    const extension = card.fileLink.fileName.split('.').pop();
-    return extension && fileTypes[extension];
-  } else {
-    return false; // Handle unsupported fileLink structure
-  }
-};
-
-
+  const filterByType = (card) => {
+    return card.fileLink.some(file => {
+      const extension = file.fileName.split('.').pop();
+      return extension && fileTypes[extension];
+    });
+  };
 
   const sortByOption = (option) => {
     const order = sortOrder === 'ascending' ? 1 : -1;
     switch (option) {
       case 'name':
-        return (a, b) => a.fileName.localeCompare(b.fileName) * order;
+        return (a, b) => a.fileLink[0].fileName.localeCompare(b.fileLink[0].fileName) * order;
       case 'size':
-        return (a, b) => a.fileSize - b.fileSize * order;
+        return (a, b) => a.fileLink[0].fileSize - b.fileLink[0].fileSize * order;
       case 'time':
-        return (a, b) => a.creationTimestamp - b.creationTimestamp * order;
+        return (a, b) => a.fileLink[0].creationTimestamp - b.fileLink[0].creationTimestamp * order;
       case 'user':
         return (a, b) => a.userId.localeCompare(b.userId) * order;
       default:
@@ -61,14 +52,15 @@ const filterByType = (card) => {
   };
 
   const filteredCards = cards
-    .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
+    .filter((card) => card.cardName.toLowerCase().includes(search.toLowerCase()))
     .filter(filterByType)
     .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
-   
-    useEffect(() => {
+
+  useEffect(() => {
     // Invoke the callback to notify parent component of filter changes
     onFilterChange(filteredCards);
   }, [filteredCards, onFilterChange]);
+
   const showSearchModal = () => {
     setSearchModalVisible(true);
   };
