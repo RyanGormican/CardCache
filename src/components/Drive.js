@@ -176,6 +176,7 @@ export default function Drive() {
         cards={cards}
         filtering={filteredCards}
         onFilterChange={handleFilterChange}
+        type="drive"
       />
       </div>
       <div className="grid-parent">

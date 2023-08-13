@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Checkbox } from 'antd';
 import { Icon } from '@iconify/react';
 
-export default function Search({ cards, filtering, onFilterChange }) {
+export default function Search({ cards, filtering, onFilterChange,type }) {
   const [search, setSearch] = useState('');
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('');
@@ -29,24 +29,20 @@ export default function Search({ cards, filtering, onFilterChange }) {
   };
 
 const filterByType = (card) => {
-  if (card.sharedWith && card.sharedWith.length > 0) {
-    return true; // Include shared cards regardless of file types
-  }
+    if (card.sharedWith && card.sharedWith.length > 0) {
+      return true; // Include shared cards regardless of file types
+    }
 
-  if (card.fileLink) {
-    // Check each file in the fileLink array
-    const fileLinkFiltered = card.fileLink.filter((file) => {
-      const extension = file.fileName.split('.').pop();
-      return fileTypes[extension];
-    });
+    if (card.fileLink) {
+      return card.fileLink.some((file) => {
+        const extension = file.fileName.split('.').pop();
+        return fileTypes[extension];
+      });
+    }
 
-    // Return true if at least one file in fileLink array matches the filter
-    return fileLinkFiltered.length > 0;
-  } else {
     const extension = card.fileName.split('.').pop();
     return fileTypes[extension];
-  }
-};
+  };
 
 
 
@@ -146,7 +142,11 @@ const filteredCards = cards
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        {type ==='drive'? (
+        ""
+        ) : (
         <Icon icon="mdi:eye-outline" height="30" onClick={showSearchModal} />
+        )}
       </div>
       <Modal
         title={`Advanced Search`}
