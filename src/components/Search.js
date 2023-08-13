@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Checkbox } from 'antd';
 import { Icon } from '@iconify/react';
 
-export default function Search({ cards, filtering, onFilterChange }) {
+export default function Search({ cards, onFilterChange }) {
   const [search, setSearch] = useState('');
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('');
@@ -29,21 +29,28 @@ export default function Search({ cards, filtering, onFilterChange }) {
   };
 
   const filterByType = (card) => {
-    return card.fileLink.some(file => {
-      const extension = file.fileName.split('.').pop();
+    if (Array.isArray(card.fileLink)) {
+      // If fileLink is an array of objects (Drive.js)
+      const extension = card.fileLink[0]?.fileName.split('.').pop();
       return extension && fileTypes[extension];
-    });
+    } else if (typeof card.fileLink === 'object') {
+      // If fileLink is an object with numbered keys (Card.js)
+      const extension = card.fileLink.fileName.split('.').pop();
+      return extension && fileTypes[extension];
+    } else {
+      return false; // Handle unsupported fileLink structure
+    }
   };
 
   const sortByOption = (option) => {
     const order = sortOrder === 'ascending' ? 1 : -1;
     switch (option) {
       case 'name':
-        return (a, b) => a.fileLink[0].fileName.localeCompare(b.fileLink[0].fileName) * order;
+        return (a, b) => a.fileName.localeCompare(b.fileName) * order;
       case 'size':
-        return (a, b) => a.fileLink[0].fileSize - b.fileLink[0].fileSize * order;
+        return (a, b) => a.fileSize - b.fileSize * order;
       case 'time':
-        return (a, b) => a.fileLink[0].creationTimestamp - b.fileLink[0].creationTimestamp * order;
+        return (a, b) => a.creationTimestamp - b.creationTimestamp * order;
       case 'user':
         return (a, b) => a.userId.localeCompare(b.userId) * order;
       default:
@@ -51,15 +58,18 @@ export default function Search({ cards, filtering, onFilterChange }) {
     }
   };
 
-  const filteredCards = cards
-    .filter((card) => card.cardName.toLowerCase().includes(search.toLowerCase()))
-    .filter(filterByType)
-    .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
+
 
   useEffect(() => {
-    // Invoke the callback to notify parent component of filter changes
+
+    const filteredCards = cards
+    .filter((card) => card.cardName.toLowerCase().includes(search.toLowerCase()))
+    .filter(filterByType)
+    .sort(sortByOption(selectedSort));
+
+
     onFilterChange(filteredCards);
-  }, [filteredCards, onFilterChange]);
+  }, [onFilterChange]);
 
   const showSearchModal = () => {
     setSearchModalVisible(true);
