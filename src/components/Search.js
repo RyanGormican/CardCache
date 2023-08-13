@@ -29,6 +29,10 @@ export default function Search({ cards, filtering, onFilterChange }) {
   };
 
 const filterByType = (card) => {
+  if (card.sharedWith && card.sharedWith.length > 0) {
+    return true; // Include shared cards regardless of file types
+  }
+
   if (card.fileLink) {
     // Check each file in the fileLink array
     const fileLinkFiltered = card.fileLink.filter((file) => {
@@ -43,6 +47,7 @@ const filterByType = (card) => {
     return fileTypes[extension];
   }
 };
+
 
 
   const sortByOption = (option) => {
@@ -61,17 +66,26 @@ const filterByType = (card) => {
     }
   };
 
-  const filteredCards = cards
-  .filter((card) =>
-    card.fileLink
-      ? card.fileLink.some(
-          (file) =>
-            file.fileName && file.fileName.toLowerCase().includes(search.toLowerCase())
-        )
-      : card.fileName && card.fileName.toLowerCase().includes(search.toLowerCase())
-  )
-  .filter(filterByType)
+const filteredCards = cards
+  .filter((card) => {
+    const isSharedCard = card.sharedWith && card.sharedWith.length > 0;
+
+    return (
+      (isSharedCard && card.sharedWith.includes(search.toLowerCase())) ||
+      (card.fileLink
+        ? card.fileLink.some(
+            (file) =>
+              file.fileName && file.fileName.toLowerCase().includes(search.toLowerCase())
+          ) ||
+          (card.cardName && card.cardName.toLowerCase().includes(search.toLowerCase()))
+        : card.fileName && card.fileName.toLowerCase().includes(search.toLowerCase()))
+    );
+  })
+  .filter((card) => filterByType(card) || (card.sharedWith && card.sharedWith.length > 0))
   .sort(sortByOption(selectedSort));
+
+
+
 
    
     useEffect(() => {

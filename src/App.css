@@ -102,8 +102,8 @@ position: absolute;
 .search-title2{
 	display: flex;
 	justify-content: center;
-	padding-top:80px;
-	z-index:5;
+	padding-top:90px;
+	z-index:8;
 }
 .return{
 	position: absolute;
