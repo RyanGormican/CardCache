@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, onSnapshot, query, where, doc, updateDoc } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth';
-
+import Search from "./Search";
 export default function Drive() {
   const navigate = useNavigate();
+  const [filteredCards, setFilteredCards] = useState([]);
   const auth = getAuth();
   const collectionRef = collection(database, 'cardData');
   const [cardName, setCardName] = useState('');
@@ -28,7 +29,9 @@ export default function Drive() {
   const showModal = () => {
     setIsModalVisible(true);
   };
-
+  const handleFilterChange = (filteredCards) => {
+    setFilteredCards(filteredCards);
+  };
   const handleLogout = () => {
     signOut(auth);
   };
@@ -160,6 +163,9 @@ const readData = (user) => {
       <div className='icon-container'>
         <Icon icon='material-symbols:folder' height='60' onClick={showModal} />
       </div>
+      	<div className='search-title'>
+			<Search cards={cards} filtering={filteredCards}  onFilterChange={handleFilterChange}  />
+			</div>
       <div className='grid-parent'>
         {dataLoaded ? (
           cards.map((card) => (

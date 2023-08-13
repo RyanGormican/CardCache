@@ -29,8 +29,13 @@ export default function Search({ cards, filtering, onFilterChange }) {
   };
 
   const filterByType = (card) => {
+     if (card.fileLink) {
+      const extension = card.fileLink[0]?.fileName.split('.').pop();
+      return fileTypes[extension];
+    } else {
     const extension = card.fileName.split('.').pop();
     return fileTypes[extension];
+    }
   };
 
   const sortByOption = (option) => {
