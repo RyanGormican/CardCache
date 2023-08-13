@@ -99,7 +99,12 @@ position: absolute;
 	display: flex;
 	justify-content: center;
 }
-
+.search-title2{
+	display: flex;
+	justify-content: center;
+	padding-top:80px;
+	z-index:5;
+}
 .return{
 	position: absolute;
 	left: 10px;

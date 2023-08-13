@@ -164,7 +164,7 @@ const readData = (user) => {
       <div className='icon-container'>
         <Icon icon='material-symbols:folder' height='60' onClick={showModal} />
       </div>
-      	<div className='search-title'>
+      	<div className='search-title2'>
 			<Search cards={cards} filtering={filteredCards}  onFilterChange={handleFilterChange}  />
 			</div>
       <div className='grid-parent'>
