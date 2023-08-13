@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Checkbox } from 'antd';
 import { Icon } from '@iconify/react';
 
-export default function Search({ cards, onFilterChange }) {
+export default function Search({ cards, filtering, onFilterChange }) {
   const [search, setSearch] = useState('');
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('');
@@ -23,22 +23,18 @@ export default function Search({ cards, onFilterChange }) {
     mp4: true,
     mp3: true,
   });
-
-  const [filteredCards, setFilteredCards] = useState([]);
-
+  
   const handleCancel = () => {
     setSearchModalVisible(false);
   };
 
   const filterByType = (card) => {
-    if (Array.isArray(card.fileLink)) {
+     if (card.fileLink) {
       const extension = card.fileLink[0]?.fileName.split('.').pop();
-      return extension && fileTypes[extension];
-    } else if (typeof card.fileLink === 'object') {
-      const extension = card.fileLink.fileName.split('.').pop();
-      return extension && fileTypes[extension];
+      return fileTypes[extension];
     } else {
-      return false;
+    const extension = card.fileName.split('.').pop();
+    return fileTypes[extension];
     }
   };
 
@@ -46,7 +42,7 @@ export default function Search({ cards, onFilterChange }) {
     const order = sortOrder === 'ascending' ? 1 : -1;
     switch (option) {
       case 'name':
-        return (a, b) => a.cardName.localeCompare(b.cardName) * order;
+        return (a, b) => a.fileName.localeCompare(b.fileName) * order;
       case 'size':
         return (a, b) => a.fileSize - b.fileSize * order;
       case 'time':
@@ -58,16 +54,15 @@ export default function Search({ cards, onFilterChange }) {
     }
   };
 
-  useEffect(() => {
-    const newFilteredCards = cards
-      .filter((card) => card.cardName.toLowerCase().includes(search.toLowerCase()))
-      .filter(filterByType)
-      .sort(sortByOption(selectedSort));
-
-    setFilteredCards(newFilteredCards);
-
-    onFilterChange(newFilteredCards);
-  }, [cards, search, selectedSort, fileTypes, onFilterChange]);
+  const filteredCards = cards
+    .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
+    .filter(filterByType)
+    .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
+   
+    useEffect(() => {
+    // Invoke the callback to notify parent component of filter changes
+    onFilterChange(filteredCards);
+  }, [filteredCards, onFilterChange]);
 
   const showSearchModal = () => {
     setSearchModalVisible(true);
@@ -149,16 +144,16 @@ export default function Search({ cards, onFilterChange }) {
           )}
         </div>
         <div className="checkbox-container">
-          <Checkbox checked={fileTypes['documents']} onChange={() => toggleCheck('documents')}>
+          <Checkbox checked={fileTypes['documents']} onChange={(e) => toggleCheck('documents')}>
             Documents
           </Checkbox>
-          <Checkbox checked={fileTypes['images']} onChange={() => toggleCheck('images')}>
+          <Checkbox checked={fileTypes['images']} onChange={(e) => toggleCheck('images')}>
             Images
           </Checkbox>
-          <Checkbox checked={fileTypes['videos']} onChange={() => toggleCheck('videos')}>
+          <Checkbox checked={fileTypes['videos']} onChange={(e) => toggleCheck('videos')}>
             Videos
           </Checkbox>
-          <Checkbox checked={fileTypes['audios']} onChange={() => toggleCheck('audios')}>
+          <Checkbox checked={fileTypes['audios']} onChange={(e) => toggleCheck('audios')}>
             Audios
           </Checkbox>
         </div>
