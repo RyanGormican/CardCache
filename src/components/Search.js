@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Checkbox } from 'antd';
 import { Icon } from '@iconify/react';
 
-export default function Search({ cards, filtering }) {
+export default function Search({ cards, filtering, onFilterChange }) {
   const [search, setSearch] = useState('');
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('');
@@ -53,7 +53,11 @@ export default function Search({ cards, filtering }) {
     .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
     .filter(filterByType)
     .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
-
+   
+    useEffect(() => {
+    // Invoke the callback to notify parent component of filter changes
+    onFilterChange(filteredCards);
+  }, [filteredCards, onFilterChange]);
 
   const showSearchModal = () => {
     setSearchModalVisible(true);
