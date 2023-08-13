@@ -28,15 +28,22 @@ export default function Search({ cards, filtering, onFilterChange }) {
     setSearchModalVisible(false);
   };
 
-  const filterByType = (card) => {
-     if (card.fileLink) {
-      const extension = card.fileLink[0]?.fileName.split('.').pop();
+const filterByType = (card) => {
+  if (card.fileLink) {
+    // Check each file in the fileLink array
+    const fileLinkFiltered = card.fileLink.filter((file) => {
+      const extension = file.fileName.split('.').pop();
       return fileTypes[extension];
-    } else {
+    });
+
+    // Return true if at least one file in fileLink array matches the filter
+    return fileLinkFiltered.length > 0;
+  } else {
     const extension = card.fileName.split('.').pop();
     return fileTypes[extension];
-    }
-  };
+  }
+};
+
 
   const sortByOption = (option) => {
     const order = sortOrder === 'ascending' ? 1 : -1;
@@ -55,11 +62,20 @@ export default function Search({ cards, filtering, onFilterChange }) {
   };
 
   const filteredCards = cards
-    .filter((card) => card.fileName.toLowerCase().includes(search.toLowerCase()))
-    .filter(filterByType)
-    .sort(sortByOption(selectedSort)); // Apply sorting based on selectedSort
+  .filter((card) =>
+    card.fileLink
+      ? card.fileLink.some(
+          (file) =>
+            file.fileName && file.fileName.toLowerCase().includes(search.toLowerCase())
+        )
+      : card.fileName && card.fileName.toLowerCase().includes(search.toLowerCase())
+  )
+  .filter(filterByType)
+  .sort(sortByOption(selectedSort));
+
    
     useEffect(() => {
+
     // Invoke the callback to notify parent component of filter changes
     onFilterChange(filteredCards);
   }, [filteredCards, onFilterChange]);

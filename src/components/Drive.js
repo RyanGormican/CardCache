@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import {  Modal, Checkbox } from 'antd';
+import { Modal, Checkbox, Button } from 'antd';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc, onSnapshot, query, where, doc, updateDoc } from 'firebase/firestore';
-import { database } from '../firebaseConfig';
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
-import Search from "./Search";
+import Search from './Search';
+import { database } from '../firebaseConfig';
+
 export default function Drive() {
   const navigate = useNavigate();
   const [filteredCards, setFilteredCards] = useState([]);
@@ -14,9 +23,8 @@ export default function Drive() {
   const [cardName, setCardName] = useState('');
   const [cards, setCards] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dataLoaded, setDataLoaded] = useState(false); // Add dataLoaded state
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-
   const [isSharingModalVisible, setIsSharingModalVisible] = useState(false);
   const [currentCardId, setCurrentCardId] = useState('');
   const [sharedWithUsers, setSharedWithUsers] = useState([]);
@@ -29,9 +37,11 @@ export default function Drive() {
   const showModal = () => {
     setIsModalVisible(true);
   };
+
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
+
   const handleLogout = () => {
     signOut(auth);
   };
@@ -52,9 +62,9 @@ export default function Drive() {
   };
 
   const handleAddSharing = async (cardId, userId) => {
-      if (!userId){
+    if (!userId) {
       return;
-      }
+    }
     const cardRef = doc(database, 'cardData', cardId);
 
     // Add the new user ID to the sharedWith array
@@ -111,69 +121,70 @@ export default function Drive() {
     return () => unsubscribe(); // Cleanup the listener
   }, [auth]);
 
-const readData = (user) => {
-  if (user) {
-    const q = query(
-      collectionRef,
-      where('sharedWith', 'array-contains', user.uid)
-    );
+  const readData = (user) => {
+    if (user) {
+      const q = query(
+        collectionRef,
+        where('sharedWith', 'array-contains', user.uid)
+      );
 
-    onSnapshot(
-      q,
-      (data) => {
-        console.log('Data fetched:', data.docs.map((doc) => doc.data()));
-        const fetchedCards = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setCards(fetchedCards);
-        setDataLoaded(true);
-        console.log(fetchedCards); // Log the fetchedCards array here
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-        setDataLoaded(true);
-      }
-    );
-  }
-};
-
-
-
+      onSnapshot(
+        q,
+        (data) => {
+          console.log('Data fetched:', data.docs.map((doc) => doc.data()));
+          const fetchedCards = data.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setCards(fetchedCards);
+          setDataLoaded(true);
+          console.log(fetchedCards); // Log the fetchedCards array here
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
+          setDataLoaded(true);
+        }
+      );
+    }
+  };
 
   return (
     <div>
-      <div className='icon-logout' onClick={handleLogout}>
-        <Icon icon='material-symbols:logout' height='60' />
+      <div className="icon-logout" onClick={handleLogout}>
+        <Icon icon="material-symbols:logout" height="60" />
       </div>
-      <div className='title'>
+      <div className="title">
         <h1> CardCache </h1>
       </div>
-      <div className='links'>
-        <a href='https://www.linkedin.com/in/ryangormican/'>
-          <Icon icon='mdi:linkedin' color='#0e76a8' width='60' />
+      <div className="links">
+        <a href="https://www.linkedin.com/in/ryangormican/">
+          <Icon icon="mdi:linkedin" color="#0e76a8" width="60" />
         </a>
-        <a href='https://github.com/RyanGormican/CardCache'>
-          <Icon icon='mdi:github' color='#e8eaea' width='60' />
+        <a href="https://github.com/RyanGormican/CardCache">
+          <Icon icon="mdi:github" color="#e8eaea" width="60" />
         </a>
-        <a href='https://ryangormicanportfoliohub.vercel.app/'>
-          <Icon icon='teenyicons:computer-outline' color='#199c35' width='60' />
+        <a href="https://ryangormicanportfoliohub.vercel.app/">
+          <Icon icon="teenyicons:computer-outline" color="#199c35" width="60" />
         </a>
-        <Icon icon='mdi:gear' width='60' onClick={showSettings} />
+        <Icon icon="mdi:gear" width="60" onClick={showSettings} />
       </div>
-      <div className='icon-container'>
-        <Icon icon='material-symbols:folder' height='60' onClick={showModal} />
+      <div className="icon-container">
+        <Icon icon="material-symbols:folder" height="60" onClick={showModal} />
       </div>
-      <div className='grid-parent'>
+      <div className="search-title2">
+      <Search
+        cards={cards}
+        filtering={filteredCards}
+        onFilterChange={handleFilterChange}
+      />
+      </div>
+      <div className="grid-parent">
         {dataLoaded ? (
-          cards.map((card) => (
-            <div
-              className='preview-child'
-              key={card.id}
-            >
+          filteredCards.map((card) => (
+            <div className="preview-child" key={card.id}>
               <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
               <Icon
-                icon='material-symbols:person-add'
+                icon="material-symbols:person-add"
                 onClick={() => handleShareIconClick(card.id)}
               />
             </div>
@@ -182,70 +193,7 @@ const readData = (user) => {
           <p>Loading...</p>
         )}
       </div>
-      <Modal
-        title='Add a Card'
-        open={isModalVisible}
-        onOk={cardUpload}
-        onCancel={handleCancel}
-        centered
-      >
-        <input
-          placeholder='Enter the Card Name...'
-          onChange={(event) => setCardName(event.target.value)}
-          value={cardName}
-        />
-      </Modal>
-
-      <Modal
-        title='Settings'
-        open={isSettingsVisible}
-        onOk={handleCancel}
-        onCancel={handleCancel}
-        centered
-      >
-        {/* Add settings content here */}
-      </Modal>
-
-      <Modal
-        title='Share Card'
-        open={isSharingModalVisible}
-        onOk={handleCancel}
-        onCancel={handleCancel}
-        centered
-      >
-        <h3>Shared with:</h3>
-        <ul>
-          {sharedWithUsers.map((userId) => (
-            <li key={userId}>{userId}</li>
-          ))}
-        </ul>
-         <div>
-    <input
-      type='text'
-      readOnly
-      value={auth.currentUser?.uid}
-    />
-    <button
-      onClick={() => {
-        const input = document.querySelector('input');
-        if (input) {
-          input.select();
-          document.execCommand('copy');
-        }
-      }}
-    >
-      Copy
-    </button>
-  </div>
-        <input
-          placeholder='Enter User ID to Share'
-          onChange={(event) => setNewUserId(event.target.value)}
-          value={newUserId}
-        />
-        <button onClick={() => handleAddSharing(currentCardId, newUserId)}>
-          Share
-        </button>
-      </Modal>
+      {/* Modals and other UI components */}
     </div>
   );
 }
