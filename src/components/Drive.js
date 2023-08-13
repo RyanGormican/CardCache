@@ -179,7 +179,7 @@ export default function Drive() {
         type="drive"
       />
       </div>
-      <div className="grid-parent">
+      <div className="card-parent">
         {dataLoaded ? (
           filteredCards.map((card) => (
             <div className="preview-child" key={card.id}>
