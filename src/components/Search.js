@@ -24,21 +24,21 @@ export default function Search({ cards, onFilterChange }) {
     mp3: true,
   });
 
+  const [filteredCards, setFilteredCards] = useState([]);
+
   const handleCancel = () => {
     setSearchModalVisible(false);
   };
 
   const filterByType = (card) => {
     if (Array.isArray(card.fileLink)) {
-      // If fileLink is an array of objects (Drive.js)
       const extension = card.fileLink[0]?.fileName.split('.').pop();
       return extension && fileTypes[extension];
     } else if (typeof card.fileLink === 'object') {
-      // If fileLink is an object with numbered keys (Card.js)
       const extension = card.fileLink.fileName.split('.').pop();
       return extension && fileTypes[extension];
     } else {
-      return false; // Handle unsupported fileLink structure
+      return false;
     }
   };
 
@@ -46,7 +46,7 @@ export default function Search({ cards, onFilterChange }) {
     const order = sortOrder === 'ascending' ? 1 : -1;
     switch (option) {
       case 'name':
-        return (a, b) => a.fileName.localeCompare(b.fileName) * order;
+        return (a, b) => a.cardName.localeCompare(b.cardName) * order;
       case 'size':
         return (a, b) => a.fileSize - b.fileSize * order;
       case 'time':
@@ -58,18 +58,16 @@ export default function Search({ cards, onFilterChange }) {
     }
   };
 
-
-
   useEffect(() => {
+    const newFilteredCards = cards
+      .filter((card) => card.cardName.toLowerCase().includes(search.toLowerCase()))
+      .filter(filterByType)
+      .sort(sortByOption(selectedSort));
 
-    const filteredCards = cards
-    .filter((card) => card.cardName.toLowerCase().includes(search.toLowerCase()))
-    .filter(filterByType)
-    .sort(sortByOption(selectedSort));
+    setFilteredCards(newFilteredCards);
 
-
-    onFilterChange(filteredCards);
-  }, [onFilterChange]);
+    onFilterChange(newFilteredCards);
+  }, [cards, search, selectedSort, fileTypes, onFilterChange]);
 
   const showSearchModal = () => {
     setSearchModalVisible(true);
@@ -151,16 +149,16 @@ export default function Search({ cards, onFilterChange }) {
           )}
         </div>
         <div className="checkbox-container">
-          <Checkbox checked={fileTypes['documents']} onChange={(e) => toggleCheck('documents')}>
+          <Checkbox checked={fileTypes['documents']} onChange={() => toggleCheck('documents')}>
             Documents
           </Checkbox>
-          <Checkbox checked={fileTypes['images']} onChange={(e) => toggleCheck('images')}>
+          <Checkbox checked={fileTypes['images']} onChange={() => toggleCheck('images')}>
             Images
           </Checkbox>
-          <Checkbox checked={fileTypes['videos']} onChange={(e) => toggleCheck('videos')}>
+          <Checkbox checked={fileTypes['videos']} onChange={() => toggleCheck('videos')}>
             Videos
           </Checkbox>
-          <Checkbox checked={fileTypes['audios']} onChange={(e) => toggleCheck('audios')}>
+          <Checkbox checked={fileTypes['audios']} onChange={() => toggleCheck('audios')}>
             Audios
           </Checkbox>
         </div>
