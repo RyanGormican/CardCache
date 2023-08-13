@@ -28,15 +28,21 @@ export default function Search({ cards, filtering, onFilterChange }) {
     setSearchModalVisible(false);
   };
 
-  const filterByType = (card) => {
-     if (card.fileLink) {
-      const extension = card.fileLink[0]?.fileName.split('.').pop();
-      return fileTypes[extension];
-    } else {
-    const extension = card.fileName.split('.').pop();
-    return fileTypes[extension];
-    }
-  };
+const filterByType = (card) => {
+  if (Array.isArray(card.fileLink)) {
+    // If fileLink is an array of objects (Drive.js)
+    const extension = card.fileLink[0]?.fileName.split('.').pop();
+    return extension && fileTypes[extension];
+  } else if (typeof card.fileLink === 'object') {
+    // If fileLink is an object with numbered keys (Card.js)
+    const extension = card.fileLink.fileName.split('.').pop();
+    return extension && fileTypes[extension];
+  } else {
+    return false; // Handle unsupported fileLink structure
+  }
+};
+
+
 
   const sortByOption = (option) => {
     const order = sortOrder === 'ascending' ? 1 : -1;
@@ -63,7 +69,6 @@ export default function Search({ cards, filtering, onFilterChange }) {
     // Invoke the callback to notify parent component of filter changes
     onFilterChange(filteredCards);
   }, [filteredCards, onFilterChange]);
-
   const showSearchModal = () => {
     setSearchModalVisible(true);
   };
