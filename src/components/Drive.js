@@ -194,7 +194,70 @@ export default function Drive() {
           <p>Loading...</p>
         )}
       </div>
-      {/* Modals and other UI components */}
+   <Modal
+        title='Add a Card'
+        open={isModalVisible}
+        onOk={cardUpload}
+        onCancel={handleCancel}
+        centered
+      >
+        <input
+          placeholder='Enter the Card Name...'
+          onChange={(event) => setCardName(event.target.value)}
+          value={cardName}
+        />
+      </Modal>
+
+      <Modal
+        title='Settings'
+        open={isSettingsVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        centered
+      >
+        {/* Add settings content here */}
+      </Modal>
+
+      <Modal
+        title='Share Card'
+        open={isSharingModalVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        centered
+      >
+        <h3>Shared with:</h3>
+        <ul>
+          {sharedWithUsers.map((userId) => (
+            <li key={userId}>{userId}</li>
+          ))}
+        </ul>
+         <div>
+    <input
+      type='text'
+      readOnly
+      value={auth.currentUser?.uid}
+    />
+    <button
+      onClick={() => {
+        const input = document.querySelector('input');
+        if (input) {
+          input.select();
+          document.execCommand('copy');
+        }
+      }}
+    >
+      Copy
+    </button>
+  </div>
+        <input
+          placeholder='Enter User ID to Share'
+          onChange={(event) => setNewUserId(event.target.value)}
+          value={newUserId}
+        />
+        <button onClick={() => handleAddSharing(currentCardId, newUserId)}>
+          Share
+        </button>
+      </Modal>
     </div>
   );
 }
