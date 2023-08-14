@@ -17,13 +17,11 @@ export default function AddCard() {
  const [isModalVisible, setIsModalVisible] = useState(false);
  const showModal = () => {
  console.log("test");
- console.log (databaseRef);
     setIsModalVisible(true);
   }
-  const params=useParams();
+
    const [cardName, setCardName] = useState('');
    const collectionRef = collection(database, 'cardData');
-   const databaseRef = doc(database, 'cardData', params?.id)
    const auth = getAuth();
      const handleCancel = () => {
 setIsModalVisible(false);
@@ -57,7 +55,7 @@ setIsModalVisible(false);
 
 return(
 <div className="prio">
-   <div className="prio" onClick={showModal}  style={{ cursor: 'pointer' }}>
+   <div  onClick={showModal}  style={{ cursor: 'pointer' }}>
          <Icon icon="material-symbols:folder" height="60"/>
     </div>
    <Modal
