@@ -14,7 +14,7 @@ import {
 import { getAuth, signOut } from 'firebase/auth';
 import Search from './Search';
 import { database } from '../firebaseConfig';
-
+import AddCard from './AddCard';
 export default function Drive() {
   const navigate = useNavigate();
   const [filteredCards, setFilteredCards] = useState([]);
@@ -167,8 +167,7 @@ export default function Drive() {
           <Icon icon="teenyicons:computer-outline" color="#199c35" width="60" />
         </a>
         <Icon icon="mdi:gear" width="60" onClick={showSettings} />
-      </div>
-      <div className="icon-container">
+        <AddCard />
         <Icon icon="material-symbols:folder" height="60" onClick={showModal} />
       </div>
       <div className="search-title2">
