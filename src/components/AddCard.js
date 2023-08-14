@@ -13,24 +13,49 @@ import {
 import { database } from '../firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth';
 import { useParams, useNavigate} from 'react-router-dom';
-export default function AddCard() {
- const [isModalVisible, setIsModalVisible] = useState(false);
+export default function AddCard({cardId }) {
+ const [isModalVisible, setIsModalVisible] = useState(true);
  const showModal = () => {
  console.log("test");
     setIsModalVisible(true);
   }
-
+  const params = useParams();
    const [cardName, setCardName] = useState('');
    const collectionRef = collection(database, 'cardData');
+const databaseRef = doc(database, 'cardData', params?.id);
+
    const auth = getAuth();
      const handleCancel = () => {
 setIsModalVisible(false);
   }
-   const cardUpload = async () => {
+  const cardUpload = async () => {
     const user = auth.currentUser;
 
-    if (collectionRef && user) {
-      try {
+    try {
+      if (cardId && user) {
+      updateDoc(databaseRef,{
+			fileLink: [...cards, {
+			downloadURL: downloadURL,
+			fileName:  selectedFile.name,
+			fileSize: selectedFile.size,
+			creationTimestamp: Date.now(),
+			userId: user.uid,
+			}]
+        await addDoc(databaseRef, {
+        fileLink: [...cards, {
+          userId: user.uid,
+          cardName: cardName,
+          sharedWith: [user.uid],
+          fileLink: [
+            {
+              downloadURL: '',
+              fileName: '',
+              fileSize: 0,
+              creationTimestamp: 0,
+            },
+          ]}]
+        });
+      } else if (collectionRef && user) {
         await addDoc(collectionRef, {
           userId: user.uid,
           cardName: cardName,
@@ -46,9 +71,9 @@ setIsModalVisible(false);
         });
 
         setIsModalVisible(false);
-      } catch (error) {
-        alert(error.message);
       }
+    } catch (error) {
+      alert(error.message);
     }
   };
 
