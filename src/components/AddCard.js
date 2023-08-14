@@ -13,7 +13,7 @@ import {
 import { database } from '../firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth';
 import { useParams, useNavigate} from 'react-router-dom';
-export default function AddCard({cardId }) {
+export default function AddCard({cardId, cards }) {
  const [isModalVisible, setIsModalVisible] = useState(true);
  const showModal = () => {
  console.log("test");
@@ -29,53 +29,55 @@ const databaseRef = doc(database, 'cardData', params?.id);
 setIsModalVisible(false);
   }
   const cardUpload = async () => {
-    const user = auth.currentUser;
+  const user = auth.currentUser;
 
-    try {
-      if (cardId && user) {
-      updateDoc(databaseRef,{
-			fileLink: [...cards, {
-			downloadURL: downloadURL,
-			fileName:  selectedFile.name,
-			fileSize: selectedFile.size,
-			creationTimestamp: Date.now(),
-			userId: user.uid,
-			}]
-        await addDoc(databaseRef, {
-        fileLink: [...cards, {
-          userId: user.uid,
-          cardName: cardName,
-          sharedWith: [user.uid],
-          fileLink: [
-            {
-              downloadURL: '',
-              fileName: '',
-              fileSize: 0,
-              creationTimestamp: 0,
-            },
-          ]}]
-        });
-      } else if (collectionRef && user) {
-        await addDoc(collectionRef, {
-          userId: user.uid,
-          cardName: cardName,
-          sharedWith: [user.uid],
-          fileLink: [
-            {
-              downloadURL: '',
-              fileName: '',
-              fileSize: 0,
-              creationTimestamp: 0,
-            },
-          ],
-        });
+  try {
+    if (cardId && user) {
+      await updateDoc(databaseRef, {
+        fileLink: [
+          ...cards,
+          {
+            userId: user.uid,
+            cardName: cardName,
+            sharedWith: [user.uid],
+            fileLink: [
+              {
+                downloadURL: '',
+                fileName: '',
+                fileSize: 0,
+                creationTimestamp: 0,
+              },
+            ],
+          },
+        ],
+      });
+    } else if (collectionRef && user) {
+      await updateDoc(collectionRef, {
+        fileLink: [
+          ...cards,
+          {
+            userId: user.uid,
+            cardName: cardName,
+            sharedWith: [user.uid],
+            fileLink: [
+              {
+                downloadURL: '',
+                fileName: '',
+                fileSize: 0,
+                creationTimestamp: 0,
+              },
+            ],
+          },
+        ],
+      });
 
-        setIsModalVisible(false);
-      }
-    } catch (error) {
-      alert(error.message);
+      setIsModalVisible(false);
     }
-  };
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
 
 
 return(
