@@ -12,15 +12,18 @@ import {
 } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth';
-
+import { useParams, useNavigate} from 'react-router-dom';
 export default function AddCard() {
  const [isModalVisible, setIsModalVisible] = useState(false);
  const showModal = () => {
  console.log("test");
+ console.log (databaseRef);
     setIsModalVisible(true);
   }
+  const params=useParams();
    const [cardName, setCardName] = useState('');
    const collectionRef = collection(database, 'cardData');
+   const databaseRef = doc(database, 'cardData', params?.id)
    const auth = getAuth();
      const handleCancel = () => {
 setIsModalVisible(false);
@@ -54,7 +57,7 @@ setIsModalVisible(false);
 
 return(
 <div className="prio">
-   <div  onClick={showModal}  style={{ cursor: 'pointer' }}>
+   <div className="prio" onClick={showModal}  style={{ cursor: 'pointer' }}>
          <Icon icon="material-symbols:folder" height="60"/>
     </div>
    <Modal
