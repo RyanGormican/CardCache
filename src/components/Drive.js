@@ -20,9 +20,7 @@ export default function Drive() {
   const [filteredCards, setFilteredCards] = useState([]);
   const auth = getAuth();
   const collectionRef = collection(database, 'cardData');
-  const [cardName, setCardName] = useState('');
   const [cards, setCards] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [isSharingModalVisible, setIsSharingModalVisible] = useState(false);
@@ -34,9 +32,7 @@ export default function Drive() {
     setIsSettingsVisible(true);
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+ 
 
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
@@ -47,7 +43,6 @@ export default function Drive() {
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
     setIsSettingsVisible(false);
     setIsSharingModalVisible(false);
   };
@@ -76,31 +71,7 @@ export default function Drive() {
     setSharedWithUsers([...sharedWithUsers, userId]);
   };
 
-  const cardUpload = async () => {
-    const user = auth.currentUser;
-
-    if (collectionRef && user) {
-      try {
-        await addDoc(collectionRef, {
-          userId: user.uid,
-          cardName: cardName,
-          sharedWith: [user.uid],
-          fileLink: [
-            {
-              downloadURL: '',
-              fileName: '',
-              fileSize: 0,
-              creationTimestamp: 0,
-            },
-          ],
-        });
-
-        setIsModalVisible(false);
-      } catch (error) {
-        alert(error.message);
-      }
-    }
-  };
+ 
 
   const openCard = (id) => {
     navigate(`/card/${id}`);
@@ -168,7 +139,6 @@ export default function Drive() {
         </a>
         <Icon icon="mdi:gear" width="60" onClick={showSettings} />
         <AddCard />
-        <Icon icon="material-symbols:folder" height="60" onClick={showModal} />
       </div>
       <div className="search-title2">
       <Search
@@ -193,19 +163,7 @@ export default function Drive() {
           <p>Loading...</p>
         )}
       </div>
-   <Modal
-        title='Add a Card'
-        open={isModalVisible}
-        onOk={cardUpload}
-        onCancel={handleCancel}
-        centered
-      >
-        <input
-          placeholder='Enter the Card Name...'
-          onChange={(event) => setCardName(event.target.value)}
-          value={cardName}
-        />
-      </Modal>
+ 
 
       <Modal
         title='Settings'

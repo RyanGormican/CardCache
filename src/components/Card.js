@@ -8,6 +8,7 @@ import {Modal, Input, Button, Checkbox} from 'antd';
 import { getAuth, signOut } from 'firebase/auth';
 import Player from "./Player";
 import Search from "./Search";
+import AddCard from './AddCard';
 export default function Card() {
 let params=useParams();
 let navigate = useNavigate();
@@ -184,6 +185,7 @@ const addComment = () => {
 			<div className='icon-container'>
 				<div class="upload-btn">
 					<Icon icon="mdi:file-document-add-outline" height="60" onClick={showModal} />
+					<AddCard />
 				</div> 
 			</div> 
 			<div className='card-title'>
