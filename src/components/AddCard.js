@@ -16,6 +16,7 @@ import { getAuth, signOut } from 'firebase/auth';
 export default function AddCard() {
  const [isModalVisible, setIsModalVisible] = useState(false);
  const showModal = () => {
+ console.log("test");
     setIsModalVisible(true);
   }
    const [cardName, setCardName] = useState('');
@@ -52,8 +53,10 @@ setIsModalVisible(false);
 
 
 return(
-<div className="prio" onClick={showModal}>
- <Icon icon="material-symbols:folder" height="60" onClick={showModal}/>
+<div className="prio">
+   <div  onClick={showModal}  style={{ cursor: 'pointer' }}>
+         <Icon icon="material-symbols:folder" height="60"/>
+    </div>
    <Modal
         title='Add a Card'
         open={isModalVisible}

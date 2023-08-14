@@ -188,7 +188,7 @@ const addComment = () => {
 					<AddCard />
 				</div> 
 			</div> 
-			<div className='card-title'>
+			<div className='title'>
 			<h1>CardCache </h1>
 			</div>
 			<div className='folder-title'>
