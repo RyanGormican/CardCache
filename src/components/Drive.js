@@ -168,7 +168,7 @@ export default function Drive() {
         </a>
       </div>
       <div onClick={showModal} className="prio">
-         <Icon icon="material-symbols:folder" height="60" onClick={showModal} />
+         <Icon icon="material-symbols:folder" height="60" />
           </div>
       <div className="search-title2">
       <Search
