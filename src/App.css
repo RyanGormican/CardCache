@@ -110,7 +110,7 @@ position: absolute;
 	display: flex;
 	justify-content: center;
 	padding-top:90px;
-	z-index:8;
+	z-index:0;
 }
 .return{
 	position: absolute;
