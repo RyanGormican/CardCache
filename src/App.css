@@ -8,6 +8,8 @@
 }
 .prio{
 	z-index:10;
+	position: absolute;
+	display: flex;
 }
 .icon-logout{
 	position: absolute;
