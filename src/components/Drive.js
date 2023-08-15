@@ -166,10 +166,7 @@ export default function Drive() {
         <a href="https://ryangormicanportfoliohub.vercel.app/">
           <Icon icon="teenyicons:computer-outline" color="#199c35" width="60" />
         </a>
-        <Icon icon="mdi:gear" width="60" onClick={showSettings} />
-      </div>
-      <div className="icon-container">
-        <Icon icon="material-symbols:folder" height="60" onClick={showModal} />
+         <Icon icon="material-symbols:folder" height="60" onClick={showModal} />
       </div>
       <div className="search-title2">
       <Search
