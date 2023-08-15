@@ -167,9 +167,11 @@ export default function Drive() {
           <Icon icon="teenyicons:computer-outline" color="#199c35" width="60" />
         </a>
       </div>
-      <div onClick={showModal} className="prio">
+      <div className="prio">
+        <div onClick={showModal}>
          <Icon icon="material-symbols:folder" height="60" />
-          </div>
+        </div>
+      </div>
       <div className="search-title2">
       <Search
         cards={cards}
