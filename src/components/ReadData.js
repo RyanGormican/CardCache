@@ -2,7 +2,7 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { database } from '../firebaseConfig';
 
 export const readData = (user, onDataFetched, onError) => {
-  if (user) {
+  if (user && typeof onDataFetched === 'function' && typeof onError === 'function') {
     const collectionRef = collection(database, 'cardData');
     const q = query(collectionRef, where('sharedWith', 'array-contains', user.uid));
 

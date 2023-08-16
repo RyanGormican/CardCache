@@ -134,7 +134,7 @@ export default function Drive() {
           <Icon icon="teenyicons:computer-outline" color="#199c35" width="60" />
         </a>
         <Icon icon="mdi:gear" width="60" onClick={showSettings} />
-      //  <AddCard cards={cards}/> //
+        <AddCard cards={cards} />
       </div>
       <div className="search-title2">
       <Search

@@ -14,7 +14,7 @@ import { database } from '../firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth';
 import { useParams, useNavigate} from 'react-router-dom';
 export default function AddCard({cardId, cards }) {
- const [isModalVisible, setIsModalVisible] = useState(true);
+ const [isModalVisible, setIsModalVisible] = useState(false);
  const showModal = () => {
  console.log("test");
     setIsModalVisible(true);
@@ -22,46 +22,55 @@ export default function AddCard({cardId, cards }) {
   const params = useParams();
    const [cardName, setCardName] = useState('');
    const collectionRef = collection(database, 'cardData');
-const databaseRef = doc(database, 'cardData', params?.id);
 
    const auth = getAuth();
      const handleCancel = () => {
 setIsModalVisible(false);
   }
-const cardUpload = async () => {
+  const cardUpload = async () => {
   const user = auth.currentUser;
 
   try {
-    if (user) {
-      const newCard = {
-        userId: user.uid,
-        cardName: cardName,
-        sharedWith: [user.uid],
+    if (cardId && user) {
+    const databaseRef = doc(database, 'cardData', params?.id);
+
+      await updateDoc(databaseRef, {
         fileLink: [
+          ...cards,
           {
-            downloadURL: '',
-            fileName: '',
-            fileSize: 0,
-            creationTimestamp: 0,
+            userId: user.uid,
+            cardName: cardName,
+            sharedWith: [user.uid],
+            fileLink: [
+              {
+                downloadURL: '',
+                fileName: '',
+                fileSize: 0,
+                creationTimestamp: 0,
+              },
+            ],
           },
         ],
-      };
-
-      if (cardId) {
-        // Update an existing card's fileLink array
-        const updatedCards = cards.map((card) =>
-          cards.id === cardId
-            ? { ...cards, fileLink: [...card.fileLink, newCard.fileLink[0]] }
-            : cards
-        );
-
-        await updateDoc(databaseRef, { fileLink: updatedCards });
-      } else {
-        // Add a new card to the collection
-        await addDoc(collectionRef, {
-          ...newCard,
-        });
-      }
+      });
+    } else if (collectionRef && user) {
+      await updateDoc(collectionRef, {
+        fileLink: [
+          ...cards,
+          {
+            userId: user.uid,
+            cardName: cardName,
+            sharedWith: [user.uid],
+            fileLink: [
+              {
+                downloadURL: '',
+                fileName: '',
+                fileSize: 0,
+                creationTimestamp: 0,
+              },
+            ],
+          },
+        ],
+      });
 
       setIsModalVisible(false);
     }
@@ -69,8 +78,6 @@ const cardUpload = async () => {
     alert(error.message);
   }
 };
-
-
 
 
 
