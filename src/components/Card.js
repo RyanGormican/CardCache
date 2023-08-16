@@ -14,7 +14,6 @@ import Player from './Player';
 import Search from './Search';
 import AddCard from './AddCard';
 import { database, storage } from '../firebaseConfig';
-import { readData } from './ReadData'; 
 export default function Card() {
   const params = useParams();
   const navigate = useNavigate();
@@ -170,6 +169,8 @@ export default function Card() {
   };
 
  useEffect(() => {
+ console.log("cards");
+ console.log(cards);
     const user = auth.currentUser;
     readData(
       user,
@@ -179,6 +180,8 @@ export default function Card() {
       (error) => {
       }
     );
+    console.log("new cards")
+    console.log(cards);
   }, []);
 
 
@@ -321,7 +324,7 @@ export default function Card() {
 	  </Modal>
 
 	   <Modal
-		title={`Comments for: ${fileToView.fileName}`}
+		title={`Comments for: ${fileToView?.fileName}`}
         visible={commentsModalVisible}
         centered
 		footer={[
@@ -337,7 +340,7 @@ export default function Card() {
 	<Icon icon="uil:comment-add" width="50"  onClick={addComment}/>
   
   </div>
-	 {fileToView.comments?.map((comment, index) => (
+	 {fileToView?.comments?.map((comment, index) => (
     <div key={index} className="comment">
       <p>{comment.text}</p>
 	<div className= "comment-id">
