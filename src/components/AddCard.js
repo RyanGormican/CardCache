@@ -60,6 +60,7 @@ setIsModalVisible(false);
             userId: user.uid,
             cardName: cardName,
             sharedWith: [user.uid],
+            type:'folder',
             fileLink: [
               {
                 downloadURL: '',

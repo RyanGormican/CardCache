@@ -84,6 +84,9 @@ export default function Card() {
     const updatedCards = cards.filter((card) => card.fileName !== fileName);
     updateCards(updatedCards);
   };
+  const hasFileLink = (card) => {
+  return card.fileLink && card.fileLink.length > 0;
+};
 
   const showDeleteModal = (fileName) => {
     setFileToDelete(fileName);
@@ -121,7 +124,15 @@ export default function Card() {
   const handleFile = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-
+  const readData = () => {
+  onSnapshot(databaseRef, (snapshot) => {
+    const data = snapshot.data();
+    if (data) {
+      setCards(data.fileLink);
+      setCardName(data.cardName);
+    }
+  });
+};
   const getFile = async () => {
     if (!selectedFile) {
       return;
@@ -168,21 +179,9 @@ export default function Card() {
     navigate('/drive');
   };
 
- useEffect(() => {
- console.log("cards");
- console.log(cards);
-    const user = auth.currentUser;
-    readData(
-      user,
-      (fetchedCards) => {
-        setCards(fetchedCards);
-      },
-      (error) => {
-      }
-    );
-    console.log("new cards")
-    console.log(cards);
-  }, []);
+ 	useEffect(() => {
+		readData();
+	}, [])
 
 
 
@@ -209,6 +208,7 @@ export default function Card() {
 	<div className='card-parent'>
   {filteredCards?.length > 0 ? (
     filteredCards?.map((card) => {
+     {hasFileLink(card) ? (
 
 	  if (card.downloadURL === '' || card.fileName === '') {
         return null; 
@@ -253,6 +253,9 @@ export default function Card() {
           />
         </div>
       </div>
+      ) : (
+      ""
+      )}
     </React.Fragment>
   )}
 </div>
