@@ -1,5 +1,5 @@
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import { database } from '../firebaseConfig';
+import { database } from '../firebaseConfig'; // Make sure this points to your Firebase configuration
 
 export const readData = (user, onDataFetched, onError) => {
   if (user && typeof onDataFetched === 'function' && typeof onError === 'function') {
@@ -9,10 +9,14 @@ export const readData = (user, onDataFetched, onError) => {
     onSnapshot(
       q,
       (data) => {
-        const fetchedCards = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
+        const fetchedCards = data.docs.map((doc) => {
+          const cardData = doc.data();
+          return {
+            ...cardData,
+            id: doc.id,
+            fileName: cardData?.fileName || "",
+          };
+        });
         onDataFetched(fetchedCards);
       },
       (error) => {

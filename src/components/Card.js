@@ -14,7 +14,7 @@ import Player from './Player';
 import Search from './Search';
 import AddCard from './AddCard';
 import { database, storage } from '../firebaseConfig';
-
+import { readData } from './ReadData'; 
 export default function Card() {
   const params = useParams();
   const navigate = useNavigate();
@@ -169,18 +169,17 @@ export default function Card() {
     navigate('/drive');
   };
 
-  useEffect(() => {
-  console.log("test");
-    const unsubscribe = onSnapshot(databaseRef, (snapshot) => {
-      const data = snapshot.data();
-      if (data) {
-        setCards(data.fileLink);
-        setCardName(data.cardName);
+ useEffect(() => {
+    const user = auth.currentUser;
+    readData(
+      user,
+      (fetchedCards) => {
+        setCards(fetchedCards);
+      },
+      (error) => {
       }
-    });
-
-    return () => unsubscribe();
-  }, [databaseRef]);
+    );
+  }, []);
 
 
 
@@ -191,8 +190,7 @@ export default function Card() {
 			</div>
 			<div className='icon-container'>
 				<div class="upload-btn">
-					<Icon icon="mdi:file-document-add-outline" height="60" onClick={showModal} />
-					<AddCard cards={cards} setCards={setCards} cardId={params?.id}/>
+					<Icon icon="mdi:file-document-add-outline" height="60" onClick={showModal} />	
 				</div> 
 			</div> 
 			<div className='title'>
@@ -300,6 +298,9 @@ export default function Card() {
 		]}
       >
 		<div>
+         {fileToView ? (
+         <>
+         <div>
 		Name: {fileToView.fileName}
 		</div>
 		<div>
@@ -311,6 +312,11 @@ export default function Card() {
 		<div>
 		Owner: {fileToView.userId}
 		</div>
+        </>
+        ) : ( 
+        <p> No File Information Available. </p>
+        )}
+        </div>
 	  </Modal>
 
 	   <Modal
