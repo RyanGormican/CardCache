@@ -13,8 +13,7 @@ function App() {
         <Route path="/" element={<Auth />} />
         <Route path="/drive/" element={<Drive database={database}/>} />
         <Route path="/card/:id" element={<Card database={database}/>} />
-        <Route path="/card/:id/nested" element={<NestedCard database={database}/>} />
-        <Route path="/card/:id/nested-:nestingLevel" element={<NestedCard database={database}/>} />
+        <Route path="/card/:id/index" element={<NestedCard database={database}/>} />
     </Routes>
     </div>
   );

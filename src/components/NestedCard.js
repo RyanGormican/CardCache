@@ -31,10 +31,179 @@ export default function NestedCard() {
   const [comment, setComment] = useState('');
   const [commentsModalVisible, setCommentsModalVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
- {
- const nestedCard = filteredCards[index];
+ 
+ 
 
-  // ... fetch nested cards based on id and nestingLevel ...
+ 
+  const handleFilterChange = (filteredCards) => {
+    setFilteredCards(filteredCards);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const files = e.dataTransfer.files;
+    setSelectedFile(files[0]);
+    getFile();
+  };
+
+  const openCommentsModal = (file) => {
+    setFileToView(file);
+    setCommentsModalVisible(true);
+  };
+
+  const addComment = () => {
+    if (comment.trim() === '') {
+      return;
+    }
+
+    const updatedFileToView = {
+      ...fileToView,
+      comments: [
+        ...(fileToView.comments || []),
+        {
+          text: comment,
+          userId: auth.currentUser.uid,
+          creationTimestamp: Date.now(),
+        },
+      ],
+    };
+
+    const updatedCards = cards.map((card) =>
+      card.fileName === fileToView.fileName ? updatedFileToView : card
+    );
+
+    updateCards(updatedCards);
+
+    setComment('');
+  };
+
+  const deleteFile = (fileName) => {
+    const updatedCards = cards.filter((card) => card.fileName !== fileName);
+    updateCards(updatedCards);
+  };
+  const hasFileLink = (card) => {
+  return card.fileLink && card.fileLink.length > 0;
+};
+
+  const showDeleteModal = (fileName) => {
+    setFileToDelete(fileName);
+    setDeleteModalVisible(true);
+  };
+
+  const showInfoModal = (file) => {
+    setInfoModalVisible(true);
+    setFileToView(file);
+  };
+
+  const hideDeleteModal = () => {
+    setFileToDelete('');
+    setDeleteModalVisible(false);
+  };
+
+  const confirmDelete = () => {
+    if (fileToDelete) {
+      deleteFile(fileToDelete);
+      hideDeleteModal();
+    }
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setInfoModalVisible(false);
+    setCommentsModalVisible(false);
+    setComment('');
+  };
+
+  const handleFile = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const readData = () => {
+  onSnapshot(databaseRef, (snapshot) => {
+    const data = snapshot.data();
+    if (data) {
+      setCards(data.fileLink);
+      setCardName(data.cardName);
+    }
+  });
+};
+  const getFile = async () => {
+    if (!selectedFile) {
+      return;
+    }
+
+    const fileRef = ref(storage, selectedFile.name);
+    const uploadTask = uploadBytesResumable(fileRef, selectedFile);
+
+    try {
+      await uploadTask;
+      const downloadURL = await getDownloadURL(fileRef);
+
+      const user = auth.currentUser;
+
+      const newFile = {
+        downloadURL: downloadURL,
+        fileName: selectedFile.name,
+        fileSize: selectedFile.size,
+        creationTimestamp: Date.now(),
+        userId: user.uid,
+      };
+
+      const updatedCards = [...cards, newFile];
+
+      updateCards(updatedCards);
+
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
+  const updateCards = (updatedCards) => {
+    updateDoc(databaseRef, {
+      fileLink: updatedCards,
+    });
+  };
+
+  const openFile = (downloadURL) => {
+    window.open(downloadURL, '_blank');
+  };
+
+  const goHome = () => {
+    navigate('/drive');
+  };
+  const openCard = (index) => {
+    const card = filteredCards[index];
+        console.log(card);
+    if (card?.fileLink && card?.fileLink.length > 0) {
+      navigate(`/card/${index}/nested`);
+    } else {
+      navigate(`/card/${index}`);
+    }
+  };
+
+  const navigateToNestedSpace = (index, nestingLevel) => {
+    const card = filteredCards[index];
+    console.log(card);
+    if (card?.fileLink && card?.fileLink.length > 0) {
+      navigate(`/card/${index}/nested-${nestingLevel}`);
+    } else {
+      navigate(`/card/${index}`);
+    }
+  };
+
+ 	useEffect(() => {
+		readData();
+	}, [])
 
 
 

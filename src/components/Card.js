@@ -178,25 +178,16 @@ export default function Card() {
   const goHome = () => {
     navigate('/drive');
   };
-  const openCard = (index) => {
-    const card = filteredCards[index];
-        console.log(card);
-    if (card?.fileLink && card?.fileLink.length > 0) {
-      navigate(`/card/${index}/nested`);
-    } else {
-      navigate(`/card/${index}`);
-    }
+ const openCard = (id, index) => {
+    navigateToNestedSpace(id, index);
   };
 
-  const navigateToNestedSpace = (index, nestingLevel) => {
-    const card = filteredCards[index];
-    console.log(card);
-    if (card?.fileLink && card?.fileLink.length > 0) {
-      navigate(`/card/${index}/nested-${nestingLevel}`);
-    } else {
-      navigate(`/card/${index}`);
-    }
+  const navigateToNestedSpace = (id, index) => {
+    // Construct the URL with id and index
+    navigate(`/card/${id}/${index}`);
   };
+
+
 
  	useEffect(() => {
 		readData();
@@ -229,7 +220,7 @@ export default function Card() {
   <div key={index} className='grid-child'>
     {hasFileLink(card) ? (
            <div  key={card.id}>
-              <h4 onClick={() => navigateToNestedSpace(index, 1)}>{card.cardName}</h4>
+              <h4 onClick={() => openCard(params.id, index)}>{card.cardName}</h4>
             </div>
       
     ) : (
