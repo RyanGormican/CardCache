@@ -28,48 +28,40 @@ const databaseRef = doc(database, 'cardData', params?.id);
      const handleCancel = () => {
 setIsModalVisible(false);
   }
-  const cardUpload = async () => {
+const cardUpload = async () => {
   const user = auth.currentUser;
 
   try {
-    if (cardId && user) {
-      await updateDoc(databaseRef, {
+    if (user) {
+      const newCard = {
+        userId: user.uid,
+        cardName: cardName,
+        sharedWith: [user.uid],
         fileLink: [
-          ...cards,
           {
-            userId: user.uid,
-            cardName: cardName,
-            sharedWith: [user.uid],
-            fileLink: [
-              {
-                downloadURL: '',
-                fileName: '',
-                fileSize: 0,
-                creationTimestamp: 0,
-              },
-            ],
+            downloadURL: '',
+            fileName: '',
+            fileSize: 0,
+            creationTimestamp: 0,
           },
         ],
-      });
-    } else if (collectionRef && user) {
-      await updateDoc(collectionRef, {
-        fileLink: [
-          ...cards,
-          {
-            userId: user.uid,
-            cardName: cardName,
-            sharedWith: [user.uid],
-            fileLink: [
-              {
-                downloadURL: '',
-                fileName: '',
-                fileSize: 0,
-                creationTimestamp: 0,
-              },
-            ],
-          },
-        ],
-      });
+      };
+
+      if (cardId) {
+        // Update an existing card's fileLink array
+        const updatedCards = cards.map((card) =>
+          cards.id === cardId
+            ? { ...cards, fileLink: [...card.fileLink, newCard.fileLink[0]] }
+            : cards
+        );
+
+        await updateDoc(databaseRef, { fileLink: updatedCards });
+      } else {
+        // Add a new card to the collection
+        await addDoc(collectionRef, {
+          ...newCard,
+        });
+      }
 
       setIsModalVisible(false);
     }
@@ -77,6 +69,8 @@ setIsModalVisible(false);
     alert(error.message);
   }
 };
+
+
 
 
 

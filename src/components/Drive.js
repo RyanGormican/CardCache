@@ -15,6 +15,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import Search from './Search';
 import { database } from '../firebaseConfig';
 import AddCard from './AddCard';
+  import { readData } from './ReadData';
 export default function Drive() {
   const navigate = useNavigate();
   const [filteredCards, setFilteredCards] = useState([]);
@@ -27,7 +28,6 @@ export default function Drive() {
   const [currentCardId, setCurrentCardId] = useState('');
   const [sharedWithUsers, setSharedWithUsers] = useState([]);
   const [newUserId, setNewUserId] = useState('');
-
   const showSettings = () => {
     setIsSettingsVisible(true);
   };
@@ -92,32 +92,28 @@ export default function Drive() {
     return () => unsubscribe(); // Cleanup the listener
   }, [auth]);
 
-  const readData = (user) => {
-    if (user) {
-      const q = query(
-        collectionRef,
-        where('sharedWith', 'array-contains', user.uid)
-      );
+ useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log('User UID:', user.uid);
+        readData(
+          user,
+          (fetchedCards) => {
+            setCards(fetchedCards);
+            setDataLoaded(true);
+          },
+          (error) => {
+            setDataLoaded(true);
+          }
+        );
+      } else {
+        navigate('/');
+        setDataLoaded(true);
+      }
+    });
 
-      onSnapshot(
-        q,
-        (data) => {
-          console.log('Data fetched:', data.docs.map((doc) => doc.data()));
-          const fetchedCards = data.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          setCards(fetchedCards);
-          setDataLoaded(true);
-          console.log(fetchedCards); // Log the fetchedCards array here
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
-          setDataLoaded(true);
-        }
-      );
-    }
-  };
+    return () => unsubscribe();
+  }, [auth]);
 
   return (
     <div>
@@ -138,7 +134,7 @@ export default function Drive() {
           <Icon icon="teenyicons:computer-outline" color="#199c35" width="60" />
         </a>
         <Icon icon="mdi:gear" width="60" onClick={showSettings} />
-        <AddCard />
+      //  <AddCard cards={cards}/> //
       </div>
       <div className="search-title2">
       <Search
