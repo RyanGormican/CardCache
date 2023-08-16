@@ -178,7 +178,9 @@ export default function Card() {
   const goHome = () => {
     navigate('/drive');
   };
-
+    const openCard = (id) => {
+    navigate(`/card/${id}`);
+  };
  	useEffect(() => {
 		readData();
 	}, [])
@@ -206,65 +208,60 @@ export default function Card() {
 			<Search cards={cards} filtering={filteredCards}  onFilterChange={handleFilterChange}  />
 			</div>
 	<div className='card-parent'>
-  {filteredCards?.length > 0 ? (
-    filteredCards?.map((card) => {
-     {hasFileLink(card) ? (
-
-	  if (card.downloadURL === '' || card.fileName === '') {
-        return null; 
-      }
-      const isImage = /\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName);
-      return (
-   <div className='grid-child'>
-  {card?.downloadURL !== '' && (
-    <React.Fragment>
-      <div className="media-container">
-        {isImage ? (
-          <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName}/>
-        ) : (
-          ''
-        )}
-        {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
-          <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName}  mediaType='video' />
-        )}
-		{/\.(mp3)$/i.test(card.fileName) && (
-		 <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName}  mediaType='audio' />
-		)}
+ {filteredCards?.map((card, index) => (
+  <div key={index} className='grid-child'>
+    {hasFileLink(card) ? (
+      <div>
+           <div className="preview-child" key={card.id}>
+              <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
+            </div>
+      
       </div>
-      <div className="file-details">
-        <h5 onClick={() => openFile(card.downloadURL)}>
-          {card.fileName}
-        </h5>
-        <div className="file-icons">
-          <Icon
-            icon="mdi:information"
-            height='30'
-            onClick={() => showInfoModal(card)}
-          />
-		    <Icon
-			 icon='ic:outline-comment'
-			 height='30'
-			 onClick={() => openCommentsModal(card)} 
-  />
-          <Icon
-            icon='jam:trash'
-            height='30'
-            onClick={() => showDeleteModal(card.fileName)}
-          />
+    ) : (
+    <div className="media-container">
+          {card?.downloadURL !== '' && (
+            <React.Fragment>
+              {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (
+                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} />
+              ) : (
+                ''
+              )}
+              {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' />
+              )}
+              {/\.(mp3)$/i.test(card.fileName) && (
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' />
+              )}
+            </React.Fragment>
+          )}
+          <div className="file-details">
+            <h5 onClick={() => openFile(card.downloadURL)}>
+              {card.fileName}
+            </h5>
+            <div className="file-icons">
+              <Icon
+                icon="mdi:information"
+                height='30'
+                onClick={() => showInfoModal(card)}
+              />
+              <Icon
+                icon='ic:outline-comment'
+                height='30'
+                onClick={() => openCommentsModal(card)}
+              />
+              <Icon
+                icon='jam:trash'
+                height='30'
+                onClick={() => showDeleteModal(card.fileName)}
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      ) : (
-      ""
-      )}
-    </React.Fragment>
-  )}
-</div>
+    )}
+  </div>
+))}
 
-      );
-    })
-  ) : (
-    <p>No files found.</p>
-  )}
+
 </div>
 
 
