@@ -179,7 +179,7 @@ export default function Card() {
     navigate('/drive');
   };
   const openCard = (index) => {
-    const card = filteredCards[index-1];
+    const card = filteredCards[index];
         console.log(card);
     if (card?.fileLink && card?.fileLink.length > 0) {
       navigate(`/card/${index}/nested`);
@@ -229,7 +229,7 @@ export default function Card() {
   <div key={index} className='grid-child'>
     {hasFileLink(card) ? (
            <div  key={card.id}>
-              <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
+              <h4 onClick={() => navigateToNestedSpace(index, 1)}>{card.cardName}</h4>
             </div>
       
     ) : (
