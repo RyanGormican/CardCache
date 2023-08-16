@@ -178,9 +178,26 @@ export default function Card() {
   const goHome = () => {
     navigate('/drive');
   };
-    const openCard = (id) => {
-    navigate(`/card/${id}`);
+  const openCard = (index) => {
+    const card = filteredCards[index-1];
+        console.log(card);
+    if (card?.fileLink && card?.fileLink.length > 0) {
+      navigate(`/card/${index}/nested`);
+    } else {
+      navigate(`/card/${index}`);
+    }
   };
+
+  const navigateToNestedSpace = (index, nestingLevel) => {
+    const card = filteredCards[index];
+    console.log(card);
+    if (card?.fileLink && card?.fileLink.length > 0) {
+      navigate(`/card/${index}/nested-${nestingLevel}`);
+    } else {
+      navigate(`/card/${index}`);
+    }
+  };
+
  	useEffect(() => {
 		readData();
 	}, [])
@@ -211,12 +228,10 @@ export default function Card() {
  {filteredCards?.map((card, index) => (
   <div key={index} className='grid-child'>
     {hasFileLink(card) ? (
-      <div>
-           <div className="preview-child" key={card.id}>
+           <div  key={card.id}>
               <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
             </div>
       
-      </div>
     ) : (
     <div className="media-container">
           {card?.downloadURL !== '' && (
