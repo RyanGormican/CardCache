@@ -28,6 +28,7 @@ export default function Drive() {
   const [currentCardId, setCurrentCardId] = useState('');
   const [sharedWithUsers, setSharedWithUsers] = useState([]);
   const [newUserId, setNewUserId] = useState('');
+  const [view,setView] = useState('grid');
   const showSettings = () => {
     setIsSettingsVisible(true);
   };
@@ -145,13 +146,14 @@ export default function Drive() {
       />
       </div>
        <span className="view-icons">
-       <div>
-      <Icon icon="mdi:grid" width="60"/>
+         <div>
+      <Icon icon="material-symbols:list" width="60"   onClick={() => setView('list')} />
       </div>
-      <div>
-      <Icon icon="material-symbols:list" width="60" />
+       <div>
+      <Icon icon="mdi:grid" width="60"  onClick={() => setView('grid')}/>
       </div>
       </span>
+      {view === 'grid'? (
       <div className="card-parent">
         {dataLoaded ? (
           filteredCards.map((card) => (
@@ -167,7 +169,9 @@ export default function Drive() {
           <p>Loading...</p>
         )}
       </div>
- 
+    ) : ( 
+    ""
+    )}
 
       <Modal
         title='Settings'
