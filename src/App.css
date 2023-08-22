@@ -24,13 +24,15 @@
   position: absolute;
   top: 356px;
   left: 45%;
-  transform: translateX(-40%);
+  transform: translateX(-39%);
   width:125px;
   height: 36px;
-  border-left: 1px solid black;
+
   border-bottom: none;
   border-top-left-radius: 50px;
-  z-index: 3;
+  border-top-right-radius:250px;
+    background-color:"#ebe659";
+  z-index: 2;
 }
 .folder-strip {
   position: relative;
@@ -38,12 +40,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 25px 0px 0px 0px;
+  padding: 26px 0px 0px 0px;
   border-top-left-radius: 0px;
   border-top-right-radius:25px;
   border-bottom-left-radius:25px;
   border-bottom-right-radius:25px;
-  border: 1px solid black;
+  background-color:"#ebe659";
   z-index: 1;
 }
 
@@ -52,12 +54,13 @@
   position: absolute;
   top: 0;
   right: -1px; 
-  border-top: 1px solid black;
-  border-right: 1px solid black;
+ 
   width: 50px;
   height: 100%;
   transform: skewX(45deg);
   transform-origin: bottom right; 
+    background-color:"#ebe659";
+	z-index:3;
 }
 
 .loginstuff {
@@ -71,8 +74,8 @@
   border-top-right-radius:25px;
   border-bottom-left-radius:25px;
   border-bottom-right-radius:25px;
-  border: 1px solid black;
   z-index: 1;
+  background-color:yellow;
 }
 
 
@@ -90,6 +93,7 @@ h1 {
 	align-items: center;
 	height: 100vh;
 	flex-direction: column;
+	background-color:grey;
 }
 .title {
   display: flex;
