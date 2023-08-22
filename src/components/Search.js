@@ -71,7 +71,8 @@ const filteredCards = cards
       (card.fileLink
         ? card.fileLink.some(
             (file) =>
-              file.fileName && file.fileName.toLowerCase().includes(search.toLowerCase() )
+              file.fileName && file.fileName.toLowerCase().includes(search.toLowerCase()) ||
+              (file.tags && file.tags.some(tag => tag.text.toLowerCase().includes(search.toLowerCase())))
           ) ||
           (card.cardName && card.cardName.toLowerCase().includes(search.toLowerCase()))||
       (card.tags && card.tags.some(tag => tag.text.toLowerCase().includes(search.toLowerCase())))
