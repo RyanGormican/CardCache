@@ -288,7 +288,12 @@ export default function Card() {
       
     ) : (
     <div className="media-container">
-          {card?.downloadURL !== '' && (
+          <div className="file-details">
+            <h5 onClick={() => openFile(card.downloadURL)}>
+              {card.fileName}
+            </h5>
+            <div className="file-icons">
+             {card?.downloadURL !== '' && (
             <React.Fragment>
               {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (
                 <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='grid' />
@@ -303,11 +308,6 @@ export default function Card() {
               )}
             </React.Fragment>
           )}
-          <div className="file-details">
-            <h5 onClick={() => openFile(card.downloadURL)}>
-              {card.fileName}
-            </h5>
-            <div className="file-icons">
               <Icon
                 icon="mdi:information"
                 height='30'
@@ -323,6 +323,7 @@ export default function Card() {
                 height='30'
                 onClick={() => showDeleteModal(card.fileName)}
               />
+
             </div>
           </div>
         </div>

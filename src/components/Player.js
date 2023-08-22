@@ -49,15 +49,13 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
           alt="image"
           onClick={() => setInfoModalVisible(true)}
         />
+        
+        <Icon icon="material-symbols:photo"  onClick={() => setInfoModalVisible(true)} />
       ) : (
         ''
       )}
            {mediaType === 'audio' ? (
-           {listing === 'grid' ? (
-      <Icon icon="heroicons:musical-note-20-solid"  height="50" width="50"   onClick={() => setInfoModalVisible(true)}/>
-      ) : (
-       <Icon icon="heroicons:musical-note-20-solid"  height="20" width="20"   onClick={() => setInfoModalVisible(true)}/>
-      )}
+      <Icon icon="heroicons:musical-note-20-solid"  height={listing ==='grid'?"30" : "50"} width={listing ==='grid'?"30" : "50"}   onClick={() => setInfoModalVisible(true)}/>
       ) : (
         ''
       )}
