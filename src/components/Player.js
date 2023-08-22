@@ -42,15 +42,22 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
       ) : (
         ''
       )}
-      {mediaType === 'image' ? (
+      {mediaType === 'image' && listing === 'grid'? (
         <img
           className="image-preview"
           src={mediaURL}
           alt="image"
           onClick={() => setInfoModalVisible(true)}
         />
-        
-        <Icon icon="material-symbols:photo"  onClick={() => setInfoModalVisible(true)} />
+     
+      ) : (
+        ''
+      )}
+        {mediaType === 'image' && listing === 'list'? (
+    <Icon
+      icon="material-symbols:photo"
+      onClick={() => setInfoModalVisible(true)}
+    />
       ) : (
         ''
       )}
