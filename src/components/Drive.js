@@ -144,6 +144,14 @@ export default function Drive() {
         type="drive"
       />
       </div>
+       <span className="view-icons">
+       <div>
+      <Icon icon="mdi:grid" width="60"/>
+      </div>
+      <div>
+      <Icon icon="material-symbols:list" width="60" />
+      </div>
+      </span>
       <div className="card-parent">
         {dataLoaded ? (
           filteredCards.map((card) => (

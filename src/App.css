@@ -94,6 +94,13 @@ h1 {
 	flex-direction: column;
 	background-color: #36454F;
 }
+.view-icons{
+	text-align:center;
+	justify-content:center;
+	align-items:center;
+	display:flex;
+	margin-top: 1vh;
+}
 .title {
   display: flex;
   justify-content: center;
