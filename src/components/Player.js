@@ -29,7 +29,7 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
   };
   return (
     <div>
-      {mediaType === 'video' ? (
+      {mediaType === 'video' && listing === 'grid' ? (
         <div>
           <video
             className="media"
@@ -39,6 +39,17 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
             onClick={() => setInfoModalVisible(true)}
           />
         </div>
+      ) : (
+        ''
+      )}
+
+          {mediaType === 'video' && listing === 'list' ? (
+      <Icon
+     icon="mdi:video"
+      height="30"
+      onClick={() => setInfoModalVisible(true)}
+    />
+       
       ) : (
         ''
       )}
@@ -56,13 +67,14 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
         {mediaType === 'image' && listing === 'list'? (
     <Icon
       icon="material-symbols:photo"
+      height="30"
       onClick={() => setInfoModalVisible(true)}
     />
       ) : (
         ''
       )}
            {mediaType === 'audio' ? (
-      <Icon icon="heroicons:musical-note-20-solid"  height={listing ==='grid'?"30" : "50"} width={listing ==='grid'?"30" : "50"}   onClick={() => setInfoModalVisible(true)}/>
+      <Icon icon="heroicons:musical-note-20-solid"  height={listing ==='list'?"30" : "50"} width={listing ==='list'?"30" : "50"}   onClick={() => setInfoModalVisible(true)}/>
       ) : (
         ''
       )}

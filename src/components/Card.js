@@ -237,15 +237,15 @@ export default function Card() {
           {card?.downloadURL !== '' && (
             <React.Fragment>
               {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (
-                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} />
+                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='grid' />
               ) : (
                 ''
               )}
               {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' />
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='grid'/>
               )}
               {/\.(mp3)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' />
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='grid'/>
               )}
             </React.Fragment>
           )}
@@ -287,7 +287,7 @@ export default function Card() {
             </div>
       
     ) : (
-    <div className="media-container">
+    <div>
           <div className="file-details">
             <h5 onClick={() => openFile(card.downloadURL)}>
               {card.fileName}
@@ -296,15 +296,15 @@ export default function Card() {
              {card?.downloadURL !== '' && (
             <React.Fragment>
               {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (
-                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='grid' />
+                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='list' />
               ) : (
                 ''
               )}
               {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='grid'/>
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='list'/>
               )}
               {/\.(mp3)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='grid' />
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='list' />
               )}
             </React.Fragment>
           )}
