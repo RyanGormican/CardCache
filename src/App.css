@@ -24,14 +24,13 @@
   position: absolute;
   top: 356px;
   left: 45%;
-  transform: translateX(-39%);
-  width:125px;
+  transform: translateX(-98%)scaleY(-1) scaleX(-1);
+  width:50px;
   height: 36px;
 
   border-bottom: none;
-  border-top-left-radius: 50px;
-  border-top-right-radius:250px;
-    background-color:"#ebe659";
+  border-bottom-left-radius: 50px;
+    background-color:#d9d568;
   z-index: 2;
 }
 .folder-strip {
@@ -45,7 +44,7 @@
   border-top-right-radius:25px;
   border-bottom-left-radius:25px;
   border-bottom-right-radius:25px;
-  background-color:"#ebe659";
+  background-color:#d9d568;
   z-index: 1;
 }
 
@@ -59,7 +58,7 @@
   height: 100%;
   transform: skewX(45deg);
   transform-origin: bottom right; 
-    background-color:"#ebe659";
+    background-color:#d9d568;
 	z-index:3;
 }
 
