@@ -48,19 +48,6 @@
   z-index: 1;
 }
 
-.folder-flap::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -1px; 
- 
-  width: 50px;
-  height: 100%;
-  transform: skewX(45deg);
-  transform-origin: bottom right; 
-    background-color:#d9d568;
-	z-index:3;
-}
 
 .loginstuff {
   position: relative;
