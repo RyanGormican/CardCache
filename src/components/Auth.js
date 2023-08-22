@@ -31,6 +31,8 @@ export default function Auth() {
 		<GoogleButton
 			onClick={signUp}
 		/>
+		<div className='folder-flap'>
+		</div>
 		</div>
 		</div>
 		</div>
