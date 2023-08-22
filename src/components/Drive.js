@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Checkbox, Button } from 'antd';
+import { Modal, Checkbox, Button, Tag } from 'antd';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -163,6 +163,12 @@ export default function Drive() {
                 icon="material-symbols:person-add"
                 onClick={() => handleShareIconClick(card.id)}
               />
+                {card.tags && card.tags.length > 0 && (
+                card.tags.map((tag , index) => (
+                <Tag key={index}>
+                {tag.text}
+                </Tag>
+                ))}
             </div>
           ))
         ) : (
