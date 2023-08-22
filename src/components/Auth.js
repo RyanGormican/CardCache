@@ -26,9 +26,11 @@ export default function Auth() {
   return (
 <div className='auth-btn'>
   <div className='folder-flap'></div>
+    <div className='folder-strip'>
   <div className='loginstuff'>
     <h1>CardCache</h1>
     <GoogleButton onClick={signUp} />
+  </div>
   </div>
 </div>
 
