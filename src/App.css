@@ -92,7 +92,7 @@ h1 {
 	align-items: center;
 	height: 100vh;
 	flex-direction: column;
-	background-color:grey;
+	background-color: #36454F;
 }
 .title {
   display: flex;
