@@ -203,7 +203,6 @@ export default function Card() {
 			<div className='icon-container'>
 				<div class="upload-btn">
 					<Icon icon="mdi:file-document-add-outline" height="60" onClick={showModal} />
-					<AddCard cards={cards} setCards={setCards} cardId={params?.id}/>
 				</div> 
 			</div> 
 			<div className='title'>

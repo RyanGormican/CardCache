@@ -19,8 +19,17 @@
 .icon{
 	cursor: pointer;
 }
+.loginstuff{
+	border: 1px solid black;
+	text-align: center;
+	padding: 10px;
+	border-radius: 5px 5px 5px px;
+}
 .prio{
 	z-index:10;
+}
+h1{
+	font-family: 'Oswald', sans-serif;
 }
 .auth-btn{
 	display:flex;
