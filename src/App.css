@@ -13,20 +13,19 @@
  align-items:center;
  padding:25px 0px 0px 0px;
  border-radius: 25px;
- z-ndex: 1;
+ z-index: 1;
+ background-color:red;
+
 }
 .folder-flap{
 position: relative;
-display:flex;
 justify-content:left;
-margin-top: -30px;
+left: 1px;
 z-index:2;
 border: 1px solid black;
-padding: 0px;
+padding: 25 0px 0px 0px;
 border-radius: 25px;
-border-top-left-radius: 20px;
-border-bottom-left-radius:20px;
-
+background-color: blue;
 }
 .icon-logout{
 	position: absolute;
@@ -45,6 +44,8 @@ border-bottom-left-radius:20px;
 	text-align: center;
 	padding: 25px;
 	border-radius: 25px 25px 25px 25px;
+	z-index:1;
+	background-color:green;
 }
 .prio{
 	z-index:10;
