@@ -1,5 +1,5 @@
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import { database } from '../firebaseConfig'; // Make sure this points to your Firebase configuration
+import { database } from '../firebaseConfig'; 
 
 export const readData = (user, onDataFetched, onError) => {
   if (user && typeof onDataFetched === 'function' && typeof onError === 'function') {
