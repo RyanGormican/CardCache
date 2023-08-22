@@ -20,7 +20,11 @@
 	cursor: pointer;
 }
 
-
+.tags{
+	display:flex;
+	justify-content: left;
+	align-items:left;
+}
 .folder-strip {
   position: relative;
   display: flex;

@@ -71,10 +71,12 @@ const filteredCards = cards
       (card.fileLink
         ? card.fileLink.some(
             (file) =>
-              file.fileName && file.fileName.toLowerCase().includes(search.toLowerCase())
+              file.fileName && file.fileName.toLowerCase().includes(search.toLowerCase() )
           ) ||
-          (card.cardName && card.cardName.toLowerCase().includes(search.toLowerCase()))
-        : card.fileName && card.fileName.toLowerCase().includes(search.toLowerCase()))
+          (card.cardName && card.cardName.toLowerCase().includes(search.toLowerCase()))||
+      (card.tags && card.tags.some(tag => tag.text.toLowerCase().includes(search.toLowerCase())))
+        : card.fileName && card.fileName.toLowerCase().includes(search.toLowerCase())) ||
+      (card.tags && card.tags.some(tag => tag.text.toLowerCase().includes(search.toLowerCase())))
     );
   })
   .filter((card) => filterByType(card) || (card.sharedWith && card.sharedWith.length > 0))

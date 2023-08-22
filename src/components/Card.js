@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Checkbox, Button, Input } from 'antd';
+import { Modal, Checkbox, Button, Input, Tag } from 'antd';
 import {Icon } from '@iconify/react';
 import {
   collection,
@@ -32,6 +32,7 @@ export default function Card() {
   const [commentsModalVisible, setCommentsModalVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [view,setView] = useState('grid');
+  const [tag, setTag]= useState('');
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -71,6 +72,7 @@ export default function Card() {
       ],
     };
 
+
     const updatedCards = cards.map((card) =>
       card.fileName === fileToView.fileName ? updatedFileToView : card
     );
@@ -79,6 +81,32 @@ export default function Card() {
 
     setComment('');
   };
+
+    const addTag = () => {
+    if (tag.trim() === '') {
+      return;
+    }
+
+    const updatedFileToView = {
+      ...fileToView,
+      tags: [
+        ...(fileToView.tags || []),
+        {
+          text: tag,
+          userId: auth.currentUser.uid,
+          creationTimestamp: Date.now(),
+        },
+      ],
+    };
+    
+    const updatedCards = cards.map((card) =>
+      card.fileName === fileToView.fileName ? updatedFileToView : card
+    );
+
+    updateCards(updatedCards);
+
+    setTag('');
+    };
 
   const deleteFile = (fileName) => {
     const updatedCards = cards.filter((card) => card.fileName !== fileName);
@@ -385,6 +413,17 @@ export default function Card() {
 		<div>
 		Owner: {fileToView.userId}
 		</div>
+         <Input.TextArea
+      placeholder="Add a tag"
+      value={tag}
+      onChange={(e) => setTag(e.target.value)}
+    />
+	<Icon icon="mdi:tag-add" width="50"  onClick={addTag}/>
+        <div>
+        {fileToView?.tags?.map((tag, index) => (
+      <Tag key={index}>{tag.text}</Tag>
+  ))}
+        </div>
         </>
         ) : ( 
         <p> No File Information Available. </p>
