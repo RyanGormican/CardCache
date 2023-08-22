@@ -25,11 +25,13 @@ export default function Auth() {
 	}, [])
 	return (
 		<div className='auth-btn'>
+		<div className='folder'>
 		<div className='loginstuff'>
 		<h1> CardCache </h1>
 		<GoogleButton
 			onClick={signUp}
 		/>
+		</div>
 		</div>
 		</div>
 	)
