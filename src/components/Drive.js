@@ -154,27 +154,44 @@ export default function Drive() {
       </div>
       </span>
       {view === 'grid'? (
-      <div className="card-parent">
-        {dataLoaded ? (
-          filteredCards.map((card) => (
-            <div className="preview-child" key={card.id}>
-              <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
-              <Icon
-                icon="material-symbols:person-add"
-                onClick={() => handleShareIconClick(card.id)}
-              />
-                {card.tags && card.tags.length > 0 && (
-                card.tags.map((tag , index) => (
-                <Tag key={index}>
-                {tag.text}
-                </Tag>
+       <div className="card-parent">
+    {dataLoaded ? (
+      filteredCards.map((card) => {
+  
+         const allTags = [];
+        if (card.tags) {
+          allTags.push(...card.tags.map(tag => tag.text));
+        }
+        card.fileLink?.forEach((file) => {
+          if (file.tags && file.tags.length > 0) {
+            allTags.push(...file.tags.map(tag => tag.text));
+          }
+        });
+
+        const uniqueTags = Array.from(new Set(allTags));
+        return (
+          <div className="preview-child" key={card.id}>
+            <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
+            <Icon
+              icon="material-symbols:person-add"
+              onClick={() => handleShareIconClick(card.id)}
+            />
+            {allTags.length > 0 && (
+              <div>
+                {uniqueTags.map((tag, index) => (
+                  <Tag key={index} className="tag">
+                    {tag}
+                  </Tag>
                 ))}
-            </div>
-          ))
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div>
+              </div>
+            )}
+          </div>
+        );
+      })
+    ) : (
+      <p>Loading...</p>
+    )}
+  </div>
     ) : ( 
     <div className="list-parent">
   {dataLoaded ? (
