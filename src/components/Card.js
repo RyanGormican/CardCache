@@ -280,7 +280,7 @@ export default function Card() {
 ) : (
 	<div className='list-parent'>
     {filteredCards?.map((card, index) => (
-  <div key={index} className='grid-child'>
+  <div key={index} className='list-child'>
     {hasFileLink(card) ? (
            <div  key={card.id}>
               <h4 onClick={() => openCard(params.id, index)}>{card.cardName}</h4>
@@ -288,11 +288,11 @@ export default function Card() {
       
     ) : (
     <div>
-          <div className="file-details">
-            <h5 onClick={() => openFile(card.downloadURL)}>
+          <div className="list-details">
+            <div className="list-icons">
+               <h5 onClick={() => openFile(card.downloadURL)}>
               {card.fileName}
             </h5>
-            <div className="file-icons">
              {card?.downloadURL !== '' && (
             <React.Fragment>
               {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (

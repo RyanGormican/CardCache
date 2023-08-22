@@ -220,8 +220,8 @@ position: absolute;
 	border: 1px solid #c5c5c5;
 	display: flex;
 	align-items:left;
-	height: 50px;
-	flex-direction:column;
+	height: 30px;
+	gap: 5px;
 	cursor: pointer;
 	border-radius: 0.25vw;
 	justify-content: center;
@@ -249,7 +249,12 @@ width: 100%;
   align-items: center;
   margin-top: 10px;
 }
-
+.list-details {
+  align-items: right;
+}
+.list-icons {
+  display: flex;
+}
 .file-icons {
   margin-top: 5px; 
   display: flex;
