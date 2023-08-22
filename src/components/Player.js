@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal,Button } from 'antd';
 import { Icon } from '@iconify/react';
-export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName }) {
+export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName, listing }) {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [rotationDegrees, setRotationDegrees] = useState(0);
   const [flipDirectionH, setFlipDirectionH] = useState('none');
@@ -53,7 +53,11 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
         ''
       )}
            {mediaType === 'audio' ? (
+           {listing === 'grid' ? (
       <Icon icon="heroicons:musical-note-20-solid"  height="50" width="50"   onClick={() => setInfoModalVisible(true)}/>
+      ) : (
+       <Icon icon="heroicons:musical-note-20-solid"  height="20" width="20"   onClick={() => setInfoModalVisible(true)}/>
+      )}
       ) : (
         ''
       )}

@@ -31,7 +31,7 @@ export default function Card() {
   const [comment, setComment] = useState('');
   const [commentsModalVisible, setCommentsModalVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [view,setView] = useState('grid');
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -214,6 +214,16 @@ export default function Card() {
 			<div className='search-title'>
 			<Search cards={cards} filtering={filteredCards}  onFilterChange={handleFilterChange}  />
 			</div>
+              <span className="view-icons">
+         <div  onClick={() => setView('list')}>
+      <Icon icon="material-symbols:list" width="60"   />
+      </div>
+       <div  onClick={() => setView('grid')}>
+      <Icon icon="mdi:grid" width="60" />
+      </div>
+      </span>
+
+    {view === 'grid' ? (
 	<div className='card-parent'>
  {filteredCards?.map((card, index) => (
   <div key={index} className='grid-child'>
@@ -266,8 +276,61 @@ export default function Card() {
   </div>
 ))}
 
-
 </div>
+) : (
+	<div className='list-parent'>
+    {filteredCards?.map((card, index) => (
+  <div key={index} className='grid-child'>
+    {hasFileLink(card) ? (
+           <div  key={card.id}>
+              <h4 onClick={() => openCard(params.id, index)}>{card.cardName}</h4>
+            </div>
+      
+    ) : (
+    <div className="media-container">
+          {card?.downloadURL !== '' && (
+            <React.Fragment>
+              {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (
+                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='grid' />
+              ) : (
+                ''
+              )}
+              {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='grid'/>
+              )}
+              {/\.(mp3)$/i.test(card.fileName) && (
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='grid' />
+              )}
+            </React.Fragment>
+          )}
+          <div className="file-details">
+            <h5 onClick={() => openFile(card.downloadURL)}>
+              {card.fileName}
+            </h5>
+            <div className="file-icons">
+              <Icon
+                icon="mdi:information"
+                height='30'
+                onClick={() => showInfoModal(card)}
+              />
+              <Icon
+                icon='ic:outline-comment'
+                height='30'
+                onClick={() => openCommentsModal(card)}
+              />
+              <Icon
+                icon='jam:trash'
+                height='30'
+                onClick={() => showDeleteModal(card.fileName)}
+              />
+            </div>
+          </div>
+        </div>
+    )}
+  </div>
+))}
+</div>
+)}
 
 
 			<Modal 

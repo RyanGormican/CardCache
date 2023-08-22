@@ -146,11 +146,11 @@ export default function Drive() {
       />
       </div>
        <span className="view-icons">
-         <div>
-      <Icon icon="material-symbols:list" width="60"   onClick={() => setView('list')} />
+         <div  onClick={() => setView('list')}>
+      <Icon icon="material-symbols:list" width="60"   />
       </div>
-       <div>
-      <Icon icon="mdi:grid" width="60"  onClick={() => setView('grid')}/>
+       <div  onClick={() => setView('grid')}>
+      <Icon icon="mdi:grid" width="60" />
       </div>
       </span>
       {view === 'grid'? (
@@ -170,7 +170,21 @@ export default function Drive() {
         )}
       </div>
     ) : ( 
-    ""
+    <div className="list-parent">
+  {dataLoaded ? (
+          filteredCards.map((card) => (
+            <div className="list-child" key={card.id}>
+              <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
+              <Icon
+                icon="material-symbols:person-add"
+                onClick={() => handleShareIconClick(card.id)}
+              />
+            </div>
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
     )}
 
       <Modal

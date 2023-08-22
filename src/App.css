@@ -137,6 +137,15 @@ h1 {
 	margin:10px;
 	padding: 2vw;
 }
+.list-parent {
+	display:grid;
+	grid-template-columns: auto;
+	position: relative;
+	margin:0px;
+	width:50%;
+	left:25%;
+	padding: 0.25vw;
+}
 .card-title {
 position: absolute;
 	text-align: center;
@@ -206,6 +215,17 @@ position: absolute;
 	cursor: pointer;
 	border-radius: 2vw;
 	margin:10px;
+}
+.list-child{
+	border: 1px solid #c5c5c5;
+	display: flex;
+	align-items:left;
+	height: 50px;
+	flex-direction:column;
+	cursor: pointer;
+	border-radius: 0.25vw;
+	justify-content: center;
+	align-items: center;
 }
 .file-drop {
   border: 2px dashed #aaa;
