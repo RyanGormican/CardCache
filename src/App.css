@@ -6,27 +6,7 @@
 	gap: 15px;
 	z-index: 9;
 }
-.folder{
- display:flex;
- border: 1px solid black;
- justify-content: center;
- align-items:center;
- padding:25px 0px 0px 0px;
- border-radius: 25px;
- z-index: 1;
- background-color:red;
 
-}
-.folder-flap{
-position: relative;
-justify-content:left;
-left: 1px;
-z-index:2;
-border: 1px solid black;
-padding: 25 0px 0px 0px;
-border-radius: 25px;
-background-color: blue;
-}
 .icon-logout{
 	position: absolute;
 	left: 10px;
@@ -39,20 +19,44 @@ background-color: blue;
 .icon{
 	cursor: pointer;
 }
-.loginstuff{
-	border: 1px solid black;
-	text-align: center;
-	padding: 25px;
-	border-radius: 25px 25px 25px 25px;
-	z-index:1;
-	background-color:green;
+
+.folder-flap {
+  position: absolute;
+  top: 356px; 
+  left: 45%;
+  transform: translateX(-33%);
+  width: 150px; 
+  height: 50px; 
+  border: 1px solid black;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  z-index: 1;
 }
-.prio{
-	z-index:10;
+
+.loginstuff {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  border-top-left-radius: 0px;
+  border-top-right-radius:25px;
+    border-bottom-left-radius:25px;
+	  border-bottom-right-radius:25px;
+  border: 1px solid black;
+  z-index: 2;
 }
-h1{
-	font-family: 'Oswald', sans-serif;
+
+
+
+
+h1 {
+  font-family: 'Oswald', sans-serif;
+  margin: 10px 0;
 }
+
+
 .auth-btn{
 	display:flex;
 	justify-content: center;
