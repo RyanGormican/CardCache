@@ -22,15 +22,30 @@
 
 .folder-flap {
   position: absolute;
-  top: 356px; 
+  top: 356px;
   left: 45%;
   transform: translateX(-33%);
-  width: 150px; 
-  height: 50px; 
-  border: 1px solid black;
+  width: 150px;
+  height: 50px;
+  border-top: 1px solid black;
+  border-right: none;
+  border-left: 1px solid black;
+  border-bottom: 1px solid white;
   border-top-left-radius: 50px;
-  border-top-right-radius: 50px;
-  z-index: 1;
+  z-index: 2;
+  overflow: hidden; /* Hide overflowing content */
+}
+
+.folder-flap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px; 
+  border-right: 1px solid black;
+  width: 50px;
+  height: 100%;
+  transform: skewX(45deg);
+  transform-origin: bottom right; 
 }
 
 .loginstuff {
@@ -45,7 +60,7 @@
     border-bottom-left-radius:25px;
 	  border-bottom-right-radius:25px;
   border: 1px solid black;
-  z-index: 2;
+  z-index: 1;
 }
 
 
