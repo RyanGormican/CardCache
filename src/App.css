@@ -20,7 +20,8 @@
 	cursor: pointer;
 }
 .selected-card{
-	border: 3px blue;
+	border: 5px solid black;
+	z-index:9;
 }
 .tags{
 	display:flex;
@@ -42,7 +43,10 @@
   z-index: 1;
 }
 
-
+.center{
+ font-family: 'Oswald';
+ text-align:center;
+}
 
 .loginstuff {
   position: relative;

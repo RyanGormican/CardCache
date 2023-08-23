@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Checkbox, Button, Input, Tag } from 'antd';
+import {  query, where } from 'firebase/firestore';
 import {Icon } from '@iconify/react';
 import {
   collection,
   doc,
   updateDoc,
   onSnapshot,
+  query,
+  where,
 } from 'firebase/firestore';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
@@ -13,6 +16,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import Player from './Player';
 import Search from './Search';
 import AddCard from './AddCard';
+import { Select } from 'antd';
 import { database, storage } from '../firebaseConfig';
 export default function Card() {
   const params = useParams();
@@ -35,6 +39,8 @@ export default function Card() {
   const [tag, setTag]= useState('');
   const [press,setPress] = useState(false);
   const [pressCards,setPressCards]=useState([]);
+  const [moveModel, setMoveModel] = useState(false);
+  onst [availableCards, setAvailableCards] = useState([]);
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -122,6 +128,9 @@ export default function Card() {
     setFileToDelete(fileName);
     setDeleteModalVisible(true);
   };
+  const showMoveModel = () => {
+        setMoveModel(true);
+  }
 
   const showInfoModal = (file) => {
     setInfoModalVisible(true);
@@ -149,6 +158,7 @@ export default function Card() {
     setInfoModalVisible(false);
     setCommentsModalVisible(false);
     setComment('');
+    setMoveModel(false);
   };
 
   const handleFile = (event) => {
@@ -216,7 +226,10 @@ export default function Card() {
     // Construct the URL with id and index
     navigate(`/card/${id}/${index}`);
   };
-
+  const cancelMulti = () => {
+        setPress(false);
+        setPressCards([]);
+  }
   const handlePress = (card) => {
         const timer = setTimeout(() => {
         setPress(true);
@@ -224,14 +237,42 @@ export default function Card() {
         if (!prevPressCards.includes(card)) {
         return [...prevPressCards,card];
         }
-        return prevPressCards;
+        return prevPressCards.filter((c)=> c !== card);
         });
+
         }, 200);
-        console.log(pressCards);
+     
+  };
+   const readAvailable = () => {
+    if (user) {
+      const collectionRef = collection(database, 'cardData');
+      const q = query(collectionRef, where('sharedWith', 'array-contains', user.uid));
+
+      onSnapshot(
+        q,
+        (data) => {
+          const fetchedCards = data.docs.map((doc) => {
+            const cardData = doc.data();
+            return {
+              ...cardData,
+              id: doc.id,
+              fileName: cardData?.fileName || "",
+            };
+          });
+
+          setAvailableCards(fetchedCards); 
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
+        }
+      );
+    }
   };
 
+ 
  	useEffect(() => {
 		readData();
+        readAvailable();
 	}, [])
 
 
@@ -263,11 +304,33 @@ export default function Card() {
       <Icon icon="mdi:grid" width="60" />
       </div>
       </span>
-
+      {press && pressCards.length > 0 ? (
+      <div>
+       <span className="view-icons">
+         <Icon icon="bxs:truck" width="60" onClick={showMoveModel} />
+         <Icon icon='jam:trash'height='60' />
+         <Icon icon="material-symbols:cancel" height="60" onClick={cancelMulti} />
+      </span>
+      <br />
+      <div className="center">
+      {pressCards.length > 1 ? (
+      <div>
+       {pressCards.length} items selected
+       </div>
+       ) : (
+       <div>
+       {pressCards.length} item selected
+       </div>
+       )}
+       </div>
+       </div>
+      ): (
+      ""
+      )}
     {view === 'grid' ? (
-	<div className={`card-parent ${pressCards.includes(card) ? 'selected-card': ''}`}>
+	<div className="card-parent">
  {filteredCards?.map((card, index) => (
-  <div key={index} className='grid-child' onMouseDown={() => handlePress(card)}>
+  <div key={index} className={pressCards.includes(card) ?  'selected-card': 'grid-child'} onMouseDown={() => handlePress(card)}>
     {hasFileLink(card) ? (
            <div  key={card.id}>
               <h4 onClick={() => openCard(params.id, index)}>{card.cardName}</h4>
@@ -444,6 +507,28 @@ export default function Card() {
         </div>
 	  </Modal>
 
+      <Modal
+	title={`Moving selection`}
+        visible={moveModel}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        centered
+      >
+      <div>
+      Where would you like to move your selection?
+
+       <Select style={{ width: '100%' }}>
+          {availableCards.map((card) => (
+            <Select.Option key={card.id} value={card.id}>
+              {card.fileName}
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
+
+
+      </Modal>
+
 	   <Modal
 		title={`Comments for: ${fileToView?.fileName}`}
         visible={commentsModalVisible}
@@ -470,6 +555,9 @@ export default function Card() {
     </div>
   ))}
 	  </Modal>
+
+
+
 		</div>
 	)
 }
