@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Checkbox, Button, Input, Tag } from 'antd';
-import {  query, where } from 'firebase/firestore';
 import {Icon } from '@iconify/react';
 import {
   collection,
@@ -40,7 +39,7 @@ export default function Card() {
   const [press,setPress] = useState(false);
   const [pressCards,setPressCards]=useState([]);
   const [moveModel, setMoveModel] = useState(false);
-  onst [availableCards, setAvailableCards] = useState([]);
+  const [availableCards, setAvailableCards] = useState([]);
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -243,37 +242,12 @@ export default function Card() {
         }, 200);
      
   };
-   const readAvailable = () => {
-    if (user) {
-      const collectionRef = collection(database, 'cardData');
-      const q = query(collectionRef, where('sharedWith', 'array-contains', user.uid));
-
-      onSnapshot(
-        q,
-        (data) => {
-          const fetchedCards = data.docs.map((doc) => {
-            const cardData = doc.data();
-            return {
-              ...cardData,
-              id: doc.id,
-              fileName: cardData?.fileName || "",
-            };
-          });
-
-          setAvailableCards(fetchedCards); 
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
-        }
-      );
-    }
-  };
+  
 
  
  	useEffect(() => {
 		readData();
-        readAvailable();
-	}, [])
+	}, []);
 
 
 
@@ -518,7 +492,7 @@ export default function Card() {
       Where would you like to move your selection?
 
        <Select style={{ width: '100%' }}>
-          {availableCards.map((card) => (
+          {cards.map((card) => (
             <Select.Option key={card.id} value={card.id}>
               {card.fileName}
             </Select.Option>
