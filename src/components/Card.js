@@ -17,6 +17,8 @@ import Search from './Search';
 import AddCard from './AddCard';
 import { Select } from 'antd';
 import { database, storage } from '../firebaseConfig';
+import { readData } from './ReadData';
+
 export default function Card() {
   const params = useParams();
   const navigate = useNavigate();
@@ -41,6 +43,7 @@ export default function Card() {
   const [moveModel, setMoveModel] = useState(false);
   const [availableCards, setAvailableCards] = useState([]);
   const [theCards, setTheCards]= useState([]);
+  const [key,setKey]=useState(1);
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -115,6 +118,11 @@ export default function Card() {
 
     setTag('');
     };
+const deleteFiles = (fileNames) => {
+  const updatedCards = cards.filter((card) => !fileNames.includes(card.fileName));
+  updateCards(updatedCards);
+  setPressCards([]);
+};
 
   const deleteFile = (fileName) => {
     const updatedCards = cards.filter((card) => card.fileName !== fileName);
@@ -127,6 +135,10 @@ export default function Card() {
   const showDeleteModal = (fileName) => {
     setFileToDelete(fileName);
     setDeleteModalVisible(true);
+  };
+   const showDeleteModalS = () => {
+    setDeleteModalVisible(true);
+    setKey(2);
   };
   const showMoveModel = () => {
         setMoveModel(true);
@@ -147,6 +159,11 @@ export default function Card() {
       deleteFile(fileToDelete);
       hideDeleteModal();
     }
+    if (key===2){
+         deleteFiles(pressCards.map((card) => card.fileName))
+        hideDeleteModal();
+        setKey(1);
+    }
   };
 
   const showModal = () => {
@@ -164,24 +181,24 @@ export default function Card() {
   const handleFile = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  const readData = () => {
+ const viewData = () => {
   onSnapshot(databaseRef, (snapshot) => {
     const data = snapshot.data();
     if (data) {
       setCards(data.fileLink);
       setCardName(data.cardName);
+
+      setTheCards(data.fileLink);
     }
-    const user = auth.currentUser;
-     readData(
-          user,
-          (theCards) => {
-            setCards(theCards);
-          }));
   });
 
-
-
+ 
 };
+
+
+
+
+
   const getFile = async () => {
     if (!selectedFile) {
       return;
@@ -256,7 +273,7 @@ export default function Card() {
 
  
  	useEffect(() => {
-		readData();
+		viewData();
 	}, []);
 
 
@@ -291,8 +308,8 @@ export default function Card() {
       {press && pressCards.length > 0 ? (
       <div>
        <span className="view-icons">
-         <Icon icon="bxs:truck" width="60" onClick={showMoveModel} />
-         <Icon icon='jam:trash'height='60' />
+         <Icon icon="bxs:truck" width="60" onClick={showMoveModel} style={{ display: 'none' }}/>
+         <Icon icon='jam:trash'height='60'  onClick={showDeleteModalS}/>
          <Icon icon="material-symbols:cancel" height="60" onClick={cancelMulti} />
       </span>
       <br />
@@ -446,7 +463,12 @@ export default function Card() {
         onCancel={hideDeleteModal}
         centered
       >
-        <p>Are you sure you want to delete {fileToDelete}?</p>
+        {fileToDelete ? (
+    <p>Are you sure you want to delete {fileToDelete}?</p>
+  ) : (
+    <p>Are you sure you want to delete your selection?</p>
+  )}
+      
       </Modal>
 
 	  		 
