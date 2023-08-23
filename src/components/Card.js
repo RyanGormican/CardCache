@@ -40,6 +40,7 @@ export default function Card() {
   const [pressCards,setPressCards]=useState([]);
   const [moveModel, setMoveModel] = useState(false);
   const [availableCards, setAvailableCards] = useState([]);
+  const [theCards, setTheCards]= useState([]);
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -170,7 +171,16 @@ export default function Card() {
       setCards(data.fileLink);
       setCardName(data.cardName);
     }
+    const user = auth.currentUser;
+     readData(
+          user,
+          (theCards) => {
+            setCards(theCards);
+          }));
   });
+
+
+
 };
   const getFile = async () => {
     if (!selectedFile) {
@@ -492,9 +502,9 @@ export default function Card() {
       Where would you like to move your selection?
 
        <Select style={{ width: '100%' }}>
-          {cards.map((card) => (
+          {theCards.map((card) => (
             <Select.Option key={card.id} value={card.id}>
-              {card.fileName}
+              {card.Name}
             </Select.Option>
           ))}
         </Select>
