@@ -33,6 +33,8 @@ export default function Card() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [view,setView] = useState('grid');
   const [tag, setTag]= useState('');
+  const [press,setPress] = useState(false);
+  const [pressCards,setPressCards]=useState([]);
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -215,7 +217,18 @@ export default function Card() {
     navigate(`/card/${id}/${index}`);
   };
 
-
+  const handlePress = (card) => {
+        const timer = setTimeout(() => {
+        setPress(true);
+        setPressCards((prevPressCards)=> {
+        if (!prevPressCards.includes(card)) {
+        return [...prevPressCards,card];
+        }
+        return prevPressCards;
+        });
+        }, 200);
+        console.log(pressCards);
+  };
 
  	useEffect(() => {
 		readData();
@@ -252,9 +265,9 @@ export default function Card() {
       </span>
 
     {view === 'grid' ? (
-	<div className='card-parent'>
+	<div className={`card-parent ${pressCards.includes(card) ? 'selected-card': ''}`}>
  {filteredCards?.map((card, index) => (
-  <div key={index} className='grid-child'>
+  <div key={index} className='grid-child' onMouseDown={() => handlePress(card)}>
     {hasFileLink(card) ? (
            <div  key={card.id}>
               <h4 onClick={() => openCard(params.id, index)}>{card.cardName}</h4>

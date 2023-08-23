@@ -19,7 +19,9 @@
 .icon{
 	cursor: pointer;
 }
-
+.selected-card{
+	border: 3px blue;
+}
 .tags{
 	display:flex;
 	justify-content: left;
