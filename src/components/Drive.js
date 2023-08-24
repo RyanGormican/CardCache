@@ -58,7 +58,6 @@ export default function Drive() {
   };
   const toggleTheme = async()=>{
         const newTheme = theme === 'light' ? 'dark' : 'light';
-  
         if (user) {
            const settingsRef = doc(database, 'settings', user.uid);
            await updateDoc(settingsRef, {
@@ -272,8 +271,11 @@ export default function Drive() {
         onCancel={handleCancel}
         centered
       >
-        <Icon icon="ph:moon" height='30' width='30'onClick={toggleTheme}/>
+        {theme === 'light'? (
+       <Icon icon="ph:moon" height='30' width='30'onClick={toggleTheme}/>) : (
+
         <Icon icon="ph:sun" height='30' width='30'onClick={toggleTheme}/>
+        )}
       </Modal>
 
       <Modal
