@@ -39,7 +39,7 @@ function App() {
     checkSettings();
   }, [location, toggle]);
   return (
-     <div className={`${theme === 'light' ? 'light-theme' : 'dark-theme'}`} style={{fontFamily: font }}>
+     <div className={`${theme === 'light' ? 'light-theme' : 'dark-theme'}`} style={{fontFamily: font}}>
       <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/drive/" element={<Drive database={database}  onThemeToggled={handleThemeToggled} />} />
