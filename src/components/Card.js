@@ -317,7 +317,7 @@ const deleteFiles = (fileNames) => {
 			<h1>{cardName} </h1>
 			</div>
 			<div className='search-title'>
-			<Search cards={cards} filtering={filteredCards}  onFilterChange={handleFilterChange}  />
+			<Search cards={cards} filtering={filteredCards}  onFilterChange={handleFilterChange} style={font}  />
 			</div>
               <span className="view-icons">
          <div  onClick={() => setView('list')}>
