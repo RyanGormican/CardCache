@@ -36,6 +36,8 @@ export default function Drive({database, onThemeToggled}) {
   const [fileToView, setFileToView] = useState(null);
   const [theme, setTheme] = useState('light'); 
   const user = auth.currentUser;
+  const [font, setFont]=useState('Oswald');
+  const fonts = ['Oswald', 'Arial', 'Times New Roman', 'Georgia', 'Helvetica'];
   const showSettings = () => {
     setIsSettingsVisible(true);
   };
@@ -55,6 +57,16 @@ export default function Drive({database, onThemeToggled}) {
     setIsSettingsVisible(false);
     setIsSharingModalVisible(false);
     setInfoModalVisible(false);
+  };
+  const handleChangeFont = async ( selectedFont) => {
+        if (user) {
+         const settingsRef = doc(database, 'settings', user.uid);
+           await updateDoc(settingsRef, {
+           font: selectedFont,
+           });
+        }
+        setFont(selectedFont);
+        onThemeToggled();
   };
   const toggleTheme = async()=>{
         const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -130,7 +142,8 @@ export default function Drive({database, onThemeToggled}) {
             setTheme('light');
       }else{
       const settingsData = settingsSnapshot.data();
-        setTheme(settingsData.theme)
+        setTheme(settingsData.theme);
+        setFont(settingsData.font);
       }
 
       }
@@ -277,6 +290,15 @@ export default function Drive({database, onThemeToggled}) {
 
         <Icon icon="ph:sun" height='30' width='30'onClick={toggleTheme}/>
         )}
+        <div>
+            <select value={font}  onChange={(e) => handleChangeFont(e.target.value)}>
+            {fonts.map((font) => (
+              <option key={font} value={font}>
+                {font}
+              </option>
+            ))}
+          </select>
+        </div>
       </Modal>
 
       <Modal

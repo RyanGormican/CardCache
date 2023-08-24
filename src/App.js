@@ -10,6 +10,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 function App() {
   const [theme, setTheme ]= useState('light');
   const [toggle, setToggle] = useState(false);
+  const [font,setFont]= useState('Oswald');
   const location = useLocation();
   const handleThemeToggled = () => {
      setToggle(!toggle);
@@ -30,6 +31,7 @@ function App() {
           const settingsData = settingsSnapshot.data();
           console.log(settingsData);
           setTheme(settingsData.theme);
+          setFont(settingsData.font);
         }
       }
     };
@@ -37,7 +39,7 @@ function App() {
     checkSettings();
   }, [location, toggle]);
   return (
-     <div className={`${theme === 'light' ? 'light-theme' : 'dark-theme'}`}>
+     <div className={`${theme === 'light' ? 'light-theme' : 'dark-theme'}`} style={{fontFamily: font }}>
       <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/drive/" element={<Drive database={database}  onThemeToggled={handleThemeToggled} />} />

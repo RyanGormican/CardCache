@@ -64,13 +64,11 @@
 }
 
 div.light-theme > :not(.preview-child):not(.safe) {
-  font-family: 'Oswald', sans-serif;
   background-color: white;
   color: black;
 }
 
 div.dark-theme > :not(.preview-child):not(.safe) {
-  font-family: 'Oswald', sans-serif;
   background-color: black;
   color: white;
 }
