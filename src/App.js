@@ -1,7 +1,7 @@
 import './App.css';
 import Drive from './components/Drive';
 import Auth from './components/Auth';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { app, database , auth} from './firebaseConfig';
 import Card from './components/Card';
 import NestedCard from './components/NestedCard';
@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 function App() {
   const [theme, setTheme ]= useState('light');
+  const location = useLocation();
   useEffect(() => {
     const checkSettings = async () => {
       if (auth.currentUser) { 
@@ -23,13 +24,14 @@ function App() {
           setTheme('light');
         } else {
           const settingsData = settingsSnapshot.data();
+          console.log(settingsData);
           setTheme(settingsData.theme);
         }
       }
     };
 
     checkSettings();
-  }, [auth.currentUser]);
+  }, [location]);
   return (
      <div className={`${theme === 'light' ? 'light-theme' : 'dark-theme'}`}>
       <Routes>
