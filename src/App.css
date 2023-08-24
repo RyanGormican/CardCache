@@ -191,7 +191,7 @@ position: absolute;
 	top: 10px;
 	display: flex;
 	cursor: pointer;
-		z-index: 1;
+		z-index: 6;
 }
 
 .image-preview{

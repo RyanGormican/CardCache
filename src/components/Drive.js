@@ -199,6 +199,7 @@ export default function Drive({database, onThemeToggled}) {
           filtering={filteredCards}
           onFilterChange={handleFilterChange}
           type="drive"
+           style={font}
         />
       </div>
       <span className="view-icons">
@@ -284,7 +285,9 @@ export default function Drive({database, onThemeToggled}) {
         onOk={handleCancel}
         onCancel={handleCancel}
         centered
+        style={{ fontFamily: font }}
       >
+
         {theme === 'light'? (
        <Icon icon="ph:moon" height='30' width='30'onClick={toggleTheme}/>) : (
 
@@ -307,6 +310,7 @@ export default function Drive({database, onThemeToggled}) {
         onOk={handleCancel}
         onCancel={handleCancel}
         centered
+        style={{ fontFamily: font }}
       >
         <h3>Shared with:</h3>
         <ul>
@@ -344,6 +348,7 @@ export default function Drive({database, onThemeToggled}) {
 		footer={[
 			<Button onClick={handleCancel}> Ok </Button>
 		]}
+        style={{ fontFamily: font }}
       >
         {fileToView && (
       <div>

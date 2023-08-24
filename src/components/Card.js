@@ -7,6 +7,7 @@ import {
   updateDoc,
   onSnapshot,
   query,
+  getDoc,
   where,
 } from 'firebase/firestore';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -44,7 +45,10 @@ export default function Card() {
   const [availableCards, setAvailableCards] = useState([]);
   const [theCards, setTheCards]= useState([]);
   const [key,setKey]=useState(1);
+  const [font,setFont]=useState('Oswald');
   const [duplicate,setDuplicate]= useState(false);
+    const [theme, setTheme] = useState('light'); 
+    const user = auth.currentUser;
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -272,13 +276,25 @@ const deleteFiles = (fileNames) => {
         return prevPressCards.filter((c)=> c !== card);
         });
 
-        }, 200);
+        }, 500);
      
   };
   
 
  
  	useEffect(() => {
+
+     const checkSettings = async () => {
+  if (user){
+   const settingsRef = doc(database, 'settings',user.uid);
+      const settingsSnapshot = await getDoc(settingsRef);
+      const settingsData = settingsSnapshot.data();
+        setTheme(settingsData.theme);
+        setFont(settingsData.font);
+     
+  }}
+
+        checkSettings();
 		viewData();
 	}, []);
 
@@ -348,15 +364,15 @@ const deleteFiles = (fileNames) => {
           {card?.downloadURL !== '' && (
             <React.Fragment>
               {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (
-                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='grid' />
+                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='grid' font={font}/>
               ) : (
                 ''
               )}
               {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='grid'/>
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='grid'font={font}/>
               )}
               {/\.(mp3)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='grid'/>
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='grid'font={font}/>
               )}
             </React.Fragment>
           )}
@@ -407,15 +423,15 @@ const deleteFiles = (fileNames) => {
              {card?.downloadURL !== '' && (
             <React.Fragment>
               {/\.(png|jpg|jpeg|gif|bmp)$/i.test(card.fileName) ?  (
-                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='list' />
+                <Player mediaURL={card.downloadURL} mediaType='image' mediaName={card.fileName} listing='list' font={font}/>
               ) : (
                 ''
               )}
               {/\.(mp4|webm|ogg)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='list'/>
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='video' listing='list' font={font}/>
               )}
               {/\.(mp3)$/i.test(card.fileName) && (
-                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='list' />
+                <Player className="media" mediaURL={card.downloadURL} autoplay={false} loop={false} mediaName={card.fileName} mediaType='audio' listing='list' font={font} />
               )}
             </React.Fragment>
           )}
@@ -451,6 +467,7 @@ const deleteFiles = (fileNames) => {
 			onOk={getFile}
 			onCancel = {handleCancel} 
 			centered
+              style={{ fontFamily: font }}
 			>
 			<div className="file-drop" onDrop={handleDrop} onDragOver={handleDragOver}>
     <p>Drag and drop files here or click 'Choose file' to add</p>
@@ -473,6 +490,7 @@ const deleteFiles = (fileNames) => {
         onOk={confirmDelete}
         onCancel={hideDeleteModal}
         centered
+          style={{ fontFamily: font }}
       >
         {fileToDelete ? (
     <p>Are you sure you want to delete {fileToDelete}?</p>
@@ -490,6 +508,7 @@ const deleteFiles = (fileNames) => {
 		footer={[
 			<Button onClick={handleCancel}> Ok </Button>
 		]}
+          style={{ fontFamily: font }}
       >
 		<div>
          {fileToView ? (
@@ -530,6 +549,7 @@ const deleteFiles = (fileNames) => {
         onOk={handleCancel}
         onCancel={handleCancel}
         centered
+        style={{ fontFamily: font }}
       >
       <div>
       Where would you like to move your selection?
@@ -553,6 +573,7 @@ const deleteFiles = (fileNames) => {
 		footer={[
 			<Button onClick={handleCancel}> Ok </Button>
 		]}
+          style={{ fontFamily: font }}
       >
 	   <div className="search-title">
     <Input.TextArea

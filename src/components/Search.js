@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Checkbox } from 'antd';
 import { Icon } from '@iconify/react';
 
-export default function Search({ cards, filtering, onFilterChange,type }) {
+export default function Search({ cards, filtering, onFilterChange,type , font}) {
   const [search, setSearch] = useState('');
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState('');
@@ -160,6 +160,7 @@ const filteredCards = cards
             Ok
           </Button>,
         ]}
+              style={{ fontFamily: font }}
       >
         <div className="sort-dropdown">
           <span>Sort by:</span>

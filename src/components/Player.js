@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal,Button } from 'antd';
 import { Icon } from '@iconify/react';
-export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName, listing }) {
+export default function Player({ mediaURL, autoplay, loop, mediaType, mediaName, listing,font }) {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [rotationDegrees, setRotationDegrees] = useState(0);
   const [flipDirectionH, setFlipDirectionH] = useState('none');
@@ -113,6 +113,7 @@ setFlipDirectionV((prevDirection) => (prevDirection === 'vertical' ? 'none' : 'v
     ]
 
   ]}
+        style={{ fontFamily: font }}
 >
       >
         {mediaType === 'video' ? (
