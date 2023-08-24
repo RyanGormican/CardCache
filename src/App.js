@@ -8,7 +8,7 @@ import NestedCard from './components/NestedCard';
 
 function App() {
   return (
-    <div>
+     <div className={`${theme === 'light' ? 'light-theme' : 'dark-theme'}`}>
       <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/drive/" element={<Drive database={database} />} />

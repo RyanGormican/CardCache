@@ -63,9 +63,18 @@
   background-color:yellow;
 }
 
-*{
-	font-family: 'Oswald', sans-serif;
+div.light-theme > :not(.preview-child):not(.safe) {
+  font-family: 'Oswald', sans-serif;
+  background-color: white;
+  color: black;
 }
+
+div.dark-theme > :not(.preview-child):not(.safe) {
+  font-family: 'Oswald', sans-serif;
+  background-color: black;
+  color: white;
+}
+
 
 
 h1 {
@@ -98,7 +107,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 10vh; 
-  z-index: -1;
+  z-index: 5;
 }
 .links {
   display: flex;
@@ -123,7 +132,6 @@ h1 {
 	grid-template-columns: auto auto auto;
 	position: relative;
 	margin:10px;
-	padding: 2vw;
 }
 .list-parent {
 	display:grid;

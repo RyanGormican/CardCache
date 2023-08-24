@@ -10,6 +10,8 @@ import {
   where,
   doc,
   updateDoc,
+  getDoc,
+  setDoc,
 } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
 import Search from './Search';
@@ -32,6 +34,8 @@ export default function Drive() {
   const [view, setView] = useState('grid');
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [fileToView, setFileToView] = useState(null);
+  const [theme, setTheme] = useState('light'); 
+  const user = auth.currentUser;
   const showSettings = () => {
     setIsSettingsVisible(true);
   };
@@ -51,6 +55,17 @@ export default function Drive() {
     setIsSettingsVisible(false);
     setIsSharingModalVisible(false);
     setInfoModalVisible(false);
+  };
+  const toggleTheme = async()=>{
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+  
+        if (user) {
+           const settingsRef = doc(database, 'settings', user.uid);
+           await updateDoc(settingsRef, {
+           theme: newTheme,
+           });
+        }
+        setTheme(newTheme);
   };
    const handleColorChange = async (event) => {
    const newColor = event.target.value;
@@ -101,8 +116,30 @@ export default function Drive() {
 
 
   useEffect(() => {
+  const checkSettings = async () => {
+  if (user){
+   const settingsRef = doc(database, 'settings',user.uid);
+      const settingsSnapshot = await getDoc(settingsRef);
+
+      if(!settingsSnapshot.exists()){
+            await setDoc(settingsRef, {
+            userid: user.uid,
+            theme: 'light',
+            font: 'Oswald',
+            });
+            setTheme('light');
+      }else{
+      const settingsData = settingsSnapshot.data();
+        setTheme(settingsData.theme)
+      }
+
+      }
+  }
+
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+     
+        checkSettings();
         readData(
           user,
           (fetchedCards) => {
@@ -176,8 +213,8 @@ export default function Drive() {
               const uniqueTags = Array.from(new Set(allTags));
               return (
                 <div className="preview-child" key={card.id}style={{backgroundColor:card.color || 'white'}}>
-                  <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
-                  <span>
+                  <h4  className="safe" onClick={() => openCard(card.id)}>{card.cardName}</h4>
+                  <span  className="safe">
                    <Icon
                 icon="mdi:information"
                 height='30'
@@ -191,7 +228,7 @@ export default function Drive() {
                 
               </span>
                   {allTags.length > 0 && (
-                    <div>
+                    <div  className="safe">
                       {uniqueTags.map((tag, index) => (
                         <Tag key={index} className="tag">
                           {tag}
@@ -235,7 +272,8 @@ export default function Drive() {
         onCancel={handleCancel}
         centered
       >
-        {/* Add settings content here */}
+        <Icon icon="ph:moon" height='30' width='30'onClick={toggleTheme}/>
+        <Icon icon="ph:sun" height='30' width='30'onClick={toggleTheme}/>
       </Modal>
 
       <Modal
