@@ -214,7 +214,6 @@ export default function Drive() {
                 <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
                   <Icon
                 icon="mdi:information"
-                height='30'
                 onClick={() => showInfoModal(card)}
               />
                 <Icon
