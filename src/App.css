@@ -63,7 +63,9 @@
   background-color:yellow;
 }
 
-
+*{
+	font-family: 'Oswald', sans-serif;
+}
 
 
 h1 {

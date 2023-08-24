@@ -30,9 +30,9 @@ setIsModalVisible(false);
   const cardUpload = async () => {
   const user = auth.currentUser;
 
-  try {
+    try {
     if (cardId && user) {
-    const databaseRef = doc(database, 'cardData', params?.id);
+      const databaseRef = doc(database, 'cardData', cardId);
 
       await updateDoc(databaseRef, {
         fileLink: [
@@ -41,6 +41,7 @@ setIsModalVisible(false);
             userId: user.uid,
             cardName: cardName,
             sharedWith: [user.uid],
+            color: 'white',
             fileLink: [
               {
                 downloadURL: '',
@@ -52,23 +53,18 @@ setIsModalVisible(false);
           },
         ],
       });
-    } else if (collectionRef && user) {
-      await updateDoc(collectionRef, {
+    } else if (!cardId && user) {
+      await addDoc(collectionRef, {
+        userId: user.uid,
+        cardName: cardName,
+        sharedWith: [user.uid],
+        color: 'white',
         fileLink: [
-          ...cards,
           {
-            userId: user.uid,
-            cardName: cardName,
-            sharedWith: [user.uid],
-            type:'folder',
-            fileLink: [
-              {
-                downloadURL: '',
-                fileName: '',
-                fileSize: 0,
-                creationTimestamp: 0,
-              },
-            ],
+            downloadURL: '',
+            fileName: '',
+            fileSize: 0,
+            creationTimestamp: 0,
           },
         ],
       });

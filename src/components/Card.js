@@ -44,6 +44,7 @@ export default function Card() {
   const [availableCards, setAvailableCards] = useState([]);
   const [theCards, setTheCards]= useState([]);
   const [key,setKey]=useState(1);
+  const [duplicate,setDuplicate]= useState(false);
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
@@ -203,7 +204,12 @@ const deleteFiles = (fileNames) => {
     if (!selectedFile) {
       return;
     }
+     const isDuplicate = cards.some(card => card.fileName === selectedFile.name);
 
+  if (isDuplicate) {
+    setDuplicate(true);
+    return;
+  }
     const fileRef = ref(storage, selectedFile.name);
     const uploadTask = uploadBytesResumable(fileRef, selectedFile);
 
@@ -224,8 +230,8 @@ const deleteFiles = (fileNames) => {
       const updatedCards = [...cards, newFile];
 
       updateCards(updatedCards);
-
-      setIsModalVisible(false);
+      setDuplicate(false);
+      setSelectedFile(null);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
@@ -449,6 +455,11 @@ const deleteFiles = (fileNames) => {
 			<div className="file-drop" onDrop={handleDrop} onDragOver={handleDragOver}>
     <p>Drag and drop files here or click 'Choose file' to add</p>
   </div>
+  {duplicate?(
+  <p> The file you are trying to upload already exists in this card. </p>
+  ):(
+  ""
+  )}
    <input
       type="file"
       name="myfile"

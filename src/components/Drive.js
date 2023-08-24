@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Tag } from 'antd';
+import { Modal, Button, Tag } from 'antd';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -30,15 +30,19 @@ export default function Drive() {
   const [sharedWithUsers, setSharedWithUsers] = useState([]);
   const [newUserId, setNewUserId] = useState('');
   const [view, setView] = useState('grid');
-
+  const [infoModalVisible, setInfoModalVisible] = useState(false);
+  const [fileToView, setFileToView] = useState(null);
   const showSettings = () => {
     setIsSettingsVisible(true);
   };
-
+  const showInfoModal = (card) => {
+  setInfoModalVisible(true);
+  setFileToView(card);
+  };
   const handleFilterChange = (filteredCards) => {
     setFilteredCards(filteredCards);
   };
-
+ 
   const handleLogout = () => {
     signOut(auth);
   };
@@ -46,8 +50,26 @@ export default function Drive() {
   const handleCancel = () => {
     setIsSettingsVisible(false);
     setIsSharingModalVisible(false);
+    setInfoModalVisible(false);
   };
-
+   const handleColorChange = async (event) => {
+   const newColor = event.target.value;
+  if (fileToView) {
+      try {
+        const cardRef = doc(database, 'cardData', fileToView.id);
+        await updateDoc(cardRef, {
+          color: newColor,
+        });
+        
+        setFileToView((prevFileToView) => ({
+          ...prevFileToView,
+          color: newColor,
+        }));
+      } catch (error) {
+        console.error('Error updating color:', error);
+      }
+    }
+  };
   const handleShareIconClick = (cardId) => {
     setCurrentCardId(cardId);
     setIsSharingModalVisible(true);
@@ -153,12 +175,21 @@ export default function Drive() {
 
               const uniqueTags = Array.from(new Set(allTags));
               return (
-                <div className="preview-child" key={card.id}>
+                <div className="preview-child" key={card.id}style={{backgroundColor:card.color || 'white'}}>
                   <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
+                  <span>
+                   <Icon
+                icon="mdi:information"
+                height='30'
+                onClick={() => showInfoModal(card)}
+              />
                   <Icon
                     icon="material-symbols:person-add"
+                      height='30'
                     onClick={() => handleShareIconClick(card.id)}
                   />
+                
+              </span>
                   {allTags.length > 0 && (
                     <div>
                       {uniqueTags.map((tag, index) => (
@@ -179,8 +210,13 @@ export default function Drive() {
         <div className="list-parent">
           {dataLoaded ? (
             filteredCards.map((card) => (
-              <div className="list-child" key={card.id}>
+              <div className="list-child" key={card.id}style={{backgroundColor:card.color || 'white'}}>
                 <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
+                  <Icon
+                icon="mdi:information"
+                height='30'
+                onClick={() => showInfoModal(card)}
+              />
                 <Icon
                   icon="material-symbols:person-add"
                   onClick={() => handleShareIconClick(card.id)}
@@ -238,6 +274,20 @@ export default function Drive() {
         <button onClick={() => handleAddSharing(currentCardId, newUserId)}>
           Share
         </button>
+      </Modal>
+       <Modal
+		title={`Information`}
+        visible={infoModalVisible}
+        centered
+		footer={[
+			<Button onClick={handleCancel}> Ok </Button>
+		]}
+      >
+        {fileToView && (
+      <div>
+     Card color:  <input type="color" style={{width:'80%'}} value={fileToView.color || 'white'} onChange={handleColorChange}/>
+      </div>
+      )}
       </Modal>
     </div>
   );
