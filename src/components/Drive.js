@@ -19,7 +19,7 @@ import { database } from '../firebaseConfig';
 import AddCard from './AddCard';
 import { readData } from './ReadData';
 
-export default function Drive() {
+export default function Drive({database, onThemeToggled}) {
   const navigate = useNavigate();
   const [filteredCards, setFilteredCards] = useState([]);
   const auth = getAuth();
@@ -65,6 +65,7 @@ export default function Drive() {
            });
         }
         setTheme(newTheme);
+        onThemeToggled();
   };
    const handleColorChange = async (event) => {
    const newColor = event.target.value;

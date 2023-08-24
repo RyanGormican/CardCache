@@ -9,7 +9,11 @@ import React, { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 function App() {
   const [theme, setTheme ]= useState('light');
+  const [toggle, setToggle] = useState(false);
   const location = useLocation();
+  const handleThemeToggled = () => {
+     setToggle(!toggle);
+  };
   useEffect(() => {
     const checkSettings = async () => {
       if (auth.currentUser) { 
@@ -31,12 +35,12 @@ function App() {
     };
 
     checkSettings();
-  }, [location]);
+  }, [location, toggle]);
   return (
      <div className={`${theme === 'light' ? 'light-theme' : 'dark-theme'}`}>
       <Routes>
         <Route path="/" element={<Auth />} />
-        <Route path="/drive/" element={<Drive database={database} />} />
+        <Route path="/drive/" element={<Drive database={database}  onThemeToggled={handleThemeToggled} />} />
         <Route path="/card/:id" element={<Card database={database} />} />
         <Route path="/card/:id/:index" element={<NestedCard database={database} />} />
       </Routes>
