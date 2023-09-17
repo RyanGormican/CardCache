@@ -252,7 +252,7 @@ export default function Drive({database, onThemeToggled}) {
                   <h4  className="safe" onClick={() => openCard(card.id)}>{card.cardName}</h4>
                   <span  className="safe">
                    <Icon
-                icon="mdi:information"
+                icon="material-symbols:palette"
                 height='30'
                 onClick={() => showInfoModal(card)}
               />
@@ -286,7 +286,7 @@ export default function Drive({database, onThemeToggled}) {
               <div className="list-child" key={card.id}style={{backgroundColor:card.color || 'white'}}>
                 <h4 onClick={() => openCard(card.id)}>{card.cardName}</h4>
                   <Icon
-                icon="mdi:information"
+                icon="material-symbols:palette"
                 onClick={() => showInfoModal(card)}
               />
                 <Icon
@@ -364,7 +364,7 @@ export default function Drive({database, onThemeToggled}) {
         </button>
       </Modal>
        <Modal
-		title={`Information`}
+		title={`Customize Folder`}
         visible={infoModalVisible}
         centered
 		footer={[
