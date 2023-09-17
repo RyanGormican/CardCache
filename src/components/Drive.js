@@ -97,6 +97,25 @@ export default function Drive({database, onThemeToggled}) {
       }
     }
   };
+
+     const handleColorChangeT = async (event) => {
+   const newColor = event.target.value;
+  if (fileToView) {
+      try {
+        const cardRef = doc(database, 'cardData', fileToView.id);
+        await updateDoc(cardRef, {
+          textColor: newColor,
+        });
+        
+        setFileToView((prevFileToView) => ({
+          ...prevFileToView,
+          textColor: newColor,
+        }));
+      } catch (error) {
+        console.error('Error updating color:', error);
+      }
+    }
+  };
   const handleShareIconClick = (cardId) => {
     setCurrentCardId(cardId);
     setIsSharingModalVisible(true);
@@ -210,6 +229,9 @@ export default function Drive({database, onThemeToggled}) {
           <Icon icon="mdi:grid" width="60" />
         </div>
       </span>
+         <div className={`${theme === 'light' ? 'light-page' : 'dark-page'}`} style={{fontFamily: font}}>
+    
+</div>
       {view === 'grid' ? (
         <div className="card-parent">
           {dataLoaded ? (
@@ -226,7 +248,7 @@ export default function Drive({database, onThemeToggled}) {
 
               const uniqueTags = Array.from(new Set(allTags));
               return (
-                <div className="preview-child" key={card.id}style={{backgroundColor:card.color || 'white'}}>
+                <div className="preview-child" key={card.id}style={{backgroundColor:card.color || 'white', color:card.textColor || 'black'}}>
                   <h4  className="safe" onClick={() => openCard(card.id)}>{card.cardName}</h4>
                   <span  className="safe">
                    <Icon
@@ -352,7 +374,8 @@ export default function Drive({database, onThemeToggled}) {
       >
         {fileToView && (
       <div>
-     Card color:  <input type="color" style={{width:'80%'}} value={fileToView.color || 'white'} onChange={handleColorChange}/>
+     Card color:  <input type="color" style={{width:'100%'}} value={fileToView.color || '#ffffff'} onChange={handleColorChange}/>
+     Text color:  <input type="color" style={{width:'100%'}} value={fileToView.textColor || 'black'} onChange={handleColorChangeT}/>
       </div>
       )}
       </Modal>

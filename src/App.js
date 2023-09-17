@@ -8,7 +8,7 @@ import NestedCard from './components/NestedCard';
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 function App() {
-  const [theme, setTheme ]= useState('light');
+  const [theme, setTheme ]= useState('');
   const [toggle, setToggle] = useState(false);
   const [font,setFont]= useState('Oswald');
   const location = useLocation();

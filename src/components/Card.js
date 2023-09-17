@@ -335,6 +335,7 @@ const deleteFiles = (fileNames) => {
          <Icon icon="material-symbols:cancel" height="60" onClick={cancelMulti} />
       </span>
       <br />
+
       <div className="center">
       {pressCards.length > 1 ? (
       <div>
@@ -350,6 +351,9 @@ const deleteFiles = (fileNames) => {
       ): (
       ""
       )}
+    <div className={`${theme === 'light' ? 'light-page' : 'dark-page'}`} style={{fontFamily: font}}>
+    
+</div>
     {view === 'grid' ? (
 	<div className="card-parent">
  {filteredCards?.map((card, index) => (
@@ -457,6 +461,7 @@ const deleteFiles = (fileNames) => {
     )}
   </div>
 ))}
+
 </div>
 )}
 

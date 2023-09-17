@@ -13,9 +13,14 @@
 	top: 10px;
 	display: flex;
 	gap: 15px;
-	 z-index: 1;
+	 z-index: 10;
 }
-
+.footer{
+position: absolute;
+width:100%;
+bottom: 0;
+background-color:black;
+}
 .icon{
 	cursor: pointer;
 }
@@ -63,16 +68,28 @@
   background-color:yellow;
 }
 
-div.light-theme > :not(.preview-child):not(.safe) {
+div.light-theme > :not(.preview-child):not(.safe):not(.card-parent) {
   background-color: white;
   color: black;
 }
 
-div.dark-theme > :not(.preview-child):not(.safe) {
+div.dark-theme > :not(.preview-child):not(.safe):not(.card-parent) {
   background-color: black;
   color: white;
 }
+.light-page{
+  background-color: white;
 
+  height:100%;
+  width:100%;
+}
+
+.dark-page{
+  background-color: black;
+  height:100%;
+  width:100%;
+  position:absolute;
+}
 
 
 h1 {
